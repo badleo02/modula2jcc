@@ -1,0 +1,425 @@
+//----------------------------------------------//
+//		SINTAXIS GENERAL		//
+//----------------------------------------------//
+UnidadDeCompilacion:
+ModuloPrograma _action_unidadDeCompilacion1
+ModuloDefinicion _action_unidadDeCompilacion2
+ModuloImplementacion _action_unidadDeCompilacion3
+
+ModuloPrograma:
+CabeceraModulo Bloque Identificador .
+
+ModuloDefinicion:
+CabeceraDefinicion { DefinicionDeModulo } END Identificador .
+
+ModuloImplementacion:
+IMPLEMENTATION ModuloPrograma
+
+CabeceraModulo:
+MODULE Identificador [ Prioridad ] ; { ListaImportados ; }
+
+CabeceraDefinicion:
+DEFINITION MODULE Identificador ; { ListaImportados ; } [ ListaExportados ; ]
+
+ListaImportados:
+[ FROM Identificador ] IMPORT IdentDeProc { , IdentDeProc }
+
+ListaExportados:
+EXPORT [ QUALIFIED ] ListaDeIdentificadores
+
+Prioridad:
+ExpresionConstante
+
+Bloque:
+ParteDeclarativa ParteEjecutiva END
+
+DefinicionDeModulo:
+DeclaracionDeConstantes
+TYPE { Identificador [ = EsquemaDeTipo ] ; }
+DeclaracionDeVariables
+CabeceraSubprograma ;
+
+//----------------------------------------------//
+//		DECLARACIONES BASICAS	   	//
+//----------------------------------------------//
+ParteDeclarativa:
+{ Declaracion }
+
+Declaracion:
+DeclaracionDeConstantes
+DeclaracionDeTipos
+DeclaracionDeVariables
+DeclaracionSubprograma
+DeclaracionModulo
+
+DeclaracionDeConstantes:
+CONST { AsociacionConstante ; }
+
+AsociacionConstante:
+Identificador = ExpresionConstante
+
+DeclaracionDeTipos:
+TYPE { DefinicionDeTipo ; }
+
+DefinicionDeTipo:
+Identificador = EsquemaDeTipo
+ 
+EsquemaDeTipo:
+TipoSimple
+TipoConjunto
+TipoFormacion
+TipoRegistro
+TipoPuntero
+TipoSubprograma
+
+TipoSimple:
+TipoEnumerado
+IdentificadorDeTipo RestoDeTipo
+\[ ExpresionConstante .. ExpresionConstante \] // Subrango
+
+TipoEnumerado:
+( ListaDeIdentificadores )
+
+RestoDeTipo:
+_epsilon_ // Simple
+\[ ExpresionConstante .. ExpresionConstante \] // Subrango
+
+TipoConjunto:
+SET OF TipoSimple
+
+TipoFormacion:
+ARRAY TipoSimple { , TipoSimple } OF EsquemaDeTipo
+
+TipoRegistro:
+RECORD SecuenciaDeListasDeCampos END
+
+SecuenciaDeListasDeCampos:
+ListaDeCampos { ; ListaDeCampos }
+
+ListaDeCampos:
+_epsilon_
+ListaDeIdentificadores : EsquemaDeTipo
+
+TipoPuntero:
+POINTER TO EsquemaDeTipo
+
+TipoSubprograma:
+PROCEDURE [ ListaDeTiposFormales ]
+
+ListaDeTiposFormales:
+( [ [ VAR ] TipoFormal { , [ VAR ] TipoFormal } ] ) [ : IdentificadorDeTipo ]
+
+DeclaracionDeVariables:
+VAR { ListaDeVariables ; }
+
+ListaDeVariables:
+ListaDeIdentificadores : EsquemaDeTipo
+
+DeclaracionSubprograma:
+CabeceraSubprograma ; Bloque Identificador ;
+
+CabeceraSubprograma:
+PROCEDURE Identificador [ ParametrosFormales ]
+
+ParametrosFormales:
+( [ GrupoDeParametros { ; GrupoDeParametros } ] ) [ : IdentificadorDeTipo ]
+
+GrupoDeParametros:
+[ VAR ] ListaDeIdentificadores : TipoFormal
+
+DeclaracionModulo:
+MODULE Identificador [ ExpresionConstante ] ; { ListaImportados ; } [ ListaExportados ; ] Bloque Identificador ; 
+
+//----------------------------------------------//
+//		SENTENCIAS EJECUTABLES	   	//
+//----------------------------------------------//
+ParteEjecutiva:
+[ BEGIN SecuenciaDeSentencias ]
+
+SecuenciaDeSentencias:
+Sentencia { ; Sentencia }
+
+Sentencia:
+_epsilon_ 
+SentenciaAsignacion _action_SentenciaAsignacion
+SentenciaIF
+SentenciaCASE
+SentenciaWHILE
+SentenciaREPEAT
+SentenciaLOOP
+SentenciaFOR
+SentenciaWITH
+LlamadaProcedimientoPredefinido
+SentenciaRETURN
+EXIT
+
+SentenciaAsignacion:
+Identificador _action_Identificador RestoSentenciaAsignacion _action_RestoSentenciaAsignacion
+
+RestoSentenciaAsignacion:
+ParteIzquierda RestoSentenciaRestoAsignacion _action_RestoSentenciaRestoAsignacion
+
+RestoSentenciaRestoAsignacion:
+_epsilon_
+:= Expresion _action_Expresion
+ParametrosDeLlamada
+
+ParteIzquierda:
+_epsilon_
+\[ ListaDeExpresiones \] ParteIzquierda
+. IdentificadorOProcPredef ParteIzquierda
+^ ParteIzquierda
+
+IdentificadorOProcPredef:
+Identificador
+LlamadaProcedimientoPredefinido
+
+SentenciaIF: 
+IF Expresion THEN SecuenciaDeSentencias RestoSentenciaIF END
+
+RestoSentenciaIF:
+{ ELSIF Expresion THEN SecuenciaDeSentencias } [ ELSE SecuenciaDeSentencias ]
+
+SentenciaCASE: 
+CASE Expresion OF Caso { | Caso } [ ELSE SecuenciaDeSentencias ] END
+
+Caso:
+ListaDeValores : SecuenciaDeSentencias
+
+SentenciaWHILE:
+WHILE Expresion DO SecuenciaDeSentencias END _action_SentenciaWHILE
+
+SentenciaREPEAT:
+REPEAT SecuenciaDeSentencias UNTIL Expresion _action_SentenciaREPEAT
+
+SentenciaLOOP: 
+LOOP SecuenciaDeSentencias END _action_SentenciaLOOP
+
+SentenciaFOR:
+FOR Identificador := Expresion TO Expresion [ BY ExpresionConstante ] DO SecuenciaDeSentencias END _action_SentenciaFOR
+
+SentenciaWITH:
+WITH Identificador ParteIzquierda DO SecuenciaDeSentencias END _action_SentenciaWITH
+
+
+SentenciaRETURN:
+RETURN [ Expresion ] _action_SentenciaRETURN
+
+//----------------------------------------------//
+//		EXPRESIONES		   	//
+//----------------------------------------------//
+ListaDeValores:
+Valores RestoListaValores _action_ListaDeValores
+
+RestoListaValores:
+_epsilon_ _action_vacio
+, Valores RestoListaValores _action_RestoValores
+
+Valores:
+ExpresionConstante RestoValores
+
+RestoValores:
+_epsilon_
+.. ExpresionConstante
+
+ExpresionConstante:
+ExpresionConstanteSimple [ OperadorComparador ExpresionConstanteSimple ]
+
+ExpresionConstanteSimple:
+Signo TerminoConstante { OperadorSumador TerminoConstante }
+
+TerminoConstante:
+FactorConstante { OperadorMultiplicador FactorConstante }
+
+FactorConstante:
+Identificador
+ConstantePredefinida
+Numero
+Cadena
+Caracter
+( ExpresionConstante )
+OperadorUnario FactorConstante
+
+ParametrosDeLlamada:
+( [ ListaDeExpresiones ] )
+
+ListaDeExpresiones:
+Expresion RestoListaDeExpresiones 
+
+RestoListaDeExpresiones:
+_epsilon_
+, Expresion _action_Expresion RestoListaDeExpresiones
+
+Expresion:
+ExpresionSimple _action_ExpresionSimple RestoExpresion _action_RestoExpresion
+
+RestoExpresion:
+_epsilon_
+OperadorComparador ExpresionSimple _action_ExpresionSimple
+
+ExpresionSimple:
+Signo Termino _action_Signo RestoExpresionSimple _action_RestoExpresionSimple
+
+RestoExpresionSimple:
+_epsilon_
+OperadorSumador Termino _action_termino  _action_OperadorSumador RestoExpresionSimple
+
+Signo:
+_epsilon_
++
+-
+
+Termino:
+Factor _action_factor RestoTermino
+
+RestoTermino:
+_epsilon_	
+OperadorMultiplicador Factor RestoTermino 
+
+Factor:
+Identificador RestoFactor
+ConstantePredefinida 
+Numero _action_numero
+TipoPredefinido \{ ListaDeElementos \}
+Cadena 
+Caracter 
+( Expresion ) 
+OperadorUnario Factor 
+LlamadaFuncionPredefinida 
+
+RestoFactor:
+\{ ListaDeElementos \} 
+ParametrosDeLlamada 
+ParteIzquierda 
+
+OperadorComparador:
+= 
+<> 
+# 
+< 
+<= 
+> 
+>= 
+IN 
+
+OperadorSumador:
++ 
+- 
+OR 
+
+OperadorMultiplicador:
+* 
+/ 
+DIV 
+MOD 
+& 
+AND 
+
+OperadorUnario:
+NOT 
+~ 
+
+//----------------------------------------------//
+//		ELEMENTOS BASICOS	   	//
+//----------------------------------------------//
+TipoFormal:
+[ ARRAY OF ] IdentificadorDeTipo 
+ 
+Numero:
+NumeroEntero _action_numEntero
+NumeroReal _action_numReal
+
+ListaDeElementos:
+[ Elementos { , Elementos } ] 
+
+Elementos:
+ExpresionConstante [ .. ExpresionConstante ] 
+
+// TIPOS
+IdentificadorDeTipo:
+TipoPredefinido 
+Identificador 
+
+TipoPredefinido:
+BITSET 
+BOOLEAN 
+CARDINAL 
+CHAR 
+INTEGER 
+LONGINT 
+LONGREAL 
+PROC 
+REAL 
+
+// CONSTANTES
+ConstantePredefinida:
+TRUE 
+FALSE 
+NIL
+
+ListaDeIdentificadores:
+Identificador RestoListaIdentificadores
+
+RestoListaIdentificadores:
+_epsilon_	
+, Identificador RestoListaIdentificadores 
+
+//--------------------------------------------------------------------------------------//
+//		IMPORTACIONES DE PROCEDIMIENTOS Y FUNCIONES PREDEFINIDAS		//
+//--------------------------------------------------------------------------------------//
+// Los procedimientos predefinidos del lenguaje no se importan
+IdentDeProc:
+Identificador
+IdentDeProcPredef
+
+IdentDeProcPredef:
+ALLOCATE
+DEALLOCATE
+ReadInt
+WriteInt
+ReadCard
+WriteCard
+ReadChar
+WriteChar
+ReadString
+WriteString
+ReadReal
+WriteReal
+WriteLn
+
+//------------------------------------------------------------------------------//
+//		LLAMADA DE PROCEDIMIENTOS Y FUNCIONES PREDEFINIDAS		//
+//------------------------------------------------------------------------------//
+LlamadaProcedimientoPredefinido:
+DEC ( Expresion [ , Expresion ] )
+INC ( Expresion [ , Expresion ] )
+INCL ( Expresion , Expresion ) 
+EXCL ( Expresion , Expresion )
+NEW ( Expresion ) 
+DISPOSE ( Expresion )
+ReadInt ( Expresion )
+WriteInt ( Expresion , Expresion )
+ReadCard ( Expresion )
+WriteCard ( Expresion , Expresion )
+ReadChar ( Expresion )
+WriteChar (  Expresion )
+ReadString ( Expresion ) 
+WriteString ( Expresion )
+ReadReal ( Expresion )
+WriteReal ( Expresion , Expresion [ , Expresion ] )
+WriteLn
+HALT
+
+LlamadaFuncionPredefinida:
+ABS ( Expresion )
+CAP ( ParametroChar )
+CHR ( Expresion )
+FLOAT ( Expresion )
+HIGH ( Expresion )
+MAX ( IdentificadorDeTipo )
+MIN ( IdentificadorDeTipo )
+ODD ( Expresion )
+ORD ( Expresion )
+SIZE ( IdentificadorDeTipo )
+TRUNC ( Expresion ) 
+VAL ( IdentificadorDeTipo , Expresion )
