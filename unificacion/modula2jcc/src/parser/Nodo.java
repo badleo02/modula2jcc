@@ -20,7 +20,6 @@ public class Nodo {
     // ATRIBUTOS
     private ArrayList<String> _tipos = null; // Tipo semántico del objeto
     private String _lexema = "";
-    private String _tipoAdelantado; // Es el tipo que espera despues este nodo
     private int _linea;
     private int _columna;
     private boolean _marcador;
@@ -43,34 +42,14 @@ public class Nodo {
      * @param columna Columna del token.
      * @param tipoAdelantado Tipo adelantado que espera recibir.
      */
-    public Nodo(TipoToken tipo, String valor, int linea, int columna, String tipoAdelantado) {
+    public Nodo(String tipo, String valor, int linea, int columna) {
     _marcador = false;
         _tipos = new ArrayList();
-        addTipo(tipo.toString());
+       // concatRight(tipo);
+        _tipos.add(tipo);
         setValor(valor);
         setLinea(linea);
         setColumna(columna);
-        setTipoAdelantado(tipoAdelantado);
-    }
-
-    /**
-     * Devuelve el String correspondiente al tipo adelantado.
-     * 
-     * @return El String correspondiente al tipo adelantado.
-     */
-    public String getTipoAdelantado() {
-
-        return _tipoAdelantado;
-    }
-
-    /**
-     * Establece el valor del tipo adelantado que espera obtener.
-     * 
-     * @param tipoAdelantado Nuevo valor a establecer.
-     */
-    public void setTipoAdelantado(String tipoAdelantado) {
-
-        _tipoAdelantado = tipoAdelantado;
     }
 
     /**

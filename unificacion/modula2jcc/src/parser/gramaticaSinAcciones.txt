@@ -113,7 +113,7 @@ DeclaracionDeVariables:
 VAR { ListaDeVariables }
 
 ListaDeVariables:
-_action_inicioListaVariables ListaDeIdentificadores : EsquemaDeTipo ; _action_finListaVariables
+ListaDeIdentificadores : EsquemaDeTipo ; _action_DeclaracionVariables
 
 DeclaracionSubprograma:
 CabeceraSubprograma ; Bloque Identificador ;
@@ -357,7 +357,7 @@ FALSE
 NIL 
 
 ListaDeIdentificadores:
-Identificador RestoListaIdentificadores
+_action_marcaInicioLista Identificador RestoListaIdentificadores
 
 RestoListaIdentificadores:
 _epsilon_ 

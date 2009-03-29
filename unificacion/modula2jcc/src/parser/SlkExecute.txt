@@ -10,7 +10,7 @@ public void execute ( int  number )
     case 2:  DefinicionDeTipo();  break;
     case 3:  TipoConjunto();  break;
     case 4:  TipoPuntero();  break;
-    case 5:  inicioListaVariables();  break;
-    case 6:  finListaVariables();  break;
+    case 5:  DeclaracionVariables();  break;
+    case 6:  marcaInicioLista();  break;
   }
 }

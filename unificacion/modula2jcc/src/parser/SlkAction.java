@@ -38,33 +38,18 @@ public class SlkAction {
      * @param number La accion semantica correspondiente.
      */
     public void execute(int number) {
-
-        switch (number) {
-            case 1:
-                AsociacionConstante();
-                break;
-            case 2:
-                DefinicionDeTipo();
-                break;
-            case 3:
-                TipoConjunto();
-                break;
-            case 4:
-                TipoPuntero();
-                break;
-            case 5:
-                inicioListaVariables();
-                break;
-            case 6:
-                finListaVariables();
-                break;
-        }
+ switch ( number ) {
+    case 1:  AsociacionConstante();  break;
+    case 2:  DefinicionDeTipo();  break;
+    case 3:  TipoConjunto();  break;
+    case 4:  TipoPuntero();  break;
+    case 5:  DeclaracionVariables();  break;
+    case 6:  marcaInicioLista();  break;
+  }
     }
 
     private void AsociacionConstante() {
-
         try {
-
             Nodo derecha = _pilaNodos.pop(); // parte derecha, el valor
             _pilaNodos.pop();// operador
             Nodo izquierda = _pilaNodos.pop(); // parte izq, en nm de la funcion
@@ -77,9 +62,7 @@ public class SlkAction {
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo <" + derecha.getLexema() + "> no es una definicion de tipo",
                         derecha.getLinea(),
                         derecha.getColumna()));
-
             } else {
-
                 // hay que completar el simbolo idetificado por el lexema de la parte izq
                 // con tipo simbolo Constante. Tipo de la parte derecha y valor
                 _tablaSimbolos.completaConstante(izquierda.getLexema(), derecha.getTipos(), derecha.getLexema());
@@ -89,10 +72,35 @@ public class SlkAction {
         }
     }
 
-    private void DefinicionDeTipo() {
-
+    private void DeclaracionVariables() {
         try {
+            // desapilamos la parte derecha que nos dira el tipo de las variables.
+            Nodo derecha = _pilaNodos.pop();
 
+            // comprueba si hay errores en la definicion del tipo (parte derecha)
+            if (derecha.esError()){
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("la definicion de tipos no es correcta",
+                                                                           derecha.getLinea(),
+                                                                           derecha.getColumna()));
+            }
+            else {
+                Nodo id;
+                // desapilamos identificadores hasta llegar a la marca.
+                // SIEMPRE hay por lo menos uno!
+                do {
+                    id = _pilaNodos.pop();
+                // completamos la definicion de la variable
+                    _tablaSimbolos.completaVariable(id.getLexema(), derecha.getTipos());
+
+                } while (!_pilaNodos.isEmpty());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void DefinicionDeTipo() {
+        try {
             Nodo derecha = _pilaNodos.pop(); // parte derecha, el valor
             _pilaNodos.pop(); // operador
             Nodo izquierda = _pilaNodos.pop(); // parte izq, en nm de la funcion
@@ -138,7 +146,6 @@ public class SlkAction {
     }
 
     private void TipoPuntero() {
-
         try {
 
             Nodo n = _pilaNodos.pop();
@@ -155,11 +162,12 @@ public class SlkAction {
         }
     }
 
-    private void finListaVariables() {
-        try {
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void marcaInicioLista() {
+//        // añade una marca en la pila para poder desapilar la lista hasta este
+//        // elemento.
+//        Nodo n = new Nodo();
+//        n.creaMarcador();
+//        _pilaNodos.push(n);
     }
 
     private void inicioListaVariables() {

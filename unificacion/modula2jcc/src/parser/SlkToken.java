@@ -1,6 +1,7 @@
 package parser;
 
 import gestor_de_errores.GestorErrores;
+import java.util.ArrayList;
 import java.util.Vector;
 import observadores.ObservadorLexico;
 import scanner.Scanner;
@@ -71,7 +72,7 @@ public class SlkToken {
         // el token de fin de fichero y el operador de asignacion
         if(!_token.getTipoToken().equals(TipoToken.EOF) && 
                 !_token.getTipoToken().equals(TipoToken.PUNTUACION) &&
-                !_token.getTipoToken().equals(TipoToken.OPERADOR_ASIGNACION))
+                !_token.getTipoToken().equals(TipoToken.PALABRA_RESERVADA))
             insertarNodo();
    
         switch (_token.getTipoToken()) {
@@ -410,13 +411,16 @@ public class SlkToken {
     private void insertarNodo() {
         
         // Creamos el nodo a apilar con los datos del token recibido del scanner.
-        Nodo nodo = new Nodo(_token.getTipoToken(), 
+        Nodo nodo = new Nodo(getTipoSemantico(),
                              _token.getAtributo(),
                              _token._linea,
-                             _token._columna,
-                             null);
+                             _token._columna);
         
         // Apilamos el nuevo nodo en la pila
         _pilaNodos.push(nodo);
+    }
+    public String getTipoSemantico(){
+        _token.getTipoToken();
+        return "hola";
     }
 }
