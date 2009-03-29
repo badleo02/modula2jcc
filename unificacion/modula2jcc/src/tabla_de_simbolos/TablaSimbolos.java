@@ -966,9 +966,10 @@ public class TablaSimbolos {
         s.setValor(valor);
     }
 
-    public void completaVariable(String lexema, String tipoSemantico) {
+    public void completaVariable(String lexema, ArrayList<String> tipoSemantico) {
         Simbolo s = _tabla.get(lexema);
         s.setTipoSimbolo(TipoSimbolo.Variable);
+        s.setTipos(tipoSemantico);
     }
 
     public void completaTipo(String lexema, ArrayList<String> tipoSemantico) {
