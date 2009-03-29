@@ -46,7 +46,7 @@ public class Nodo {
     public Nodo(TipoToken tipo, String valor, int linea, int columna, String tipoAdelantado) {
     _marcador = false;
         _tipos = new ArrayList();
-        concatRight(tipo);
+        addTipo(tipo.toString());
         setValor(valor);
         setLinea(linea);
         setColumna(columna);
@@ -163,22 +163,17 @@ public class Nodo {
         _tipos = tipos;
     }
 
-    public void setTipoBasico(String tipo) {
-        _tipos = new ArrayList<String>();
-        _tipos.add(tipo);
-    }
-
     /**
-     * Concatena por la derecha el tipo en el array de tipos.
+     * Añade por la derecha el tipo en el array de tipos.
      * 
-     * @param type Tipo a concatenar.
+     * @param tipo Tipo a concatenar.
      */
-    public void concatRight(TipoToken type) {
+    public void addTipo(String tipo) {
 
         if (_tipos == null) {
             _tipos = new ArrayList();
         }
-        _tipos.add(type.name());
+        _tipos.add(tipo);
     }
 
     /**
