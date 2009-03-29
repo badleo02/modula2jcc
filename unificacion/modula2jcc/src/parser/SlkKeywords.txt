@@ -26,7 +26,6 @@ public static String[] name = {
 ,"TO"
 ,"PROCEDURE"
 ,"VAR"
-,"EsquemaDeTipo;"
 ,"BEGIN"
 ,"EXIT"
 ,"IF"
@@ -121,7 +120,6 @@ public static short[] token = {
 ,SlkConstants.TO_ 
 ,SlkConstants.PROCEDURE_ 
 ,SlkConstants.VAR_ 
-,SlkConstants.ESQUEMADETIPOSEMI_ 
 ,SlkConstants.BEGIN_ 
 ,SlkConstants.EXIT_ 
 ,SlkConstants.IF_ 

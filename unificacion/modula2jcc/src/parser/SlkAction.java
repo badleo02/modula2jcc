@@ -3,7 +3,6 @@ package parser;
 import gestor_de_errores.GestorErrores;
 import gestor_de_errores.TErrorSemantico;
 import tabla_de_simbolos.TablaSimbolos;
-import org.apache.log4j.Logger;
 //import org.apache.log4j.Logger;
 import tabla_de_simbolos.TipoSimbolo;
 
@@ -39,7 +38,7 @@ public class SlkAction {
      * @param number La accion semantica correspondiente.
      */
     public void execute(int number) {
-        
+
         switch (number) {
             case 1:
                 AsociacionConstante();
@@ -52,6 +51,12 @@ public class SlkAction {
                 break;
             case 4:
                 TipoPuntero();
+                break;
+            case 5:
+                inicioListaVariables();
+                break;
+            case 6:
+                finListaVariables();
                 break;
         }
     }
@@ -109,24 +114,34 @@ public class SlkAction {
                 // con tipo simbolo Tipo.
                 _tablaSimbolos.completaTipo(izquierda.getLexema(), derecha.getTipos());
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void TipoConjunto() {
-    
-        try{
 
-            
-        }catch(Exception e){}
+        try {
+        } catch (Exception e) {
+        }
     }
 
     private void TipoPuntero() {
-        
-        try{
 
-            
-        }catch(Exception e){}
+        try {
+        } catch (Exception e) {
+        }
+    }
+
+    private void finListaVariables() {
+        try {
+        } catch (Exception e) {
+        }
+    }
+
+    private void inicioListaVariables() {
+        try {
+        } catch (Exception e) {
+        }
     }
 }

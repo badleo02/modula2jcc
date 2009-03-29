@@ -113,7 +113,7 @@ DeclaracionDeVariables:
 VAR { ListaDeVariables }
 
 ListaDeVariables:
-_action_inicioListaVariables ListaDeIdentificadores : EsquemaDeTipo; _action_finListaVariables
+_action_inicioListaVariables ListaDeIdentificadores : EsquemaDeTipo ; _action_finListaVariables
 
 DeclaracionSubprograma:
 CabeceraSubprograma ; Bloque Identificador ;

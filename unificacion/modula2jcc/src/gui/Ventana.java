@@ -578,7 +578,6 @@ private void _opcionCompilarActionPerformed(java.awt.event.ActionEvent evt) {//G
         _txtSemantico.setText("");
         
         _gestorDeErrores.reiniciar();
-        //PilaNodos.getInstancia().inicializarPilas();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

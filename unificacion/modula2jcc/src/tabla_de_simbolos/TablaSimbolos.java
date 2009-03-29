@@ -147,8 +147,15 @@ public class TablaSimbolos {
         generaListaProcedimientosPredefinidos();
     }
 
+    /**
+     * 
+     * @param lexema
+     * @param Tipo
+     * @return
+     */
     public boolean esDeTipo(String lexema, TipoSimbolo Tipo) {
-       return _tabla.get(lexema).get_tipoSimbolo() == Tipo;
+    
+        return _tabla.get(lexema).getTipoSimbolo() == Tipo;
     }
 
     /**
@@ -318,329 +325,329 @@ public class TablaSimbolos {
      * @param ident Nombre del identificador.
      * @param type Tipo que se le va a asignar al identificador.
      */
-    public void setTypeIdent(String ident, String type) {
-        Simbolo arg = (Simbolo) _tabla.get(ident);
-        if (arg != null) {
-            arg.setTipoSemantico(type);
-        }
-    }
-
-    /**
-     * Metodo que comprueba si dos tipos son compatibles.
-     *
-     * @param ident Nombre de la variable.
-     * @param tipo Tipo con el que se va a comprobar.
-     *
-     * @return True si los tipos son compatibles, false si no lo son.
-     */
-    public boolean sonConpatibles(String ident, TipoToken tipo) {
-        Simbolo arg = (Simbolo) _tabla.get(ident);
-
-        if (arg != null) {
-
-            String[] tipoVar = arg.getTipo().split("-");
-
-            TipoToken tipoIdent = null;
-
-            if (tipoVar[0].equals("INTEGER")) {
-                tipoIdent = TipoToken.valueOf("NUMERO_ENTERO");
-            }
-            if (tipoVar[0].equals("REAL")) {
-                tipoIdent = TipoToken.valueOf("NUMERO_REAL");
-            }
-            if (tipoVar[0].equals("BOOLEAN")) {
-                tipoIdent = TipoToken.valueOf("PALABRA_RESERVADA");
-            }
-            if (tipo.compareTo(tipoIdent) == 0) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-
-            _logger.error("Variable " + ident + " no declarada");
-            return false;
-        }
-    }
-
-    /**
-     * Comprueba que los dos identificadores sean del tipo booleano.
-     *
-     * @param ident1 Lexema del primer identificador.
-     * @param ident2 Lexema del segundo identificador.
-     *
-     * @return False si los dos no son de tipo boolean y true si lo son.
-     */
-    public boolean sonBooleanos(String ident1, String ident2) {
-
-        Simbolo arg1 = (Simbolo) _tabla.get(ident1);
-        Simbolo arg2 = (Simbolo) _tabla.get(ident2);
-
-        if (arg1 != null && arg2 != null) {
-
-            String[] tipo1 = arg1.getTipo().split("-");
-            String[] tipo2 = arg2.getTipo().split("-");
-
-            boolean iguales = false;
-
-            for (int i = 0; i < tipo1.length; i++) {
-                if (!tipo1[i].equals(tipo2[i])) {
-                    iguales = false;
-                } else if (tipo1[i].equals("BOOLEAN")) {
-                    iguales = true;
-                }
-            }
-            return iguales;
-        }
-
-        return false;
-    }
-
-    /**
-     * Comprueba que los dos identificadores sean del tipo reales.
-     *
-     * @param ident1 Lexema del primer identificador.
-     * @param ident2 Lexema del segundo identificador.
-     *
-     * @return False si los dos no son de tipo real y true si lo son.
-     */
-    public boolean sonReales(String ident1, String ident2) {
-
-        Simbolo arg1 = (Simbolo) _tabla.get(ident1);
-        Simbolo arg2 = (Simbolo) _tabla.get(ident2);
-
-        if (arg1 != null && arg2 != null) {
-
-            String[] tipo1 = arg1.getTipo().split("-");
-            String[] tipo2 = arg2.getTipo().split("-");
-
-            boolean iguales = true;
-
-            for (int i = 0; i < tipo1.length; i++) {
-                if (!tipo1[i].equals(tipo2[i])) {
-                    iguales = false;
-                }
-            }
-            return iguales;
-        }
-
-        return false;
-    }
-
-    /**
-     * Comprueba que los dos identificadores sean del tipo entero.
-     *
-     * @param ident1 Lexema del primer identificador.
-     * @param ident2 Lexema del segundo identificador.
-     *
-     * @return False si los dos no son de tipo entero y true si lo son.
-     */
-    public boolean sonEnteros(String ident1, String ident2) {
-
-        Simbolo arg1 = (Simbolo) _tabla.get(ident1);
-        Simbolo arg2 = (Simbolo) _tabla.get(ident2);
-
-        if (arg1 != null && arg2 != null) {
-
-            String[] tipo1 = arg1.getTipo().split("-");
-            String[] tipo2 = arg2.getTipo().split("-");
-
-            boolean iguales = true;
-
-            for (int i = 0; i < tipo1.length; i++) {
-                if (!tipo1[i].equals(tipo2[i])) {
-                    iguales = false;
-                }
-            }
-            return iguales;
-        }
-
-        return false;
-    }
-
-    /**
-     * Comprueba que los tipos sean del tipo booleano.
-     *
-     * @param tipo1 Tipo a comparar.
-     * @param ident1 Lexema del identificador.
-     *
-     * @return False si los dos no son de tipo boolean y true si lo son.
-     */
-    public boolean sonBooleanos(TipoToken tipo1, String ident1) {
-
-        Simbolo arg1 = (Simbolo) _tabla.get(ident1);
-
-        if (arg1 != null) {
-
-            String[] tipo = arg1.getTipo().split("-");
-
-            TipoToken tipoIdent = null;
-
-            if (tipo[0].equals("INTEGER")) {
-                tipoIdent = TipoToken.valueOf("NUMERO_ENTERO");
-            }
-            if (tipo[0].equals("REAL")) {
-                tipoIdent = TipoToken.valueOf("NUMERO_REAL");
-            }
-            if (tipo[0].equals("BOOLEAN")) {
-                tipoIdent = TipoToken.valueOf("PALABRA_RESERVADA");
-            }
-            if ((tipo1.compareTo(tipoIdent) == 0) && tipo1.compareTo(TipoToken.valueOf("PALABRA_RESERVADA")) == 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Comprueba que los tipos sean del tipo real.
-     *
-     * @param tipo1 Tipo a comparar.
-     * @param ident1 Lexema del identificador.
-     *
-     * @return False si los dos no son de tipo real y true si lo son.
-     */
-    public boolean sonReales(TipoToken tipo1, String ident1) {
-
-        Simbolo arg1 = (Simbolo) _tabla.get(ident1);
-
-        if (arg1 != null) {
-
-            String[] tipo = arg1.getTipo().split("-");
-
-            TipoToken tipoIdent = null;
-
-            if (tipo[0].equals("INTEGER")) {
-                tipoIdent = TipoToken.valueOf("NUMERO_ENTERO");
-            }
-            if (tipo[0].equals("REAL")) {
-                tipoIdent = TipoToken.valueOf("NUMERO_REAL");
-            }
-            if (tipo[0].equals("BOOLEAN")) {
-                tipoIdent = TipoToken.valueOf("PALABRA_RESERVADA");
-            }
-            if ((tipo1.compareTo(tipoIdent) == 0) && (tipo1.compareTo(TipoToken.valueOf("NUMERO_REAL")) == 0)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Comprueba que los tipos sean del tipo entero.
-     *
-     * @param tipo1 tipo a comparar.
-     * @param ident1 Lexema del identificador.
-     *
-     * @return false si los dos no son de tipo entero y true si lo son.
-     */
-    public boolean sonEnteros(TipoToken tipo1, String ident1) {
-
-        Simbolo arg1 = (Simbolo) _tabla.get(ident1);
-
-        if (arg1 != null) {
-
-            String[] tipo = arg1.getTipo().split("-");
-
-            TipoToken tipoIdent = null;
-
-            if (tipo[0].equals("INTEGER")) {
-                tipoIdent = TipoToken.valueOf("NUMERO_ENTERO");
-            }
-            if (tipo[0].equals("REAL")) {
-                tipoIdent = TipoToken.valueOf("NUMERO_REAL");
-            }
-            if (tipo[0].equals("BOOLEAN")) {
-                tipoIdent = TipoToken.valueOf("PALABRA_RESERVADA");
-            }
-            if ((tipo1.compareTo(tipoIdent) == 0) && (tipo1.compareTo(TipoToken.valueOf("PALABRA_RESERVADA")) == 0)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Metodo que comprueba si dos tipos son compatibles.
-     *
-     * @param ident Nombre de la variable.
-     * @param ident2 Nombre de la segunda variable.
-     *
-     * @return true si los tipos son compatibles, false si no lo son.
-     */
-    public boolean sonConpatiblesIdentificadores(String ident, String ident2) {
-
-        //comprobar que estaContenida en todos los ambitos posibles
-        Simbolo arg = (Simbolo) _tabla.get(ident);
-        Simbolo arg2 = (Simbolo) _tabla.get(ident2);
-
-        if (arg != null && arg2 != null) {
-
-            String tipoVar = arg.getTipo();
-            String tipoVar2 = arg2.getTipo();
-
-            if (tipoVar2.equals(tipoVar)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-
-            _logger.error("Error en la obtencion de los tipos de las variables en el metodo sonCompatiblesIdentificadores");
-            return false;
-        }
-
-    }
-
-    /**
-     * Devuelve el arraylist con el tipo (compuesto o no) del identificador.
-     *
-     * @param ident Nombre del identificador.
-     *
-     * @return Arralist con los tipos del identificador.
-     */
-    public ArrayList dameTipoIdentificador(String ident) {
-
-        // Buscar en todos los ambitos
-        Simbolo arg = (Simbolo) _tabla.get(ident);
-
-        if (arg != null) {
-
-            String tipos = arg.getTipo();
-            String[] aux = tipos.split("-");
-
-            ArrayList salida = new ArrayList();
-
-            for (int i = 0; i < aux.length; i++) {
-
-                TipoToken tipo = null;
-
-                if (aux[i].equals("INTEGER")) {
-                    tipo = TipoToken.valueOf("NUMERO_ENTERO");
-                } else if (aux[i].equals("REAL")) {
-                    tipo = TipoToken.valueOf("NUMERO_REAL");
-                } // Modificado
-                else if (aux[i].equals("BOOLEAN")) {
-                    tipo = TipoToken.valueOf("PALABRA_RESERVADA");
-                }
-                salida.add(tipo);
-            }
-
-            return salida;
-        } else {
-
-            _logger.error("Variable " + ident + " no declarada se retornara null");
-            return null;
-        }
-    }
+//    public void setTypeIdent(String ident, String type) {
+//        Simbolo arg = (Simbolo) _tabla.get(ident);
+//        if (arg != null) {
+//            arg.setTipoSemantico(type);
+//        }
+//    }
+//
+//    /**
+//     * Metodo que comprueba si dos tipos son compatibles.
+//     *
+//     * @param ident Nombre de la variable.
+//     * @param tipo Tipo con el que se va a comprobar.
+//     *
+//     * @return True si los tipos son compatibles, false si no lo son.
+//     */
+//    public boolean sonConpatibles(String ident, TipoToken tipo) {
+//        Simbolo arg = (Simbolo) _tabla.get(ident);
+//
+//        if (arg != null) {
+//
+//            String[] tipoVar = arg.getTipo().split("-");
+//
+//            TipoToken tipoIdent = null;
+//
+//            if (tipoVar[0].equals("INTEGER")) {
+//                tipoIdent = TipoToken.valueOf("NUMERO_ENTERO");
+//            }
+//            if (tipoVar[0].equals("REAL")) {
+//                tipoIdent = TipoToken.valueOf("NUMERO_REAL");
+//            }
+//            if (tipoVar[0].equals("BOOLEAN")) {
+//                tipoIdent = TipoToken.valueOf("PALABRA_RESERVADA");
+//            }
+//            if (tipo.compareTo(tipoIdent) == 0) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        } else {
+//
+//            _logger.error("Variable " + ident + " no declarada");
+//            return false;
+//        }
+//    }
+//
+//    /**
+//     * Comprueba que los dos identificadores sean del tipo booleano.
+//     *
+//     * @param ident1 Lexema del primer identificador.
+//     * @param ident2 Lexema del segundo identificador.
+//     *
+//     * @return False si los dos no son de tipo boolean y true si lo son.
+//     */
+//    public boolean sonBooleanos(String ident1, String ident2) {
+//
+//        Simbolo arg1 = (Simbolo) _tabla.get(ident1);
+//        Simbolo arg2 = (Simbolo) _tabla.get(ident2);
+//
+//        if (arg1 != null && arg2 != null) {
+//
+//            String[] tipo1 = arg1.getTipo().split("-");
+//            String[] tipo2 = arg2.getTipo().split("-");
+//
+//            boolean iguales = false;
+//
+//            for (int i = 0; i < tipo1.length; i++) {
+//                if (!tipo1[i].equals(tipo2[i])) {
+//                    iguales = false;
+//                } else if (tipo1[i].equals("BOOLEAN")) {
+//                    iguales = true;
+//                }
+//            }
+//            return iguales;
+//        }
+//
+//        return false;
+//    }
+//
+//    /**
+//     * Comprueba que los dos identificadores sean del tipo reales.
+//     *
+//     * @param ident1 Lexema del primer identificador.
+//     * @param ident2 Lexema del segundo identificador.
+//     *
+//     * @return False si los dos no son de tipo real y true si lo son.
+//     */
+//    public boolean sonReales(String ident1, String ident2) {
+//
+//        Simbolo arg1 = (Simbolo) _tabla.get(ident1);
+//        Simbolo arg2 = (Simbolo) _tabla.get(ident2);
+//
+//        if (arg1 != null && arg2 != null) {
+//
+//            String[] tipo1 = arg1.getTipo().split("-");
+//            String[] tipo2 = arg2.getTipo().split("-");
+//
+//            boolean iguales = true;
+//
+//            for (int i = 0; i < tipo1.length; i++) {
+//                if (!tipo1[i].equals(tipo2[i])) {
+//                    iguales = false;
+//                }
+//            }
+//            return iguales;
+//        }
+//
+//        return false;
+//    }
+//
+//    /**
+//     * Comprueba que los dos identificadores sean del tipo entero.
+//     *
+//     * @param ident1 Lexema del primer identificador.
+//     * @param ident2 Lexema del segundo identificador.
+//     *
+//     * @return False si los dos no son de tipo entero y true si lo son.
+//     */
+//    public boolean sonEnteros(String ident1, String ident2) {
+//
+//        Simbolo arg1 = (Simbolo) _tabla.get(ident1);
+//        Simbolo arg2 = (Simbolo) _tabla.get(ident2);
+//
+//        if (arg1 != null && arg2 != null) {
+//
+//            String[] tipo1 = arg1.getTipo().split("-");
+//            String[] tipo2 = arg2.getTipo().split("-");
+//
+//            boolean iguales = true;
+//
+//            for (int i = 0; i < tipo1.length; i++) {
+//                if (!tipo1[i].equals(tipo2[i])) {
+//                    iguales = false;
+//                }
+//            }
+//            return iguales;
+//        }
+//
+//        return false;
+//    }
+//
+//    /**
+//     * Comprueba que los tipos sean del tipo booleano.
+//     *
+//     * @param tipo1 Tipo a comparar.
+//     * @param ident1 Lexema del identificador.
+//     *
+//     * @return False si los dos no son de tipo boolean y true si lo son.
+//     */
+//    public boolean sonBooleanos(TipoToken tipo1, String ident1) {
+//
+//        Simbolo arg1 = (Simbolo) _tabla.get(ident1);
+//
+//        if (arg1 != null) {
+//
+//            String[] tipo = arg1.getTipo().split("-");
+//
+//            TipoToken tipoIdent = null;
+//
+//            if (tipo[0].equals("INTEGER")) {
+//                tipoIdent = TipoToken.valueOf("NUMERO_ENTERO");
+//            }
+//            if (tipo[0].equals("REAL")) {
+//                tipoIdent = TipoToken.valueOf("NUMERO_REAL");
+//            }
+//            if (tipo[0].equals("BOOLEAN")) {
+//                tipoIdent = TipoToken.valueOf("PALABRA_RESERVADA");
+//            }
+//            if ((tipo1.compareTo(tipoIdent) == 0) && tipo1.compareTo(TipoToken.valueOf("PALABRA_RESERVADA")) == 0) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }
+//
+//        return false;
+//    }
+//
+//    /**
+//     * Comprueba que los tipos sean del tipo real.
+//     *
+//     * @param tipo1 Tipo a comparar.
+//     * @param ident1 Lexema del identificador.
+//     *
+//     * @return False si los dos no son de tipo real y true si lo son.
+//     */
+//    public boolean sonReales(TipoToken tipo1, String ident1) {
+//
+//        Simbolo arg1 = (Simbolo) _tabla.get(ident1);
+//
+//        if (arg1 != null) {
+//
+//            String[] tipo = arg1.getTipo().split("-");
+//
+//            TipoToken tipoIdent = null;
+//
+//            if (tipo[0].equals("INTEGER")) {
+//                tipoIdent = TipoToken.valueOf("NUMERO_ENTERO");
+//            }
+//            if (tipo[0].equals("REAL")) {
+//                tipoIdent = TipoToken.valueOf("NUMERO_REAL");
+//            }
+//            if (tipo[0].equals("BOOLEAN")) {
+//                tipoIdent = TipoToken.valueOf("PALABRA_RESERVADA");
+//            }
+//            if ((tipo1.compareTo(tipoIdent) == 0) && (tipo1.compareTo(TipoToken.valueOf("NUMERO_REAL")) == 0)) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }
+//
+//        return false;
+//    }
+//
+//    /**
+//     * Comprueba que los tipos sean del tipo entero.
+//     *
+//     * @param tipo1 tipo a comparar.
+//     * @param ident1 Lexema del identificador.
+//     *
+//     * @return false si los dos no son de tipo entero y true si lo son.
+//     */
+//    public boolean sonEnteros(TipoToken tipo1, String ident1) {
+//
+//        Simbolo arg1 = (Simbolo) _tabla.get(ident1);
+//
+//        if (arg1 != null) {
+//
+//            String[] tipo = arg1.getTipo().split("-");
+//
+//            TipoToken tipoIdent = null;
+//
+//            if (tipo[0].equals("INTEGER")) {
+//                tipoIdent = TipoToken.valueOf("NUMERO_ENTERO");
+//            }
+//            if (tipo[0].equals("REAL")) {
+//                tipoIdent = TipoToken.valueOf("NUMERO_REAL");
+//            }
+//            if (tipo[0].equals("BOOLEAN")) {
+//                tipoIdent = TipoToken.valueOf("PALABRA_RESERVADA");
+//            }
+//            if ((tipo1.compareTo(tipoIdent) == 0) && (tipo1.compareTo(TipoToken.valueOf("PALABRA_RESERVADA")) == 0)) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    /**
+//     * Metodo que comprueba si dos tipos son compatibles.
+//     *
+//     * @param ident Nombre de la variable.
+//     * @param ident2 Nombre de la segunda variable.
+//     *
+//     * @return true si los tipos son compatibles, false si no lo son.
+//     */
+//    public boolean sonConpatiblesIdentificadores(String ident, String ident2) {
+//
+//        //comprobar que estaContenida en todos los ambitos posibles
+//        Simbolo arg = (Simbolo) _tabla.get(ident);
+//        Simbolo arg2 = (Simbolo) _tabla.get(ident2);
+//
+//        if (arg != null && arg2 != null) {
+//
+//            String tipoVar = arg.getTipo();
+//            String tipoVar2 = arg2.getTipo();
+//
+//            if (tipoVar2.equals(tipoVar)) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        } else {
+//
+//            _logger.error("Error en la obtencion de los tipos de las variables en el metodo sonCompatiblesIdentificadores");
+//            return false;
+//        }
+//
+//    }
+//
+//    /**
+//     * Devuelve el arraylist con el tipo (compuesto o no) del identificador.
+//     *
+//     * @param ident Nombre del identificador.
+//     *
+//     * @return Arralist con los tipos del identificador.
+//     */
+//    public ArrayList dameTipoIdentificador(String ident) {
+//
+//        // Buscar en todos los ambitos
+//        Simbolo arg = (Simbolo) _tabla.get(ident);
+//
+//        if (arg != null) {
+//
+//            String tipos = arg.getTipo();
+//            String[] aux = tipos.split("-");
+//
+//            ArrayList salida = new ArrayList();
+//
+//            for (int i = 0; i < aux.length; i++) {
+//
+//                TipoToken tipo = null;
+//
+//                if (aux[i].equals("INTEGER")) {
+//                    tipo = TipoToken.valueOf("NUMERO_ENTERO");
+//                } else if (aux[i].equals("REAL")) {
+//                    tipo = TipoToken.valueOf("NUMERO_REAL");
+//                } // Modificado
+//                else if (aux[i].equals("BOOLEAN")) {
+//                    tipo = TipoToken.valueOf("PALABRA_RESERVADA");
+//                }
+//                salida.add(tipo);
+//            }
+//
+//            return salida;
+//        } else {
+//
+//            _logger.error("Variable " + ident + " no declarada se retornara null");
+//            return null;
+//        }
+//    }
 
     /**
      * Devuelve el contenido de una tabla.
@@ -952,27 +959,27 @@ public class TablaSimbolos {
         _nombre = nombre;
     }
 
-    public void completaConstante(String lexema, String tipoSemantico, String valor) {
+    public void completaConstante(String lexema, ArrayList<String> tipoSemantico, String valor) {
         Simbolo s = _tabla.get(lexema);
-        s.set_tipoSimbolo(TipoSimbolo.Constante);
-        s.setTipoSemantico(tipoSemantico);
+        s.setTipoSimbolo(TipoSimbolo.Constante);
+        s.setTipos(tipoSemantico);
         s.setValor(valor);
     }
 
     public void completaVariable(String lexema, String tipoSemantico) {
         Simbolo s = _tabla.get(lexema);
-        s.set_tipoSimbolo(TipoSimbolo.Variable);
+        s.setTipoSimbolo(TipoSimbolo.Variable);
     }
 
     public void completaTipo(String lexema, ArrayList<String> tipoSemantico) {
         Simbolo s = _tabla.get(lexema);
-        s.set_tipoSimbolo(TipoSimbolo.Tipo);
-        s.set_tipos(tipoSemantico);
+        s.setTipoSimbolo(TipoSimbolo.Tipo);
+        s.setTipos(tipoSemantico);
     }
 
     public void completaFuncion(String lexema, String tipoSemanticoRetorno, int numParam, String[] tipoSemanticoParams) {
         Simbolo s = _tabla.get(lexema);
-        s.set_tipoSimbolo(TipoSimbolo.Funcion);
+        s.setTipoSimbolo(TipoSimbolo.Funcion);
     }
 
     private void insertarIdentificador(String lexema, Simbolo reg) {

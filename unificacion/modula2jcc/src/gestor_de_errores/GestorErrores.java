@@ -37,16 +37,6 @@ public class GestorErrores {
     }
 
     /**
-     * Devuelve la instancia de la clase.
-     * 
-     * @return La instancia de la clase GestorErrores.
-     */
-    public static GestorErrores getInstancia() {
-
-        return new GestorErrores();
-    }
-
-    /**
      * Devuelve la lista de errores léxicos producidos durante el analisis 
      * lexico.
      * 
@@ -237,6 +227,11 @@ public class GestorErrores {
         _flagErroresLexicos = valor;
     }
 
+    /**
+     * Establece el flag de mostrar errores lexicos a valor <b>valor</b>.
+     * 
+     * @param valor Nuevo valor a establecer.
+     */
     private void setFlagErroresSemanticos(boolean valor) {
         _flagErroresSemanticos = valor;
     }
