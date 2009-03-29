@@ -78,14 +78,14 @@ IdentificadorDeTipo RestoDeTipo
 \[ ExpresionConstante .. ExpresionConstante \] // Subrango
 
 TipoEnumerado:
-( ListaDeIdentificadores )
+\( ListaDeIdentificadores \)
 
 RestoDeTipo:
 _epsilon_ // Simple
 \[ ExpresionConstante .. ExpresionConstante \] // Subrango
 
 TipoConjunto:
-SET OF TipoSimple
+SET OF TipoSimple _action_TipoConjunto
 
 TipoFormacion:
 ARRAY TipoSimple { , TipoSimple } OF EsquemaDeTipo
@@ -101,7 +101,8 @@ _epsilon_
 ListaDeIdentificadores : EsquemaDeTipo
 
 TipoPuntero:
-POINTER TO EsquemaDeTipo
+POINTER TO EsquemaDeTipo _action_TipoPuntero
+
 TipoSubprograma:
 PROCEDURE [ ListaDeTiposFormales ]
 

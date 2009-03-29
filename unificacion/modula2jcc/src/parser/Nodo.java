@@ -27,10 +27,10 @@ public class Nodo {
      * Constructora por defecto de la clase Nodo. Crea el array de tipos asociado.
      */
     public Nodo() {
-        
+
         _tipos = new ArrayList();
     }
-    
+
     /**
      * Constructora de la clase Nodo. Crea el array de tipos asociado y actualiza
      * los atributos pasados como argumentos.
@@ -42,7 +42,7 @@ public class Nodo {
      * @param tipoAdelantado Tipo adelantado que espera recibir.
      */
     public Nodo(TipoToken tipo, String valor, int linea, int columna, String tipoAdelantado) {
-        
+
         _tipos = new ArrayList();
         concatRight(tipo);
         setValor(valor);
@@ -50,14 +50,14 @@ public class Nodo {
         setColumna(columna);
         setTipoAdelantado(tipoAdelantado);
     }
-    
+
     /**
      * Devuelve el String correspondiente al tipo adelantado.
      * 
      * @return El String correspondiente al tipo adelantado.
      */
     public String getTipoAdelantado() {
-        
+
         return _tipoAdelantado;
     }
 
@@ -67,7 +67,7 @@ public class Nodo {
      * @param tipoAdelantado Nuevo valor a establecer.
      */
     public void setTipoAdelantado(String tipoAdelantado) {
-        
+
         _tipoAdelantado = tipoAdelantado;
     }
 
@@ -77,14 +77,19 @@ public class Nodo {
      * @return El tipo semantico del objeto.
      */
     public ArrayList<String> getTipos() {
-        
+
         return _tipos;
     }
 
-    public String getTipoBasico(){
-        return (String)_tipos.get(0);
-    }
+    /**
+     * Devuelve el primer simbolo del array de tipos semanticos.
+     * 
+     * @return El primer simbolo del array de tipos semanticos.
+     */
+    public String getTipoBasico() {
 
+        return (String) _tipos.get(0);
+    }
 
     /**
      * Devuelve el valor del objeto.
@@ -92,8 +97,8 @@ public class Nodo {
      * @return El valor del objeto.
      */
     public String getLexema() {
-        
-          return _lexema;
+
+        return _lexema;
     }
 
     /**
@@ -142,36 +147,35 @@ public class Nodo {
      * @param valor Nuevo valor a establecer.
      */
     public void setValor(String valor) {
-        
+
         _lexema = valor;
     }
-    
+
     /**
      * Establece el tipo semantico del objeto.
      * 
      * @param tipos Tipo Nuevo valor a establecer.
      */
     public void setTipo(ArrayList tipos) {
-        
+
         _tipos = tipos;
     }
 
-    public void setTipoBasico(String tipo){
+    public void setTipoBasico(String tipo) {
         _tipos = new ArrayList<String>();
         _tipos.add(tipo);
     }
-
 
     /**
      * Concatena por la derecha el tipo en el array de tipos.
      * 
      * @param type Tipo a concatenar.
      */
-    public void concatRight(TipoToken type){
-        
-        if(_tipos == null)
+    public void concatRight(TipoToken type) {
+
+        if (_tipos == null) {
             _tipos = new ArrayList();
-        
+        }
         _tipos.add(type.name());
     }
 
@@ -181,18 +185,17 @@ public class Nodo {
      * @return El string correspondiente a la clase Nodo.
      */
     @Override
-    public String toString(){
-        
+    public String toString() {
+
         StringBuilder trace = new StringBuilder("Nodo{tipo: ");
         trace.append(_tipos);
         trace.append("; tipo.size: ");
-        
-        if(_tipos != null)
+
+        if (_tipos != null) {
             trace.append(_tipos.size());
-        
-        else
+        } else {
             trace.append("0");
-        
+        }
         trace.append("}");
         return trace.toString();
     }

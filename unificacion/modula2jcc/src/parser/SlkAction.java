@@ -4,6 +4,7 @@ import gestor_de_errores.GestorErrores;
 import gestor_de_errores.TErrorSemantico;
 import tabla_de_simbolos.TablaSimbolos;
 import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 import tabla_de_simbolos.TipoSimbolo;
 
 /**
@@ -14,7 +15,7 @@ import tabla_de_simbolos.TipoSimbolo;
 public class SlkAction {
 
     // CONSTANTES
-    private static final Logger logger = Logger.getLogger(SlkAction.class);    // ATRIBUTOS
+    //private static final Logger logger = Logger.getLogger(SlkAction.class);    // ATRIBUTOS
     private TablaSimbolos _tablaSimbolos;
     private GestorErrores _gestorDeErrores;
     private PilaNodos _pilaNodos;
@@ -38,30 +39,48 @@ public class SlkAction {
      * @param number La accion semantica correspondiente.
      */
     public void execute(int number) {
-  switch ( number ) {
-    case 1:  AsociacionConstante();  break;
-    case 2:  DefinicionDeTipo();  break;
-    case 3:  inicioListaVariables();  break;
-    case 4:  finListaVariables();  break;
-  }
+        
+        switch (number) {
+            case 1:
+                AsociacionConstante();
+                break;
+            case 2:
+                DefinicionDeTipo();
+                break;
+            case 3:
+                TipoConjunto();
+                break;
+            case 4:
+                TipoPuntero();
+                break;
+        }
     }
 
     private void AsociacionConstante() {
 
-        Nodo derecha = _pilaNodos.pop(); // parte derecha, el valor
-        _pilaNodos.pop();// operador
-        Nodo izquierda = _pilaNodos.pop(); // parte izq, en nm de la funcion
+        try {
 
-        // comprobación de errores:
-        if (derecha.getTipoBasico().equals(TipoSimbolo.Error.toString())) {
-            Nodo n = new Nodo();
-            n.setTipoBasico(TipoSimbolo.Error.toString());
-            _pilaNodos.add(n);
-        } else {
+            Nodo derecha = _pilaNodos.pop(); // parte derecha, el valor
+            _pilaNodos.pop();// operador
+            Nodo izquierda = _pilaNodos.pop(); // parte izq, en nm de la funcion
 
-            // hay que completar el simbolo idetificado por el lexema de la parte izq
-            // con tipo simbolo Constante. Tipo de la parte derecha y valor
-            _tablaSimbolos.completaConstante(izquierda.getLexema(), derecha.getTipoBasico(), derecha.getLexema());
+            // comprobación de errores:
+            if (derecha.getTipoBasico().equals(TipoSimbolo.Error.toString())) {
+                Nodo n = new Nodo();
+                n.setTipoBasico(TipoSimbolo.Error.toString());
+                _pilaNodos.add(n);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo <" + derecha.getLexema() + "> no es una definicion de tipo",
+                        derecha.getLinea(),
+                        derecha.getColumna()));
+
+            } else {
+
+                // hay que completar el simbolo idetificado por el lexema de la parte izq
+                // con tipo simbolo Constante. Tipo de la parte derecha y valor
+                _tablaSimbolos.completaConstante(izquierda.getLexema(), derecha.getTipos(), derecha.getLexema());
+            }
+        } catch (Exception e) {            // Con esto evitamos que el sintactico se bloquee ante 
+            // errores en la pila.
         }
     }
 
@@ -81,26 +100,33 @@ public class SlkAction {
                 // lo de la derecha no es un tipo
                 Nodo n = new Nodo();
                 n.setTipoBasico(TipoSimbolo.Error.toString());
-                //_pilaNodos.add(n);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo <" + derecha.getLexema() + "> no es una definicion de tipo",
                         derecha.getLinea(),
                         derecha.getColumna()));
-            } else // hay que completar el simbolo idetificado por el lexema de la parte izq
-            // con tipo simbolo Tipo.
-            {
+            } else {
+
+                // hay que completar el simbolo idetificado por el lexema de la parte izq
+                // con tipo simbolo Tipo.
                 _tablaSimbolos.completaTipo(izquierda.getLexema(), derecha.getTipos());
             }
-        }
-        catch(Exception e){
+        }catch(Exception e){
             e.printStackTrace();
         }
     }
 
-    private void finListaVariables() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private void TipoConjunto() {
+    
+        try{
+
+            
+        }catch(Exception e){}
     }
 
-    private void inicioListaVariables() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private void TipoPuntero() {
+        
+        try{
+
+            
+        }catch(Exception e){}
     }
 }
