@@ -72,7 +72,7 @@ public class SlkAction {
             // comprobación de errores:
             if (derecha.getTipoBasico().equals(TipoSimbolo.Error.toString())) {
                 Nodo n = new Nodo();
-                n.setTipoBasico(TipoSimbolo.Error.toString());
+                n.addTipo(TipoSimbolo.Error.toString());
                 _pilaNodos.add(n);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo <" + derecha.getLexema() + "> no es una definicion de tipo",
                         derecha.getLinea(),
@@ -84,8 +84,8 @@ public class SlkAction {
                 // con tipo simbolo Constante. Tipo de la parte derecha y valor
                 _tablaSimbolos.completaConstante(izquierda.getLexema(), derecha.getTipos(), derecha.getLexema());
             }
-        } catch (Exception e) {            // Con esto evitamos que el sintactico se bloquee ante 
-            // errores en la pila.
+        } catch (Exception e) {            
+            e.printStackTrace();
         }
     }
 
@@ -104,7 +104,7 @@ public class SlkAction {
             if (!_tablaSimbolos.esDeTipo(derecha.getLexema(), TipoSimbolo.Tipo)) {
                 // lo de la derecha no es un tipo
                 Nodo n = new Nodo();
-                n.setTipoBasico(TipoSimbolo.Error.toString());
+                n.addTipo(TipoSimbolo.Error.toString());
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo <" + derecha.getLexema() + "> no es una definicion de tipo",
                         derecha.getLinea(),
                         derecha.getColumna()));
@@ -122,26 +122,50 @@ public class SlkAction {
     private void TipoConjunto() {
 
         try {
+
+            Nodo n = _pilaNodos.pop();
+
+            // si no es error completamos diciendole que es de tipo conjunto
+            if (!n.esError()) {
+                n.addTipo("Conjunto");            
+            }
+            // Si hay un error lo propagamos
+            _pilaNodos.push(n);
+
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     private void TipoPuntero() {
 
         try {
+
+            Nodo n = _pilaNodos.pop();
+
+            // si no es error completamos diciendole que es de tipo puntero
+            if (!n.esError()) {
+                n.addTipo("Puntero");            
+            }
+            // Si hay un error lo propagamos
+            _pilaNodos.push(n);
+
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     private void finListaVariables() {
         try {
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     private void inicioListaVariables() {
         try {
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
