@@ -8,5 +8,7 @@ public void execute ( int  number )
   switch ( number ) {
     case 1:  AsociacionConstante();  break;
     case 2:  DefinicionDeTipo();  break;
+    case 3:  inicioListaVariables();  break;
+    case 4:  finListaVariables();  break;
   }
 }

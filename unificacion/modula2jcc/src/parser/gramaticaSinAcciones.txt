@@ -109,10 +109,10 @@ ListaDeTiposFormales:
 ( [ [ VAR ] TipoFormal { , [ VAR ] TipoFormal } ] ) [ : IdentificadorDeTipo ]
 
 DeclaracionDeVariables:
-VAR { ListaDeVariables ; }
+VAR { ListaDeVariables }
 
 ListaDeVariables:
-ListaDeIdentificadores : EsquemaDeTipo 
+_action_inicioListaVariables ListaDeIdentificadores : EsquemaDeTipo; _action_finListaVariables
 
 DeclaracionSubprograma:
 CabeceraSubprograma ; Bloque Identificador ;

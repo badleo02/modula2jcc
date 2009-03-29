@@ -38,14 +38,12 @@ public class SlkAction {
      * @param number La accion semantica correspondiente.
      */
     public void execute(int number) {
-        switch (number) {
-            case 1:
-                //AsociacionConstante();
-                break;
-            case 2:
-                DefinicionDeTipo();
-                break;
-        }
+  switch ( number ) {
+    case 1:  AsociacionConstante();  break;
+    case 2:  DefinicionDeTipo();  break;
+    case 3:  inicioListaVariables();  break;
+    case 4:  finListaVariables();  break;
+  }
     }
 
     private void AsociacionConstante() {
@@ -93,6 +91,16 @@ public class SlkAction {
                 _tablaSimbolos.completaTipo(izquierda.getLexema(), derecha.getTipos());
             }
         }
-        catch(Exception e){}
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void finListaVariables() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void inicioListaVariables() {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }
