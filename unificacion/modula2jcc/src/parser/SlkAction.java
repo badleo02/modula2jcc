@@ -169,11 +169,11 @@ public class SlkAction {
 //        n.creaMarcador();
 //        _pilaNodos.push(n);
     }
-
-    private void inicioListaVariables() {
-        try {
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//
+//    private void inicioListaVariables() {
+//        try {
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 }
