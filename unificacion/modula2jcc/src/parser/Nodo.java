@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public class Nodo {
     
     // ATRIBUTOS
-    private ArrayList _tipos = null; // Tipo semántico del objeto
-    private String _valor = "";
+    private ArrayList<String> _tipos = null; // Tipo semántico del objeto
+    private String _lexema = "";
     private String _tipoAdelantado; // Es el tipo que espera despues este nodo
     private int _linea;
     private int _columna;
@@ -76,19 +76,24 @@ public class Nodo {
      * 
      * @return El tipo semantico del objeto.
      */
-    public ArrayList getTipos() {
+    public ArrayList<String> getTipos() {
         
         return _tipos;
     }
+
+    public String getTipoBasico(){
+        return (String)_tipos.get(0);
+    }
+
 
     /**
      * Devuelve el valor del objeto.
      * 
      * @return El valor del objeto.
      */
-    public String getValor() {
+    public String getLexema() {
         
-          return _valor;
+          return _lexema;
     }
 
     /**
@@ -138,7 +143,7 @@ public class Nodo {
      */
     public void setValor(String valor) {
         
-        _valor = valor;
+        _lexema = valor;
     }
     
     /**
@@ -151,6 +156,12 @@ public class Nodo {
         _tipos = tipos;
     }
 
+    public void setTipoBasico(String tipo){
+        _tipos = new ArrayList<String>();
+        _tipos.add(tipo);
+    }
+
+
     /**
      * Concatena por la derecha el tipo en el array de tipos.
      * 
@@ -161,7 +172,7 @@ public class Nodo {
         if(_tipos == null)
             _tipos = new ArrayList();
         
-        _tipos.add(type);
+        _tipos.add(type.name());
     }
 
     /**

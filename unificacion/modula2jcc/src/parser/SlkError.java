@@ -1,6 +1,5 @@
 package parser;
 
-import gestor_de_errores.ErroresSintacticos;
 import gestor_de_errores.GestorErrores;
 import gestor_de_errores.TErrorSintactico;
 
@@ -32,47 +31,46 @@ public class SlkError {
     }
 
     /**
-     * The input token does not match the parse stack token. 
+     * El token de entrada no se corresponde con el simbolo de la tabla. 
      * 
-     * @param terminal
-     * @param token
+     * @param terminal El terminal analizado.
+     * @param token Token del analizador lexico.
      * 
-     * @return
+     * @return El token asociado.
      */
     public short mismatch(short terminal, short token) {
 
         String error = "Esperaba \"" + SlkString.GetSymbolName(terminal) +
-                "\" pero encontr� \"" + SlkString.GetSymbolName(token) +
-                "\".";
-        _gestorDeErrores.insertaErrorSintactico(new TErrorSintactico(ErroresSintacticos.ERROR_SINTACTICO_IMPOSIBLE_EMPAREJAR_TERMINAL_CON_TOKEN, error, _tokens._analizadorLexico.getYyline(), _tokens._analizadorLexico.getYycolumn()));
+                "\" pero encontro \"" + SlkString.GetSymbolName(token) + "\".";
+        _gestorDeErrores.insertaErrorSintactico(new TErrorSintactico(error, _tokens._analizadorLexico.getYyline(), _tokens._analizadorLexico.getYycolumn()));
         return token;
     }
 
     /**
-     * No parse table entry exists for the nonterminal/token pair. 
+     * No existe ninguna entrada de la tabla para el par del NoTerminal/Token. 
      * 
-     * @param nonterminal
-     * @param token
-     * @param level
-     * @return
+     * @param nonterminal Simbolo no terminal asociado.
+     * @param token Token del lexico.
+     * @param level Nivel de analisis.
+     * 
+     * @return El token asociado.
      */
     public short no_entry(short nonterminal, short token, int level) {
 
-        String error = "\"" + SlkString.GetSymbolName(token) + "\".";
-
-        _gestorDeErrores.insertaErrorSintactico(new TErrorSintactico(ErroresSintacticos.ERROR_SINTACTICO_TOKEN_DE_ENTRADA_ERRONEO, error, _tokens._analizadorLexico.getYyline(), _tokens._analizadorLexico.getYycolumn()));
+        _gestorDeErrores.insertaErrorSintactico(new TErrorSintactico("Token de entrada \"" + SlkString.GetSymbolName(token) + "\" erroneo.", _tokens._analizadorLexico.getYyline(), _tokens._analizadorLexico.getYycolumn()));
         token = _tokens.get();
         return token;
     }
 
     /**
-     * The parse stack is empty, but input remains. 
+     * La pila del parser ha quedado vacia pero quedan elementos de entrada
+     * por analizar. 
      */
     public void input_left() {
 
         String error = "La pila del parser ha quedado vacia " +
-                "pero todavia quedan por analizar.";
+                "pero todavia quedan elementos por analizar.";
 
-        _gestorDeErrores.insertaErrorSintactico(new TErrorSintactico(ErroresSintacticos.ERROR_SINTACTICO_PILAVACIA_ANTES_DE_TIEMPO, error, _tokens._analizadorLexico.getYyline(), _tokens._analizadorLexico.getYycolumn()));
+        _gestorDeErrores.insertaErrorSintactico(new TErrorSintactico(error, _tokens._analizadorLexico.getYyline(), _tokens._analizadorLexico.getYycolumn()));
     }
 }

@@ -70,7 +70,7 @@ public class SlkToken {
         // Insertamos el token reconocido en la pila menos los signos de puntuacion,
         // el token de fin de fichero y el operador de asignacion
         if(!_token.getTipoToken().equals(TipoToken.EOF) && 
-                !_token.getTipoToken().equals(TipoToken.PUNTUACION) && 
+                !_token.getTipoToken().equals(TipoToken.PUNTUACION) &&
                 !_token.getTipoToken().equals(TipoToken.OPERADOR_ASIGNACION))
             insertarNodo();
    

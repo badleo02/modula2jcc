@@ -56,13 +56,13 @@ DeclaracionDeConstantes:
 CONST { AsociacionConstante ; }
 
 AsociacionConstante:
-Identificador = ExpresionConstante
+Identificador = ExpresionConstante _action_AsociacionConstante
 
 DeclaracionDeTipos:
 TYPE { DefinicionDeTipo ; }
 
 DefinicionDeTipo:
-Identificador = EsquemaDeTipo
+Identificador = EsquemaDeTipo _action_DefinicionDeTipo
 
 EsquemaDeTipo:
 TipoSimple 

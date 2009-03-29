@@ -445,6 +445,7 @@ public class Scanner {
                 }
                 else{ // Si es un identificador
                     atributos.add((String) valor);
+                    _tablaSimbolos.insertarIdentificador((String)valor);
                 }
             
         } else if (tipo == TipoToken.NUMERO_ENTERO) {
@@ -862,7 +863,7 @@ public class Scanner {
                 case 8: {
                     yybegin(YYINITIAL);
                     /* Generamos el error correspondiente */
-                    TErrorLexico error = new TErrorLexico(ErroresLexicos.ERROR_LEXICO_CADENA_O_CARACTER_MAL_FORMADO, "Cadena o car�cter sin terminar al final de l�nea, falta \" � \'", yyline, yycolumn);
+                    TErrorLexico error = new TErrorLexico("Cadena o caracter sin terminar al final de linea, falta \" o \'", yyline, yycolumn);
                     _gestorErrores.insertaErrorLexico(error);
                 }
                 case 77:
@@ -924,17 +925,17 @@ public class Scanner {
 
                     /* Generamos el error correspondiente */
                     if (_fuenteDelError.matches("numero_entero")) {
-                        error = new TErrorLexico(ErroresLexicos.ERROR_LEXICO_FORMATO_DE_IDENTIFICADOR_NO_VALIDO, _lexema + yytext(), yyline, yycolumn);
+                        error = new TErrorLexico("El formato del identificador " + _lexema + yytext() + " no es valido.", yyline, yycolumn);
                     } else if (_fuenteDelError.matches("identificador")) {
-                        error = new TErrorLexico(ErroresLexicos.ERROR_LEXICO_CARACTER_NO_VALIDO_EN_IDENTIFICADOR, _lexema + yytext(), yyline, yycolumn);
+                        error = new TErrorLexico("El caracter " + _lexema + yytext() + " no es valido en un identificador.", yyline, yycolumn);
                     } else if (_fuenteDelError.matches("numero_real")) {
-                        error = new TErrorLexico(ErroresLexicos.ERROR_LEXICO_NUMERO_REAL_MAL_FORMADO, _lexema + yytext(), yyline, yycolumn);
+                        error = new TErrorLexico("El numero real " +  _lexema + yytext() + " esta mal formado.", yyline, yycolumn);
                     } else if (_fuenteDelError.matches("numero_hexadecimal")) {
-                        error = new TErrorLexico(ErroresLexicos.ERROR_LEXICO_NUMERO_HEXADECIMAL_MAL_FORMADO, _lexema + yytext(), yyline, yycolumn);
+                        error = new TErrorLexico("El numero hexadecimal " + _lexema + yytext() + " esta mal formado.", yyline, yycolumn);
                     } else if (_fuenteDelError.matches("numero_octal")) {
-                        error = new TErrorLexico(ErroresLexicos.ERROR_LEXICO_NUMERO_OCTAL_MAL_FORMADO, _lexema + yytext(), yyline, yycolumn);
+                        error = new TErrorLexico("El numero octal " + _lexema + yytext() + " esta mal formado.", yyline, yycolumn);
                     } else if (_fuenteDelError.matches("caracter_en_octal")) {
-                        error = new TErrorLexico(ErroresLexicos.ERROR_LEXICO_CARACTER_EN_OCTAL_MAL_FORMADO, _lexema + yytext(), yyline, yycolumn);
+                        error = new TErrorLexico("El caracter octal " + _lexema + yytext() + " mal formado.", yyline, yycolumn);
                     }
                     _gestorErrores.insertaErrorLexico(error);
                 }
@@ -1039,7 +1040,7 @@ public class Scanner {
                 case 100:
                     break;
                 case 1: {
-                    TErrorLexico error = new TErrorLexico(ErroresLexicos.ERROR_LEXICO_CARACTER_NO_VALIDO_EN_ESTE_CONTEXTO, yytext(), yyline, yycolumn);
+                    TErrorLexico error = new TErrorLexico("El caracter " + yytext() + " no valido en este contexto", yyline, yycolumn);
                     _gestorErrores.insertaErrorLexico(error);
                 }
                 case 101:
@@ -1351,7 +1352,7 @@ public class Scanner {
                                 yybegin(YYINITIAL);
 
                                 /* Generamos el error correspondiente */
-                                TErrorLexico error = new TErrorLexico(ErroresLexicos.ERROR_LEXICO_COMENTARIO_MAL_FORMADO, "Falta *) para completar el comentario", yyline, yycolumn);
+                                TErrorLexico error = new TErrorLexico("Comentario mal formado, falta \'*)\'", yyline, yycolumn);
                                 _gestorErrores.insertaErrorLexico(error);
                             }
                             case 158:

@@ -9,7 +9,6 @@ package gestor_de_errores;
 public class TErrorSintactico {
 
     // ATRIBUTOS
-    private ErroresSintacticos _error;
     private String _mensaje;
     private int _linea;
     private int _columna;
@@ -17,37 +16,15 @@ public class TErrorSintactico {
     /**
      * Constructor de la clase TErrorSintactico.
      * 
-     * @param error Tipo de error.
      * @param mensaje Mensaje de error asociado.
      * @param _linea Linea donde se ha producido el error.
      * @param _columna Columna donde se ha producido el error.
      */
-    public TErrorSintactico(ErroresSintacticos error, String mensaje, int linea, int columna) {
+    public TErrorSintactico(String mensaje, int linea, int columna) {
 
-        _error = error;
         _mensaje = mensaje;
         _linea = linea;
         _columna = columna;
-    }
-
-    /**
-     * Devuelve el _tipo de error sintactico.
-     * 
-     * @return El _tipo de error sintactico.
-     */
-    public ErroresSintacticos getError() {
-
-        return _error;
-    }
-
-    /**
-     * Establece el _tipo de error sintactico a valor error.
-     * 
-     * @param error El nuevo valor a establecer.
-     */
-    public void setError(ErroresSintacticos error) {
-
-        _error = error;
     }
 
     /**
@@ -119,13 +96,8 @@ public class TErrorSintactico {
     @Override
     public String toString() {
 
-        String error = new String();
-        error += "\n Linea: " + _linea;
-        error += ", Columna: " + _columna + ":\n ";
-        error += _error.toString().replace("_", " ");
-        error += " : ";
-        error += _mensaje;
-        error += " \n";
+        String error = "Error Sintactico -> Linea: " + _linea;
+        error += ", Columna: " + _columna + " : " + _mensaje + "\n";
         return error;
     }
 }

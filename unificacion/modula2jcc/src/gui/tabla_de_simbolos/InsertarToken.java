@@ -113,8 +113,8 @@ public class InsertarToken extends javax.swing.JPanel {
 
             if (_tablaDeSimbolos == null) 
                 _tablaDeSimbolos = new TablaSimbolos(contenido, null, null);
-            else 
-                _tablaDeSimbolos.insertarModulo(contenido);
+//            else
+//                _tablaDeSimbolos.insertarModulo(contenido);
         }
         if (importadas == 0) {
             
@@ -186,8 +186,8 @@ public class InsertarToken extends javax.swing.JPanel {
             
             String contenido = JOptionPane.showInputDialog(null,
                     "Inserte el nombre del procedure", "Nombre del procedure", JOptionPane.QUESTION_MESSAGE);
-            if (contenido != null) 
-                _tablaDeSimbolos = _tablaDeSimbolos.insertarProcedimiento(contenido);   
+//            if (contenido != null)
+//                _tablaDeSimbolos = _tablaDeSimbolos.insertarProcedimiento(contenido);
         } 
         else 
             JOptionPane.showMessageDialog(_marcoTabla, "Modulo padre no creado", "Error", JOptionPane.ERROR_MESSAGE);

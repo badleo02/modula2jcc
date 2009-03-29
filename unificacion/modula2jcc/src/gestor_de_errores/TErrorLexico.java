@@ -9,7 +9,6 @@ package gestor_de_errores;
 public class TErrorLexico {
     
     // ATRIBUTOS
-    private ErroresLexicos _error;
     private int _linea;
     private int _columna;
     private String _mensaje;
@@ -17,14 +16,12 @@ public class TErrorLexico {
     /**
      * Constructor de la clase TErrorLexico.
      * 
-     * @param error El _tipo de error de la clase enum ErroresLexicos.
      * @param _linea La fila donde se ha producido el error. 
      * @param _columna La _columna donde se ha producido el error.
      * @param mensaje Mensaje informativo asociado.
      */
-    public TErrorLexico(ErroresLexicos error, String mensaje, int fila, int columna) {
+    public TErrorLexico(String mensaje, int fila, int columna) {
 
-        _error = error;
         _linea = fila;
         _columna = columna;
         _mensaje = mensaje;
@@ -71,26 +68,6 @@ public class TErrorLexico {
     }
 
     /**
-     * Devuelve el _tipo de error producido.
-     * 
-     * @return El _tipo de error producido.
-     */
-    public ErroresLexicos getError() {
-
-        return _error;
-    }
-
-    /**
-     * Establece el _tipo de error producido.
-     * 
-     * @param _error El _tipo del error producido.
-     */
-    public void setError(ErroresLexicos error) {
-
-        _error = error;
-    }
-
-    /**
      * Transforma la clase TErrorLexico en un String para presentarlo por 
      * pantalla.
      * 
@@ -99,16 +76,8 @@ public class TErrorLexico {
     @Override
     public String toString() {
 
-        String error = new String();
-        error += "\n Linea: ";
-        error += _linea;
-        error += ", Columna: ";
-        error += _columna;
-        error += ":\n ";
-        error += _error.toString().replace("_", " ");
-        error += " : ";
-        error += _mensaje;
-        error += " \n";
+        String error = "Error Lexico -> Linea: " + _linea;
+        error += ", Columna: " + _columna + " : " + _mensaje + "\n";
         return error;
     }
 }

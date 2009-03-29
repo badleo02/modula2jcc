@@ -14,7 +14,7 @@ import java.util.Stack;
 public class PilaNodos extends Stack<Nodo> {
 
     // ATRIBUTOS
-    private static PilaNodos _pilaNodos = null;
+//    private static PilaNodos _pilaNodos = null;
     private boolean _parteDeclarativa = true;
     
     /**
@@ -22,13 +22,13 @@ public class PilaNodos extends Stack<Nodo> {
      * 
      * @return La instancia unica de la clase PilaNodos.
      */
-    public static PilaNodos getInstancia() {
-        
-        if (_pilaNodos == null) 
-            _pilaNodos = new PilaNodos();
-        
-        return _pilaNodos;
-    }
+//    public static PilaNodos getInstancia() {
+//
+//        if (_pilaNodos == null)
+//            _pilaNodos = new PilaNodos();
+//
+//        return _pilaNodos;
+//    }
 
     /**
      * Pone a true la variable que indica si estamos en parte declarativa

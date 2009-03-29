@@ -1,18 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package gestor_de_errores;
 
 /**
- *
- * @author usuario
+ * Clase que se encarga de gestionar los errores producidos durante el analisis
+ * semantico.
+ * 
+ * @author Javier Salcedo Gomez
  */
 public class TErrorSemantico {
 
     // ATRIBUTOS
-    private ErroresSemanticos _error;
     private String _mensaje;
     private int _linea;
     private int _columna;
@@ -20,37 +16,15 @@ public class TErrorSemantico {
     /**
      * Constructor de la clase TErrorSemantico.
      *
-     * @param error Tipo de error.
      * @param mensaje Mensaje de error asociado.
      * @param _linea Linea donde se ha producido el error.
      * @param _columna Columna donde se ha producido el error.
      */
-    public TErrorSemantico(ErroresSemanticos error, String mensaje, int linea, int columna) {
+    public TErrorSemantico(String mensaje, int linea, int columna) {
 
-        _error = error;
         _mensaje = mensaje;
         _linea = linea;
         _columna = columna;
-    }
-
-    /**
-     * Devuelve el _tipo de error Semantico.
-     *
-     * @return El _tipo de error Semantico.
-     */
-    public ErroresSemanticos getError() {
-
-        return _error;
-    }
-
-    /**
-     * Establece el _tipo de error Semantico a valor error.
-     *
-     * @param error El nuevo valor a establecer.
-     */
-    public void setError(ErroresSemanticos error) {
-
-        _error = error;
     }
 
     /**
@@ -122,16 +96,8 @@ public class TErrorSemantico {
     @Override
     public String toString() {
 
-        String error = new String();
-        error += "\n Linea: " + _linea;
-        error += ", Columna: " + _columna + ":\n ";
-        error += _error.toString().replace("_", " ");
-        error += " : ";
-        error += _mensaje;
-        error += " \n";
+        String error = "Error Semantico -> Linea: " + _linea;
+        error += ", Columna: " + _columna + " : " + _mensaje + "\n";
         return error;
     }
-
-
-
 }

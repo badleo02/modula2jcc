@@ -6,7 +6,6 @@ import parser.SlkError;
 import parser.SlkLog;
 import parser.SlkParser;
 import parser.SlkToken;
-import parser.SlkTree;
 import scanner.Scanner;
 import tabla_de_simbolos.TablaSimbolos;
 import java.io.BufferedReader;
@@ -400,7 +399,7 @@ private void _opcionCompilarActionPerformed(java.awt.event.ActionEvent evt) {//G
             SlkError error = new SlkError(tokens, log, _gestorDeErrores);
             
             // Generamos la clase que nos permite visualizar el arbol sintactico
-            SlkTree tree = new SlkTree(log);
+//            SlkTree tree = new SlkTree(log);
             
             // Mostramos dicho arbol
 //            tree.show_parse_derivation();
@@ -410,7 +409,7 @@ private void _opcionCompilarActionPerformed(java.awt.event.ActionEvent evt) {//G
 //            tree.show_tree();
             
             // Analiza la entrada a nivel sintactico
-            SlkParser.parse(0, new SlkAction(_tablaSimbolos, _gestorDeErrores, _pilaNodos), tokens, error, log, tree, (short) 0);
+            SlkParser.parse(0, new SlkAction(_tablaSimbolos, _gestorDeErrores, _pilaNodos), tokens, error, log, (short) 0);
             
             // Muestra el resultado de la ejecucion en sus pestañas correspondientes
             mostrarResultadoAnalisis();
