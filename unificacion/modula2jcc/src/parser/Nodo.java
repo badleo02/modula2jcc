@@ -2,6 +2,7 @@ package parser;
 
 import scanner.TipoToken;
 import java.util.ArrayList;
+import tabla_de_simbolos.TipoSimbolo;
 
 /**
  *
@@ -22,12 +23,13 @@ public class Nodo {
     private String _tipoAdelantado; // Es el tipo que espera despues este nodo
     private int _linea;
     private int _columna;
+    private boolean _marcador;
 
     /**
      * Constructora por defecto de la clase Nodo. Crea el array de tipos asociado.
      */
     public Nodo() {
-
+    _marcador = false;
         _tipos = new ArrayList();
     }
 
@@ -42,7 +44,7 @@ public class Nodo {
      * @param tipoAdelantado Tipo adelantado que espera recibir.
      */
     public Nodo(TipoToken tipo, String valor, int linea, int columna, String tipoAdelantado) {
-
+    _marcador = false;
         _tipos = new ArrayList();
         concatRight(tipo);
         setValor(valor);
@@ -198,5 +200,21 @@ public class Nodo {
         }
         trace.append("}");
         return trace.toString();
+    }
+
+    /**
+     * comprueba si estamos hablando de un error
+     * @return si es un error.
+     */
+    public boolean esError(){
+       return  getTipoBasico().equals(TipoSimbolo.Error.toString());
+    }
+
+    public void creaMarcador(){
+        _marcador = true;
+    }
+
+    public boolean esMarcador(){
+        return  _marcador;
     }
 }
