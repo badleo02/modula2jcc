@@ -260,6 +260,8 @@ public class SlkAction {
 //        }
 //    }
     
+    //Añade un  nodo constante predefinida con valor TRUE y 
+    //tipo semantico booleano
     public void TRUE() {
 
 		//REGLA: ConstantePredefinida: TRUE 
@@ -273,7 +275,8 @@ public class SlkAction {
 		n.setValor("TRUE");
 		_PilaNodos.push(n); // ]]] <- expression
     }
-    
+    //Añade un  nodo constante predefinida con valor FALSE y 
+    //tipo semantico booleano    
     public void FALSE(){
 		//REGLA: ConstantePredefinida: FALSE
     	_PilaNodos.pop(); // ]] ] 
@@ -286,6 +289,8 @@ public class SlkAction {
 		_PilaNodos.push(n); // ]]] <- expression
     }
 
+    //Añade un  nodo constante predefinida con valor NIL  y 
+    //tipo semantico VOID?¿?¿?¿? <-- DUDA!!!!!!!!!	
     public void NIL() {
 		//REGLA: ConstantePredefinida: NIL
     	_PilaNodos.pop(); // ]] ] 
@@ -293,7 +298,7 @@ public class SlkAction {
 		tipoSemantico = n.getTipos();
         tipoSemantico.add(TipoSimbolo.Constante);
         _tablaSimbolos.completaTipo(n.getLexema(), tipoSemantico);
-		n.setTipo(new ExpresionTipo(TiposBasicos.BOOLEAN));
+		n.setTipo(new ExpresionTipo(TiposBasicos.VOID));
 		n.setValor("NIL");
 		_PilaNodos.push(n); // ]]] <- expression    	
     }
