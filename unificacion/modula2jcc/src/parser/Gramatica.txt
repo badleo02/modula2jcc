@@ -16,7 +16,7 @@ ModuloImplementacion:
 IMPLEMENTATION ModuloPrograma
 
 CabeceraModulo:
-MODULE _action_activarDeclarativa Identificador _action_cabeceraModulo [ Prioridad ] ; { ListaImportados ; }
+MODULE _action_ activarDeclarativa Identificador _action_cabeceraModulo [ Prioridad ] ; { ListaImportados ; }
 
 CabeceraDefinicion:
 DEFINITION MODULE Identificador ; { ListaImportados ; } [ ListaExportados ; ]

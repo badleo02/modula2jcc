@@ -30,7 +30,9 @@ public class SlkAction {
 
         _tablaSimbolos = tabla;
         _gestorDeErrores = gestorDeErrores;
-        _pilaNodos = pilaNodos;
+        _pilaNodos = pilaNodos; 
+        
+        
     }
 
     /**
@@ -123,8 +125,11 @@ public class SlkAction {
         }
     }
 
+    
     private void DefinicionDeTipo() {
-        try {
+    	//REGLA: DefinicionDeTipo: Identificador = EsquemaDeTipo
+        
+    	try {
 
             Nodo derecha = _pilaNodos.pop(); // parte derecha, el valor
 
@@ -155,10 +160,12 @@ public class SlkAction {
     }
 
     private void EliminarMarcaLista() {
+    	//REGLA: RestoListaIdentificadores:	_epsilon_ _action_EliminarMarcaLista
         
     }
 
     private void TipoConjunto() {
+    	//REGLA TipoConjunto: SET OF TipoSimple
 
         try {
 
@@ -177,6 +184,7 @@ public class SlkAction {
     }
 
     private void TipoEnumerado() {
+    	//REGLA TTipoEnumerado:\( ListaDeIdentificadores \)
 
         // TODO: MARCADOR EN LISTA DE VARIABLES!!!!
         try {
@@ -206,6 +214,8 @@ public class SlkAction {
      * 
      */
     private void TipoSimple_Enumerado() {
+    	
+    	//REGLA: TipoSimple: TipoEnumerado
 
         // TODO: MARCADOR EN LISTA DE VARIABLES!!!!
         try {
@@ -227,6 +237,7 @@ public class SlkAction {
     }
 
     private void TipoPuntero() {
+    	//REGLA: TipoPuntero:POINTER TO EsquemaDeTipo
         try {
 
             Nodo n = _pilaNodos.pop();
@@ -244,6 +255,7 @@ public class SlkAction {
     }
 
     private void marcaInicioLista() {
+    	//REGLA: ListaDeIdentificadores: _action_marcaInicioLista Identificador RestoListaIdentificadores
         // añade una marca en la pila para poder desapilar la lista hasta este
         // elemento.
         Nodo n = new Nodo();
