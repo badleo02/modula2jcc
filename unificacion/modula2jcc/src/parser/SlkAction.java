@@ -3,6 +3,10 @@ package parser;
 import gestor_de_errores.GestorErrores;
 import gestor_de_errores.TErrorSemantico;
 import java.util.ArrayList;
+
+import Semantico.ExpresionTipo;
+import Semantico.Nodo;
+import Semantico.TiposBasicos;
 import scanner.TipoToken;
 import tabla_de_simbolos.TablaSimbolos;
 //import org.apache.log4j.Logger;
@@ -41,36 +45,22 @@ public class SlkAction {
      * 
      * @param number La accion semantica correspondiente.
      */
-    public void execute(int number) {
-        switch (number) {
-            case 1:
-                AsociacionConstante();
-                break;
-            case 2:
-                DefinicionDeTipo();
-                break;
-            case 3:
-                TipoSimple_Enumerado();
-                break;
-            case 4:
-                TipoEnumerado();
-                break;
-            case 5:
-                TipoConjunto();
-                break;
-            case 6:
-                TipoPuntero();
-                break;
-            case 7:
-                DeclaracionVariables();
-                break;
-            case 8:
-                marcaInicioLista();
-                break;
-            case 9:
-                EliminarMarcaLista();
-                break;
-        }
+    public void execute ( int  number )
+    {
+      switch ( number ) {
+        case 1:  AsociacionConstante();  break;
+        case 2:  DefinicionDeTipo();  break;
+        case 3:  TipoSimple_Enumerado();  break;
+        case 4:  TipoEnumerado();  break;
+        case 5:  TipoConjunto();  break;
+        case 6:  TipoPuntero();  break;
+        case 7:  DeclaracionVariables();  break;
+        case 8:  TRUE();  break;
+        case 9:  FALSE();  break;
+        case 10:  NIL();  break;
+        case 11:  marcaInicioLista();  break;
+        case 12:  EliminarMarcaLista();  break;
+      }
     }
 
     private void AsociacionConstante() {
@@ -269,7 +259,44 @@ public class SlkAction {
 //            e.printStackTrace();
 //        }
 //    }
+    
+    public void TRUE() {
 
+		//REGLA: ConstantePredefinida: TRUE 
+		 
+    	_PilaNodos.pop(); // ]] ] 
+		Nodo n = new Nodo("ConstantePredefinida");
+		tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSimbolo.Constante);
+        _tablaSimbolos.completaTipo(n.getLexema(), tipoSemantico);
+		n.setTipo(new ExpresionTipo(TiposBasicos.BOOLEAN));
+		n.setValor("TRUE");
+		_PilaNodos.push(n); // ]]] <- expression
+    }
+    
+    public void FALSE(){
+		//REGLA: ConstantePredefinida: FALSE
+    	_PilaNodos.pop(); // ]] ] 
+		Nodo n = new Nodo("ConstantePredefinida");
+		tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSimbolo.Constante);
+        _tablaSimbolos.completaTipo(n.getLexema(), tipoSemantico);
+		n.setTipo(new ExpresionTipo(TiposBasicos.BOOLEAN));
+		n.setValor("FALSE");
+		_PilaNodos.push(n); // ]]] <- expression
+    }
+
+    public void NIL() {
+		//REGLA: ConstantePredefinida: NIL
+    	_PilaNodos.pop(); // ]] ] 
+		Nodo n = new Nodo("ConstantePredefinida");
+		tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSimbolo.Constante);
+        _tablaSimbolos.completaTipo(n.getLexema(), tipoSemantico);
+		n.setTipo(new ExpresionTipo(TiposBasicos.BOOLEAN));
+		n.setValor("NIL");
+		_PilaNodos.push(n); // ]]] <- expression    	
+    }
     /**
      * Comprueba que los dos nodos sean de tipo booleano
      * @param nodo1 Primer nodo a comprobar

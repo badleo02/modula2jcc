@@ -13,7 +13,10 @@ public void execute ( int  number )
     case 5:  TipoConjunto();  break;
     case 6:  TipoPuntero();  break;
     case 7:  DeclaracionVariables();  break;
-    case 8:  marcaInicioLista();  break;
-    case 9:  EliminarMarcaLista();  break;
+    case 8:  TRUE();  break;
+    case 9:  FALSE();  break;
+    case 10:  NIL();  break;
+    case 11:  marcaInicioLista();  break;
+    case 12:  EliminarMarcaLista();  break;
   }
 }

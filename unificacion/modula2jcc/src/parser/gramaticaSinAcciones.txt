@@ -352,9 +352,9 @@ REAL
 
 // CONSTANTES
 ConstantePredefinida:
-TRUE 
-FALSE 
-NIL 
+TRUE _action_TRUE
+FALSE _action_FALSE
+NIL _action_NIL
 
 ListaDeIdentificadores:
 _action_marcaInicioLista Identificador RestoListaIdentificadores
