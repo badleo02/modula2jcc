@@ -405,22 +405,50 @@ public class SlkToken {
         _observadoresLexico.removeElement(obs);
     }
 
+    private TipoToken getTipoToken() {
+       return _token.getTipoToken();
+    }
+
     /**
      * Crea e inserta un nuevo nodo en la pila.
      */
     private void insertarNodo() {
-        
+        Nodo nodo = null;
+        switch (getTipoToken()) {
+            case TIPO_SIMPLE:
+                // Creamos el nodo a apilar con los datos del token recibido del scanner.
+                nodo = new Nodo(_token.getAtributo(),
+                        _token.getAtributo(),
+                        _token._linea,
+                        _token._columna);
+                break;
+            case CONSTANTE_PREDEFINIDA:
+                String semantico = "";
+                if ((_token.getAtributo().equals("FALSE"))||(_token.getAtributo().equals("TRUE")))
+                    semantico = "BOOLEAN";
+                else 
+                    semantico = "PUNTERO";
+                
+                nodo = new Nodo(semantico,
+                        _token.getAtributo(),
+                        _token._linea,
+                        _token._columna);
+                break;
+            default:
+                nodo = new Nodo(_token.getTipoToken().name(),
+                        _token.getAtributo(),
+                        _token._linea,
+                        _token._columna);
+                break;
+        }
+
         // Creamos el nodo a apilar con los datos del token recibido del scanner.
-        Nodo nodo = new Nodo(getTipoSemantico(),
-                             _token.getAtributo(),
-                             _token._linea,
-                             _token._columna);
-        
+//        Nodo nodo = new Nodo(getTipoSemantico(),
+//                             _token.getAtributo(),
+//                             _token._linea,
+//                             _token._columna);
+//
         // Apilamos el nuevo nodo en la pila
         _pilaNodos.push(nodo);
-    }
-    public String getTipoSemantico(){
-        _token.getTipoToken();
-        return "hola";
     }
 }
