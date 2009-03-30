@@ -73,12 +73,12 @@ TipoPuntero
 TipoSubprograma
 
 TipoSimple:
-TipoEnumerado
+TipoEnumerado _action_TipoSimple_Enumerado
 IdentificadorDeTipo RestoDeTipo 
 \[ ExpresionConstante .. ExpresionConstante \] // Subrango
 
 TipoEnumerado:
-\( ListaDeIdentificadores \)
+\( ListaDeIdentificadores \) _action_TipoEnumerado
 
 RestoDeTipo:
 _epsilon_ // Simple
@@ -360,7 +360,7 @@ ListaDeIdentificadores:
 _action_marcaInicioLista Identificador RestoListaIdentificadores
 
 RestoListaIdentificadores:
-_epsilon_ 
+_epsilon_ _action_EliminarMarcaLista
 , Identificador RestoListaIdentificadores
 
 //----------------------------------------------------------------------------------//

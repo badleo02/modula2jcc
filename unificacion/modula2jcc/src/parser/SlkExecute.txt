@@ -8,9 +8,12 @@ public void execute ( int  number )
   switch ( number ) {
     case 1:  AsociacionConstante();  break;
     case 2:  DefinicionDeTipo();  break;
-    case 3:  TipoConjunto();  break;
-    case 4:  TipoPuntero();  break;
-    case 5:  DeclaracionVariables();  break;
-    case 6:  marcaInicioLista();  break;
+    case 3:  TipoSimple_Enumerado();  break;
+    case 4:  TipoEnumerado();  break;
+    case 5:  TipoConjunto();  break;
+    case 6:  TipoPuntero();  break;
+    case 7:  DeclaracionVariables();  break;
+    case 8:  marcaInicioLista();  break;
+    case 9:  EliminarMarcaLista();  break;
   }
 }

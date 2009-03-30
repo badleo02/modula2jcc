@@ -28,7 +28,7 @@ public class SlkToken {
     /**
      * Constructor de la clase SlkToken.
      */
-    public SlkToken(Scanner analizadorLexico, GestorErrores gestorDeErrores,TablaSimbolos tablaSimbolos,  PilaNodos pilaNodos) {
+    public SlkToken(Scanner analizadorLexico, GestorErrores gestorDeErrores, TablaSimbolos tablaSimbolos, PilaNodos pilaNodos) {
 
         _analizadorLexico = analizadorLexico;
         _gestorDeErrores = gestorDeErrores;
@@ -65,16 +65,16 @@ public class SlkToken {
 
             _token = _analizadorLexico.get_token();
             avisarTokenGenerado(_token.toString());
-        } 
-        catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         // Insertamos el token reconocido en la pila menos los signos de puntuacion,
         // el token de fin de fichero y el operador de asignacion
-        if(!_token.getTipoToken().equals(TipoToken.EOF) && 
+        if (!_token.getTipoToken().equals(TipoToken.EOF) &&
                 !_token.getTipoToken().equals(TipoToken.PUNTUACION) &&
-                !_token.getTipoToken().equals(TipoToken.PALABRA_RESERVADA))
+                !_token.getTipoToken().equals(TipoToken.PALABRA_RESERVADA)) {
             insertarNodo();
-   
+        }
         switch (_token.getTipoToken()) {
 
             case EOF:
@@ -249,9 +249,9 @@ public class SlkToken {
             case OPERADOR_ASIGNACION:
                 return SlkConstants.COLON_EQUAL_;
 
-            
+
             case TIPO_SIMPLE:
-                
+
                 if (_token.getAtributo().equals("BITSET")) {
                     return SlkConstants.BITSET_;
                 } else if (_token.getAtributo().equals("BOOLEAN")) {
@@ -270,19 +270,19 @@ public class SlkToken {
                     return SlkConstants.PROC_;
                 } else if (_token.getAtributo().equals("REAL")) {
                     return SlkConstants.REAL_;
-                } 
-                
-            
+                }
+
+
             case CONSTANTE_PREDEFINIDA:
-                
+
                 if (_token.getAtributo().equals("FALSE")) {
                     return SlkConstants.FALSE_;
                 } else if (_token.getAtributo().equals("NIL")) {
                     return SlkConstants.NIL_;
                 } else if (_token.getAtributo().equals("TRUE")) {
                     return SlkConstants.TRUE_;
-                } 
-                
+                }
+
             case FUNCION_PREDEFINIDA:
 
                 if (_token.getAtributo().equals("ABS")) {
@@ -358,7 +358,7 @@ public class SlkToken {
 
         return SlkConstants.END_OF_SLK_INPUT_;
     }
-    
+
     /**
      * Devuelve el lexema del token.
      * 
@@ -377,8 +377,9 @@ public class SlkToken {
      */
     private void avisarTokenGenerado(String infoToken) {
 
-        for (ObservadorLexico obs : _observadoresLexico)
-            obs.tokenGenerado(infoToken);     
+        for (ObservadorLexico obs : _observadoresLexico) {
+            obs.tokenGenerado(infoToken);
+        }
     }
 
     /**
@@ -390,8 +391,9 @@ public class SlkToken {
      */
     public void addObserver(ObservadorLexico obs) {
 
-        if (!_observadoresLexico.contains(obs))
+        if (!_observadoresLexico.contains(obs)) {
             _observadoresLexico.add(obs);
+        }
     }
 
     /**
@@ -406,7 +408,7 @@ public class SlkToken {
     }
 
     private TipoToken getTipoToken() {
-       return _token.getTipoToken();
+        return _token.getTipoToken();
     }
 
     /**
@@ -424,16 +426,17 @@ public class SlkToken {
                 break;
             case CONSTANTE_PREDEFINIDA:
                 String semantico = "";
-                if ((_token.getAtributo().equals("FALSE"))||(_token.getAtributo().equals("TRUE")))
+                if ((_token.getAtributo().equals("FALSE")) || (_token.getAtributo().equals("TRUE"))) {
                     semantico = "BOOLEAN";
-                else 
+                } else {
                     semantico = "PUNTERO";
-                
+                }
                 nodo = new Nodo(semantico,
                         _token.getAtributo(),
                         _token._linea,
                         _token._columna);
                 break;
+
             default:
                 nodo = new Nodo(_token.getTipoToken().name(),
                         _token.getAtributo(),

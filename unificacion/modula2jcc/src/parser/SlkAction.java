@@ -2,6 +2,7 @@ package parser;
 
 import gestor_de_errores.GestorErrores;
 import gestor_de_errores.TErrorSemantico;
+import java.util.ArrayList;
 import scanner.TipoToken;
 import tabla_de_simbolos.TablaSimbolos;
 //import org.apache.log4j.Logger;
@@ -39,20 +40,43 @@ public class SlkAction {
      * @param number La accion semantica correspondiente.
      */
     public void execute(int number) {
- switch ( number ) {
-    case 1:  AsociacionConstante();  break;
-    case 2:  DefinicionDeTipo();  break;
-    case 3:  TipoConjunto();  break;
-    case 4:  TipoPuntero();  break;
-    case 5:  DeclaracionVariables();  break;
-    case 6:  marcaInicioLista();  break;
-  }
+        switch (number) {
+            case 1:
+                AsociacionConstante();
+                break;
+            case 2:
+                DefinicionDeTipo();
+                break;
+            case 3:
+                TipoSimple_Enumerado();
+                break;
+            case 4:
+                TipoEnumerado();
+                break;
+            case 5:
+                TipoConjunto();
+                break;
+            case 6:
+                TipoPuntero();
+                break;
+            case 7:
+                DeclaracionVariables();
+                break;
+            case 8:
+                marcaInicioLista();
+                break;
+            case 9:
+                EliminarMarcaLista();
+                break;
+        }
     }
 
     private void AsociacionConstante() {
         try {
             Nodo derecha = _pilaNodos.pop(); // parte derecha, el valor
+
             _pilaNodos.pop();// operador
+
             Nodo izquierda = _pilaNodos.pop(); // parte izq, en nm de la funcion
 
             // comprobación de errores:
@@ -68,7 +92,7 @@ public class SlkAction {
                 // con tipo simbolo Constante. Tipo de la parte derecha y valor
                 _tablaSimbolos.completaConstante(izquierda.getLexema(), derecha.getTipos(), derecha.getLexema());
             }
-        } catch (Exception e) {            
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -79,18 +103,17 @@ public class SlkAction {
             Nodo derecha = _pilaNodos.pop();
 
             // comprueba si hay errores en la definicion del tipo (parte derecha)
-            if (derecha.esError()){
+            if (derecha.esError()) {
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("la definicion de tipos no es correcta",
-                                                                           derecha.getLinea(),
-                                                                           derecha.getColumna()));
-            }
-            else {
+                        derecha.getLinea(),
+                        derecha.getColumna()));
+            } else {
                 Nodo id;
                 // desapilamos identificadores hasta llegar a la marca.
                 // SIEMPRE hay por lo menos uno!
                 do {
                     id = _pilaNodos.pop();
-                // completamos la definicion de la variable
+                    // completamos la definicion de la variable
                     _tablaSimbolos.completaVariable(id.getLexema(), derecha.getTipos());
 
                 } while (!_pilaNodos.isEmpty());
@@ -102,8 +125,11 @@ public class SlkAction {
 
     private void DefinicionDeTipo() {
         try {
+
             Nodo derecha = _pilaNodos.pop(); // parte derecha, el valor
+
             _pilaNodos.pop(); // operador
+
             Nodo izquierda = _pilaNodos.pop(); // parte izq, en nm de la funcion
 
             // comprobación de errores:
@@ -128,6 +154,10 @@ public class SlkAction {
         }
     }
 
+    private void EliminarMarcaLista() {
+        
+    }
+
     private void TipoConjunto() {
 
         try {
@@ -136,7 +166,7 @@ public class SlkAction {
 
             // si no es error completamos diciendole que es de tipo conjunto
             if (!n.esError()) {
-                n.addTipo("Conjunto");            
+                n.addTipo("CONJUNTO");
             }
             // Si hay un error lo propagamos
             _pilaNodos.push(n);
@@ -146,6 +176,56 @@ public class SlkAction {
         }
     }
 
+    private void TipoEnumerado() {
+
+        // TODO: MARCADOR EN LISTA DE VARIABLES!!!!
+        try {
+            Nodo n = null;
+            ArrayList<String> tipoSemantico = null;
+
+            // Desapilamos cada elemento identificador del enumerado
+            // Siempre tiene que haber al menos 1!!
+            do {
+
+                n = _pilaNodos.pop(); // Identificador de Enumerado
+
+                if (!n.esMarcador()) {
+                    // Completamos el array de tipo semantico de cada identificador de enumerado
+                    tipoSemantico = n.getTipos();
+                    tipoSemantico.add(TipoSimbolo.ElementoEnumerado.name());
+                    _tablaSimbolos.completaTipo(n.getLexema(), tipoSemantico);
+                }
+            } while (!n.esMarcador());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 
+     */
+    private void TipoSimple_Enumerado() {
+
+        // TODO: MARCADOR EN LISTA DE VARIABLES!!!!
+        try {
+
+            Nodo n = _pilaNodos.pop();
+
+            // Completamos el tipo semantico del nodo indicandole que es un enumerado
+            // para asignarselo a la regla superior
+            ArrayList<String> tipoSemantico = n.getTipos();
+            tipoSemantico.add(TipoSimbolo.Enumerado.name());
+            n.setTipo(tipoSemantico);
+
+            // Se lo pasamos a la regla superior
+            _pilaNodos.push(n);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void TipoPuntero() {
         try {
 
@@ -153,7 +233,7 @@ public class SlkAction {
 
             // si no es error completamos diciendole que es de tipo puntero
             if (!n.esError()) {
-                n.addTipo("Puntero");            
+                n.addTipo("PUNTERO");
             }
             // Si hay un error lo propagamos
             _pilaNodos.push(n);
@@ -164,11 +244,11 @@ public class SlkAction {
     }
 
     private void marcaInicioLista() {
-//        // añade una marca en la pila para poder desapilar la lista hasta este
-//        // elemento.
-//        Nodo n = new Nodo();
-//        n.creaMarcador();
-//        _pilaNodos.push(n);
+        // añade una marca en la pila para poder desapilar la lista hasta este
+        // elemento.
+        Nodo n = new Nodo();
+        n.creaMarcador();
+        _pilaNodos.push(n);
     }
 //
 //    private void inicioListaVariables() {
@@ -178,16 +258,15 @@ public class SlkAction {
 //        }
 //    }
 
-
     /**
      * Comprueba que los dos nodos sean de tipo booleano
      * @param nodo1 Primer nodo a comprobar
      * @param nodo2 Segundo nodo a comprobar
      * @return true si los dos nodos son de tipo booleano y false en otro caso
      */
-    private boolean sonBooleanos(Nodo nodo1, Nodo nodo2){
-        if(nodo1 != null && nodo2 != null){
-            if(nodo1.getTipoBasico().equals("BOOLEAN") && nodo1.getTipoBasico().equals("BOOLEAN")){
+    private boolean sonBooleanos(Nodo nodo1, Nodo nodo2) {
+        if (nodo1 != null && nodo2 != null) {
+            if (nodo1.getTipoBasico().equals("BOOLEAN") && nodo1.getTipoBasico().equals("BOOLEAN")) {
                 return true;
             }
             return false;
@@ -200,8 +279,8 @@ public class SlkAction {
      * @param nodo Nodo a comprobar
      * @return true si el nodo es de tipo booleano, false en otro caso
      */
-    private boolean esBooleano(Nodo nodo){
-        if(nodo != null && nodo.getTipoBasico().equals("BOOLEAN")){
+    private boolean esBooleano(Nodo nodo) {
+        if (nodo != null && nodo.getTipoBasico().equals("BOOLEAN")) {
             return true;
         }
         return false;
@@ -213,9 +292,9 @@ public class SlkAction {
      * @param nodo2 Segundo nodo a comprobar
      * @return true si los dos nodos son de tipo entero y false en otro caso
      */
-    private boolean sonEnteros(Nodo nodo1, Nodo nodo2){
-         if(nodo1 != null && nodo2 != null){
-            if(nodo1.getTipoBasico().equals("INTEGER") && nodo1.getTipoBasico().equals("INTEGER")){
+    private boolean sonEnteros(Nodo nodo1, Nodo nodo2) {
+        if (nodo1 != null && nodo2 != null) {
+            if (nodo1.getTipoBasico().equals("INTEGER") && nodo1.getTipoBasico().equals("INTEGER")) {
                 return true;
             }
             return false;
@@ -223,13 +302,13 @@ public class SlkAction {
         return false;
     }
 
-     /**
+    /**
      * Comprueba que el nodo introducido sea de tipo entero
      * @param nodo Nodo a comprobar
      * @return true si el nodo es de tipo entero, false en otro caso
      */
-    private boolean esEntero(Nodo nodo){
-        if(nodo != null && nodo.getTipoBasico().equals("INTEGER")){
+    private boolean esEntero(Nodo nodo) {
+        if (nodo != null && nodo.getTipoBasico().equals("INTEGER")) {
             return true;
         }
         return false;
@@ -241,9 +320,9 @@ public class SlkAction {
      * @param nodo2 Segundo nodo a comprobar
      * @return true si los dos nodos son de tipo real y false en otro caso
      */
-    private boolean sonReales(Nodo nodo1, Nodo nodo2){
-         if(nodo1 != null && nodo2 != null){
-            if(nodo1.getTipoBasico().equals("REAL") && nodo1.getTipoBasico().equals("REAL")){
+    private boolean sonReales(Nodo nodo1, Nodo nodo2) {
+        if (nodo1 != null && nodo2 != null) {
+            if (nodo1.getTipoBasico().equals("REAL") && nodo1.getTipoBasico().equals("REAL")) {
                 return true;
             }
             return false;
@@ -251,13 +330,13 @@ public class SlkAction {
         return false;
     }
 
-     /**
+    /**
      * Comprueba que el nodo introducido sea de tipo real
      * @param nodo Nodo a comprobar
      * @return true si el nodo es de tipo real, false en otro caso
      */
-    private boolean esReal(Nodo nodo){
-        if(nodo != null && nodo.getTipoBasico().equals("REAL")){
+    private boolean esReal(Nodo nodo) {
+        if (nodo != null && nodo.getTipoBasico().equals("REAL")) {
             return true;
         }
         return false;
@@ -269,9 +348,9 @@ public class SlkAction {
      * @param nodo2 Segundo nodo a comprobar
      * @return true si los dos nodos son de tipo char y false en otro caso
      */
-    private boolean sonChars(Nodo nodo1, Nodo nodo2){
-         if(nodo1 != null && nodo2 != null){
-            if(nodo1.getTipoBasico().equals("CHAR") && nodo1.getTipoBasico().equals("CHAR")){
+    private boolean sonChars(Nodo nodo1, Nodo nodo2) {
+        if (nodo1 != null && nodo2 != null) {
+            if (nodo1.getTipoBasico().equals("CHAR") && nodo1.getTipoBasico().equals("CHAR")) {
                 return true;
             }
             return false;
@@ -279,13 +358,13 @@ public class SlkAction {
         return false;
     }
 
-     /**
+    /**
      * Comprueba que el nodo introducido sea de tipo char
      * @param nodo Nodo a comprobar
      * @return true si el nodo es de tipo chars, false en otro caso
      */
-    private boolean esChar(Nodo nodo){
-        if(nodo != null && nodo.getTipoBasico().equals("CHAR")){
+    private boolean esChar(Nodo nodo) {
+        if (nodo != null && nodo.getTipoBasico().equals("CHAR")) {
             return true;
         }
         return false;

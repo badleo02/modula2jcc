@@ -11,5 +11,7 @@ public enum TipoSimbolo {
     Tipo,
     Procedimiento,
     Funcion,
-    Error
+    Enumerado,
+    Error,
+    ElementoEnumerado
 }

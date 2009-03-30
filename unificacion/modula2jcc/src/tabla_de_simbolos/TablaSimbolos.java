@@ -148,14 +148,19 @@ public class TablaSimbolos {
     }
 
     /**
+     * Comprueba que el simbolo de la tabla sea de tipo "tipo". 
+     * @param lexema Lexema del simbolo de la tabla.
+     * @param Tipo Tipo del simbolo de la tabla.
      * 
-     * @param lexema
-     * @param Tipo
-     * @return
+     * @return Verdadero si el simbolo de la tabla asociado al lexema 
+     * es de tipo "tipo".
      */
     public boolean esDeTipo(String lexema, TipoSimbolo Tipo) {
     
-        return _tabla.get(lexema).getTipoSimbolo() == Tipo;
+        if(lexema != null)
+            return _tabla.get(lexema).getTipoSimbolo().equals(Tipo);   
+        else
+            return false;
     }
 
     /**
