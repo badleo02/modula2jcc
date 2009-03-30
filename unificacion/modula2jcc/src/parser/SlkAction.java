@@ -2,6 +2,7 @@ package parser;
 
 import gestor_de_errores.GestorErrores;
 import gestor_de_errores.TErrorSemantico;
+import scanner.TipoToken;
 import tabla_de_simbolos.TablaSimbolos;
 //import org.apache.log4j.Logger;
 import tabla_de_simbolos.TipoSimbolo;
@@ -176,4 +177,117 @@ public class SlkAction {
 //            e.printStackTrace();
 //        }
 //    }
+
+
+    /**
+     * Comprueba que los dos nodos sean de tipo booleano
+     * @param nodo1 Primer nodo a comprobar
+     * @param nodo2 Segundo nodo a comprobar
+     * @return true si los dos nodos son de tipo booleano y false en otro caso
+     */
+    private boolean sonBooleanos(Nodo nodo1, Nodo nodo2){
+        if(nodo1 != null && nodo2 != null){
+            if(nodo1.getTipoBasico().equals("BOOLEAN") && nodo1.getTipoBasico().equals("BOOLEAN")){
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Comprueba que el nodo introducido sea de tipo booleano
+     * @param nodo Nodo a comprobar
+     * @return true si el nodo es de tipo booleano, false en otro caso
+     */
+    private boolean esBooleano(Nodo nodo){
+        if(nodo != null && nodo.getTipoBasico().equals("BOOLEAN")){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Comprueba que los dos nodos sean de tipo entero
+     * @param nodo1 Primer nodo a comprobar
+     * @param nodo2 Segundo nodo a comprobar
+     * @return true si los dos nodos son de tipo entero y false en otro caso
+     */
+    private boolean sonEnteros(Nodo nodo1, Nodo nodo2){
+         if(nodo1 != null && nodo2 != null){
+            if(nodo1.getTipoBasico().equals("INTEGER") && nodo1.getTipoBasico().equals("INTEGER")){
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+     /**
+     * Comprueba que el nodo introducido sea de tipo entero
+     * @param nodo Nodo a comprobar
+     * @return true si el nodo es de tipo entero, false en otro caso
+     */
+    private boolean esEntero(Nodo nodo){
+        if(nodo != null && nodo.getTipoBasico().equals("INTEGER")){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Comprueba que los dos nodos sean de tipo real
+     * @param nodo1 Primer nodo a comprobar
+     * @param nodo2 Segundo nodo a comprobar
+     * @return true si los dos nodos son de tipo real y false en otro caso
+     */
+    private boolean sonReales(Nodo nodo1, Nodo nodo2){
+         if(nodo1 != null && nodo2 != null){
+            if(nodo1.getTipoBasico().equals("REAL") && nodo1.getTipoBasico().equals("REAL")){
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+     /**
+     * Comprueba que el nodo introducido sea de tipo real
+     * @param nodo Nodo a comprobar
+     * @return true si el nodo es de tipo real, false en otro caso
+     */
+    private boolean esReal(Nodo nodo){
+        if(nodo != null && nodo.getTipoBasico().equals("REAL")){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Comprueba que los dos nodos sean de tipo char
+     * @param nodo1 Primer nodo a comprobar
+     * @param nodo2 Segundo nodo a comprobar
+     * @return true si los dos nodos son de tipo char y false en otro caso
+     */
+    private boolean sonChars(Nodo nodo1, Nodo nodo2){
+         if(nodo1 != null && nodo2 != null){
+            if(nodo1.getTipoBasico().equals("CHAR") && nodo1.getTipoBasico().equals("CHAR")){
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+     /**
+     * Comprueba que el nodo introducido sea de tipo char
+     * @param nodo Nodo a comprobar
+     * @return true si el nodo es de tipo chars, false en otro caso
+     */
+    private boolean esChar(Nodo nodo){
+        if(nodo != null && nodo.getTipoBasico().equals("CHAR")){
+            return true;
+        }
+        return false;
+    }
 }
