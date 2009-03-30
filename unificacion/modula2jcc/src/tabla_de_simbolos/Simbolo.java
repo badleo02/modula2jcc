@@ -13,7 +13,7 @@ public class Simbolo {
     /**
      * Array de tipos semanticos del simbolo para simbolos compuestos.
      */
-    private ArrayList<String> _tipos;
+    private ArrayList<String> _tipoSemantico;
     /**
      * lexema que identifica el simbolo
      */
@@ -33,14 +33,14 @@ public class Simbolo {
     /**
      * tipo semantico de los argumentos funciones y procedimientos
      */
-    private ArrayList _tiposArgumentos;
+    private ArrayList<ArrayList<String>> _tiposArgumentos;
     /**
      * modo de paso de los argumentos en funciones y procedimientos
      */
     private ArrayList _pasoArgumentos;
     /**
      * tipo de simbolo:
-     * variable, constante, funciones y procedimientos
+     * variable, constante, funcion,  procedimiento...
      */
     private TipoSimbolo _tipoSimbolo;
     /**
@@ -194,7 +194,7 @@ public class Simbolo {
      */
     public ArrayList<String> getTipos() {
         
-        return _tipos;
+        return _tipoSemantico;
     }
 
     /**
@@ -204,7 +204,7 @@ public class Simbolo {
      */
     public void setTipos(ArrayList<String> tipos) {
         
-        _tipos = tipos;
+        _tipoSemantico = tipos;
     }
 
     /**
