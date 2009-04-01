@@ -6,7 +6,7 @@ import semantico.TipoSemantico;
 
 /**
  *
- * @author Grupo 3
+ * @author Grupo 11
  */
 public class Simbolo {
 
@@ -45,12 +45,17 @@ public class Simbolo {
      * Logger de la aplicacion
      */
     private static final Logger _logger = Logger.getLogger(Simbolo.class);
+    /**
+     * si el simbolo fue completado (esto es, tipo semantico y codigo y eso)
+     */
+    private boolean _completo;
 
     /**
      * Constructor por defecto de la clase Argumentos.
      */
     public Simbolo() {
         _contenido = null;
+        _completo = false;
     }
 
     /**
@@ -59,7 +64,7 @@ public class Simbolo {
      * @param contenido Contenido de los argumentos.
      */
     public Simbolo(TablaSimbolos contenido) {
-
+        _completo = false;
         _contenido = contenido;
         _logger.debug("Creando la tabla con puntero  " + contenido.getNombre());
     }
@@ -70,7 +75,6 @@ public class Simbolo {
      * @return El contenido de los argumentos.
      */
     public TablaSimbolos getContenido() {
-
         return _contenido;
     }
 
@@ -80,7 +84,6 @@ public class Simbolo {
      * @return El numero de argumentos.
      */
     public int getNumArgs() {
-
         return _numArgs;
     }
 
@@ -90,7 +93,6 @@ public class Simbolo {
      * @return El paso de argumentos.
      */
     public ArrayList getPasoArgumentos() {
-
         return _pasoArgumentos;
     }
 
@@ -100,7 +102,6 @@ public class Simbolo {
      * @return Los tipos de los argumentos.
      */
     public ArrayList getTipoArgumentos() {
-
         return _tiposArgumentos;
     }
 
@@ -110,7 +111,6 @@ public class Simbolo {
      * @return El valor de los argumentos.
      */
     public Object getValor() {
-
         return _valor;
     }
 
@@ -120,7 +120,6 @@ public class Simbolo {
      * @param numArgs Nuevo valor a establecer.
      */
     public void setNumArgs(int numArgs) {
-
         _numArgs = numArgs;
     }
 
@@ -130,7 +129,6 @@ public class Simbolo {
      * @param pasoArgumentos Nuevo valor a establecer.
      */
     public void setPasoArgumentos(ArrayList pasoArgumentos) {
-
         _pasoArgumentos = pasoArgumentos;
     }
 
@@ -140,7 +138,6 @@ public class Simbolo {
      * @param tipoArgumentos Nuevo valor a establecer.
      */
     public void setTipoArgumentos(ArrayList tipoArgumentos) {
-
         _tiposArgumentos = tipoArgumentos;
     }
 
@@ -150,7 +147,6 @@ public class Simbolo {
      * @param valor Nuevo valor a establecer.
      */
     public void setValor(String valor) {
-
         _valor = valor;
     }
 
@@ -160,7 +156,6 @@ public class Simbolo {
      * @param contenido Nuevo valor a establecer.
      */
     public void setContenido(TablaSimbolos contenido) {
-
         _contenido = contenido;
     }
 
@@ -170,7 +165,6 @@ public class Simbolo {
      * @return El lexema del simbolo.
      */
     public String getLexema() {
-
         return (String) _valor;
     }
 
@@ -189,7 +183,6 @@ public class Simbolo {
      * @param tipos Nuevo valor a establecer.
      */
     public void setTipos(ArrayList<TipoSemantico> tipos) {
-        
         _tipoSemantico = tipos;
     }
 
@@ -199,17 +192,34 @@ public class Simbolo {
      * @param tipoSimbolo Nuevo valor a establecer.
      */
     public void setTipoSimbolo(TipoSimbolo tipoSimbolo) {
-        
         _tipoSimbolo = tipoSimbolo;
     }
 
     /**
      * Devuelve el tipo de simbolo del simbolo.
-     * 
+     *
      * @return El tipo de simbolo del simbolo.
      */
     public TipoSimbolo getTipoSimbolo() {
-        
         return _tipoSimbolo;
+    }
+
+    /**
+     * indica que el método ya esta completo, a partir de este momento, no deberia
+     * modificarse sus parametros NUNCA.
+     */
+     public void completo(){
+         _completo = true;
+     }
+
+    /**
+     * un simbolo solo puede ser completado en una ocasion, durante la
+     * ejecución de la accion semántica que lo definio, si se intenta
+     * definir otra vez hay que dar error.
+     * 
+     * @return si ya esta completo
+     */
+    boolean estaCompletado() {
+        return _completo;
     }
 }

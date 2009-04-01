@@ -18,6 +18,7 @@ public class TablaSimbolos {
     private static final Logger _logger = Logger.getLogger(TablaSimbolos.class);    // ATRIBUTOS
 
     // ATRIBUTOS
+    // TODO: eliminar estos objetos, son strings o algo!! NUNCA objetos
     private Hashtable<String, ArrayList<Object>> _palabrasReservadas;
     private Hashtable<String, ArrayList<Object>> _funcionesPredefinidas;
     private Hashtable<String, ArrayList<Object>> _procedimientosPredefinidos;
@@ -884,28 +885,46 @@ public class TablaSimbolos {
         _nombre = nombre;
     }
 
-    public void completaConstante(String lexema, ArrayList<TipoSemantico> tipoSemantico, String valor) {
+    public boolean completaConstante(String lexema, ArrayList<TipoSemantico> tipoSemantico, String valor) {
         Simbolo s = _tabla.get(lexema);
+        if (s.estaCompletado())
+            return false;
+
         s.setTipoSimbolo(TipoSimbolo.CONSTANTE);
         s.setTipos(tipoSemantico);
         s.setValor(valor);
+        s.completo();    // cierra el simbolo para no modificarlo ni machacarlo
+        return true;
     }
 
-    public void completaVariable(String lexema, ArrayList<TipoSemantico> tipoSemantico) {
+    public boolean completaVariable(String lexema, ArrayList<TipoSemantico> tipoSemantico) {
         Simbolo s = _tabla.get(lexema);
+        if (s.estaCompletado())
+            return false;
+
         s.setTipoSimbolo(TipoSimbolo.VARIABLE);
         s.setTipos(tipoSemantico);
+        s.completo();    // cierra el simbolo para no modificarlo ni machacarlo
+        return true;
     }
 
-    public void completaTipo(String lexema, ArrayList<TipoSemantico> tipoSemantico) {
+    public boolean completaTipo(String lexema, ArrayList<TipoSemantico> tipoSemantico) {
         Simbolo s = _tabla.get(lexema);
+        if (s.estaCompletado())
+            return false;
         s.setTipoSimbolo(TipoSimbolo.TIPO);
         s.setTipos(tipoSemantico);
+        s.completo();    // cierra el simbolo para no modificarlo ni machacarlo
+        return true;
     }
 
-    public void completaFuncion(String lexema, String tipoSemanticoRetorno, int numParam, String[] tipoSemanticoParams) {
+    public boolean completaFuncion(String lexema, String tipoSemanticoRetorno, int numParam, String[] tipoSemanticoParams) {
         Simbolo s = _tabla.get(lexema);
+        if (s.estaCompletado())
+            return false;
         s.setTipoSimbolo(TipoSimbolo.FUNCION);
+        s.completo();    // cierra el simbolo para no modificarlo ni machacarlo
+        return true;
     }
 
     private void insertarIdentificador(String lexema, Simbolo reg) {

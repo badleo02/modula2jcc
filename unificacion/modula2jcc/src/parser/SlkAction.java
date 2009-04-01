@@ -161,7 +161,14 @@ public class SlkAction {
             } else {
                 // hay que completar el simbolo idetificado por el lexema de la parte izq
                 // con tipo simbolo Constante. Tipo de la parte derecha y valor
-                _tablaSimbolos.completaConstante(izquierda.getLexema(), derecha.getTipos(), derecha.getLexema());
+                if (!_tablaSimbolos.completaConstante(izquierda.getLexema(), derecha.getTipos(), derecha.getLexema())) {
+                    Nodo n = new Nodo();
+                    n.addTipo(TipoSemantico.ERROR);
+                    _pilaNodos.add(n);
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("se intenta redefinir el simbolo <" + izquierda.getLexema(),
+                                                                            derecha.getLinea(),
+                                                                            derecha.getColumna()));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -184,7 +191,14 @@ public class SlkAction {
                     id = _pilaNodos.pop();
                     // completamos la definicion de la variable
                     if (!id.esInicioListaIdentificadores()) {
-                        _tablaSimbolos.completaVariable(id.getLexema(), derecha.getTipos());
+                        if (!_tablaSimbolos.completaVariable(id.getLexema(), derecha.getTipos())) {
+                            Nodo n = new Nodo();
+                            n.addTipo(TipoSemantico.ERROR);
+                            _pilaNodos.add(n);
+                            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("se intenta redefinir el simbolo <" + id.getLexema() + ">",
+                                    derecha.getLinea(),
+                                    derecha.getColumna()));
+                        }
                     }
                 } while (!id.esInicioListaIdentificadores());
             }
@@ -204,7 +218,7 @@ public class SlkAction {
             // si se da un error llamamos al gestor de errores y no lo apilamos error
             // si la parte derecha es un identificador debemos comprobar que sea
             // una definicion de tipo.
-            if (derecha._tipoToken.equals(TipoToken.IDENTIFICADOR) && !_tablaSimbolos.esDeTipo(derecha.getLexema(), TipoSimbolo.TIPO)) {
+            if (derecha._tipoToken == TipoToken.IDENTIFICADOR && !_tablaSimbolos.esDeTipo(derecha.getLexema(), TipoSimbolo.TIPO)) {
                 // lo de la derecha no es un tipo
                 Nodo n = new Nodo();
                 n.addTipo(TipoSemantico.ERROR);
@@ -214,7 +228,15 @@ public class SlkAction {
             } else {
                 // hay que completar el simbolo idetificado por el lexema de la parte izq
                 // con tipo simbolo Tipo.
-                _tablaSimbolos.completaTipo(izquierda.getLexema(), derecha.getTipos());
+                if (!_tablaSimbolos.completaTipo(izquierda.getLexema(), derecha.getTipos())) {
+                    Nodo n = new Nodo();
+                    n.addTipo(TipoSemantico.ERROR);
+                    _pilaNodos.add(n);
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("se intenta redefinir el simbolo <" + izquierda.getLexema() + ">",
+                            derecha.getLinea(),
+                            derecha.getColumna()));
+
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -419,7 +441,7 @@ public class SlkAction {
      */
     private boolean sonBooleanos(Nodo nodo1, Nodo nodo2) {
         if (nodo1 != null && nodo2 != null) {
-            if (nodo1.getTipoBasico() == TipoSemantico.ENTERO && nodo1.getTipoBasico() == TipoSemantico.ENTERO) {
+            if (nodo1.getTipoBasico() == TipoSemantico.BOOLEANO && nodo1.getTipoBasico() == TipoSemantico.BOOLEANO) {
                 return true;
             }
             return false;
@@ -517,9 +539,48 @@ public class SlkAction {
      * @return true si el nodo es de tipo chars, false en otro caso
      */
     private boolean esChar(Nodo nodo) {
-        if (nodo != null && nodo.getTipoBasico().equals("CHAR")) {
+        if (nodo != null && nodo.getTipoBasico() == TipoSemantico.CARACTER) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * comprueba si dos tipos son compatibles, de forma que se puede operar con
+     * ellos o realizar una asignacion:
+     * los tipos son compatibles de la siguente manera:
+     *    Bitset,
+     *    Integer, Real, LongInt, Boolean son compatibles SOLO con su mismo tipo
+     *    Puntero es compatible con puentero SOLO si el segundo tipo es igual
+     *                  ( puntero de enteros no lo es con puntero de reales)
+     *    Conjuntos y Registos solo son compatibles si el conjunto es exactamente del mismo
+     * tipo, (la cadena completa)
+     *
+     * @param a nodo 1 a comprobar
+     * @param b nodo 2 a comprobar
+     * @return si son compatibles
+     */
+
+    private boolean compatiblesTiposSemanticos(Nodo a, Nodo b){
+        // TODO: hay que completar esto, faltan tipos y comprobaciones
+        // TODO: esta sin probar
+        if ((a == null) || (b == null))
+            return false;
+
+        switch (a.getTipoBasico()){
+            case BITSET: case BOOLEANO: case CARACTER:
+            case CARDINAL: case ENTERO: case ENTERO_LARGO:
+                return a.getTipoBasico() == b.getTipoBasico();
+            case PUNTERO:
+                try {
+                    ArrayList<TipoSemantico> la = a.getTipos();
+                    ArrayList<TipoSemantico> lb = b.getTipos();
+                    return la.get(1) == lb.get(2);
+                } catch (Exception e){  // la excepcion es por si estan mal definidos.
+                    return false;
+                }
+            default:
+                return false;
+        }
     }
 }

@@ -2,7 +2,7 @@ package tabla_de_simbolos;
 
 /**
  *
- * @author pitidecaner
+ * @author Luis Ayuso
  */
 public enum TipoSimbolo {
     
