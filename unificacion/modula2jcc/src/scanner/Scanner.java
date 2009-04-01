@@ -426,28 +426,23 @@ public class Scanner {
             atributos.add((ConstantePredefinida) valor);
         } else if (tipo == TipoToken.IDENTIFICADOR) {
 
-            // Si es Palabra Reservada
             if (_tablaSimbolos.esPalabraReservada((String) valor)) {
+                atributos.add(PalabrasReservadas.valueOf((String) valor));
                 tipo = TipoToken.PALABRA_RESERVADA;
-            }
-            
-            // Si es funcion predefinida
-            if(_tablaSimbolos.esFuncionPredefinida((String) valor)){
+            } else if(_tablaSimbolos.esProcedimientoPredefinido((String) valor)){
+
+                atributos.add(ProcedimientosPredefinidos.valueOf((String) valor));
+                tipo = TipoToken.PROCEDIMIENTO_PREDEFINIDO;
+            } else if(_tablaSimbolos.esFuncionPredefinida((String) valor)){
 
                 atributos.add(FuncionesPredefinidas.valueOf((String) valor));
                 tipo = TipoToken.FUNCION_PREDEFINIDA;
-            }
-            else // Si es procedimiento predefinido
-                if(_tablaSimbolos.esProcedimientoPredefinido((String) valor)){
-
-                    atributos.add(ProcedimientosPredefinidos.valueOf((String) valor));
-                    tipo = TipoToken.PROCEDIMIENTO_PREDEFINIDO;
-                }
-                else{ // Si es un identificador
-                    atributos.add((String) valor);
-                    _tablaSimbolos.insertarIdentificador((String)valor);
-                }
+            } else{ 
             
+                // Es un IDENTIFICADOR
+                atributos.add((String) valor);
+                _tablaSimbolos.insertarIdentificador((String)valor);
+            } 
         } else if (tipo == TipoToken.NUMERO_ENTERO) {
             atributos.add(new Integer((Integer) valor));
         } else if (tipo == TipoToken.NUMERO_REAL) {

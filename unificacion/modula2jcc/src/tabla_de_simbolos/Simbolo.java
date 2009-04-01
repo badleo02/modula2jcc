@@ -14,10 +14,7 @@ public class Simbolo {
      * Array de tipos semanticos del simbolo para simbolos compuestos.
      */
     private ArrayList<String> _tipoSemantico;
-    /**
-     * lexema que identifica el simbolo
-     */
-    private String _lexema;
+
     /**
      * valor en el caso de las constantes
      */
@@ -51,8 +48,8 @@ public class Simbolo {
     /**
      * Constructor por defecto de la clase Argumentos.
      */
-    public Simbolo(String lexema) {
-        _lexema = lexema;
+    public Simbolo() {
+
         _contenido = null;
     }
 
@@ -175,16 +172,6 @@ public class Simbolo {
     public String getLexema() {
 
         return (String) _valor;
-    }
-
-    /**
-     * Establece el valor del lexema a valor <b>lexema</b>.
-     * 
-     * @param lexema Nuevo valor a establecer.
-     */
-    public void setLexema(String lexema) {
-
-        _lexema = lexema;
     }
 
     /**

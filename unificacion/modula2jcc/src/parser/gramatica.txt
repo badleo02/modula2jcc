@@ -2,24 +2,24 @@
 //		SINTAXIS GENERAL		//
 //----------------------------------------------//
 UnidadDeCompilacion:
-ModuloPrograma _action_unidadDeCompilacion1
-ModuloDefinicion _action_unidadDeCompilacion2
-ModuloImplementacion _action_unidadDeCompilacion3
+ModuloPrograma 
+ModuloDefinicion 
+ModuloImplementacion
 
 ModuloPrograma:
-CabeceraModulo Bloque Identificador . _action_moduloPrograma
+CabeceraModulo Bloque Identificador . _action_FinDeModulo 
 
 ModuloDefinicion:
-CabeceraDefinicion { DefinicionDeModulo } END Identificador .
+CabeceraDefinicion { DefinicionDeModulo } END Identificador . _action_FinDeModulo
 
 ModuloImplementacion:
 IMPLEMENTATION ModuloPrograma
 
 CabeceraModulo:
-MODULE _action_ activarDeclarativa Identificador _action_cabeceraModulo [ Prioridad ] ; { ListaImportados ; }
+MODULE Identificador _action_ComienzoDeModulo [ Prioridad ] ; { ListaImportados ; }
 
 CabeceraDefinicion:
-DEFINITION MODULE Identificador ; { ListaImportados ; } [ ListaExportados ; ]
+DEFINITION MODULE Identificador _action_ComienzoDeModulo ; { ListaImportados ; } [ ListaExportados ; ]
 
 ListaImportados:
 [ FROM Identificador ] IMPORT IdentDeProc { , IdentDeProc }
@@ -31,7 +31,7 @@ Prioridad:
 ExpresionConstante
 
 Bloque:
-ParteDeclarativa _action_CierraAmbito ParteEjecutiva END
+ParteDeclarativa ParteEjecutiva END
 
 DefinicionDeModulo:
 DeclaracionDeConstantes
@@ -46,26 +46,26 @@ ParteDeclarativa:
 { Declaracion }
 
 Declaracion:
-_action_Declaracion DeclaracionDeConstantes
-_action_Declaracion DeclaracionDeTipos
-_action_Declaracion DeclaracionDeVariables
-_action_Declaracion DeclaracionSubprograma
-_action_Declaracion DeclaracionModulo
+DeclaracionDeConstantes
+DeclaracionDeTipos
+DeclaracionDeVariables
+DeclaracionSubprograma
+DeclaracionModulo
 
 DeclaracionDeConstantes:
 CONST { AsociacionConstante ; }
 
 AsociacionConstante:
-Identificador = ExpresionConstante
+Identificador = ExpresionConstante _action_AsociacionConstante
 
 DeclaracionDeTipos:
 TYPE { DefinicionDeTipo ; }
 
 DefinicionDeTipo:
-Identificador = EsquemaDeTipo
+Identificador = EsquemaDeTipo _action_DefinicionDeTipo
 
 EsquemaDeTipo:
-TipoSimple _action_tipoSimple
+TipoSimple 
 TipoConjunto
 TipoFormacion
 TipoRegistro
@@ -73,19 +73,19 @@ TipoPuntero
 TipoSubprograma
 
 TipoSimple:
-TipoEnumerado
-IdentificadorDeTipo RestoDeTipo _action_tipoSimple2
-\[ ExpresionConstante .. ExpresionConstante \] _action_subrango // Subrango
+TipoEnumerado 
+IdentificadorDeTipo RestoDeTipo 
+\[ ExpresionConstante .. ExpresionConstante \] // Subrango
 
 TipoEnumerado:
-( ListaDeIdentificadores ) _action_listaIdentificadores
+\( ListaDeIdentificadores \) 
 
 RestoDeTipo:
-_epsilon_ _action_vacio // Simple
+_epsilon_ // Simple
 \[ ExpresionConstante .. ExpresionConstante \] // Subrango
 
 TipoConjunto:
-SET OF TipoSimple
+SET OF TipoSimple _action_TipoConjunto
 
 TipoFormacion:
 ARRAY TipoSimple { , TipoSimple } OF EsquemaDeTipo
@@ -101,7 +101,8 @@ _epsilon_
 ListaDeIdentificadores : EsquemaDeTipo
 
 TipoPuntero:
-POINTER TO EsquemaDeTipo
+POINTER TO EsquemaDeTipo _action_TipoPuntero
+
 TipoSubprograma:
 PROCEDURE [ ListaDeTiposFormales ]
 
@@ -109,10 +110,10 @@ ListaDeTiposFormales:
 ( [ [ VAR ] TipoFormal { , [ VAR ] TipoFormal } ] ) [ : IdentificadorDeTipo ]
 
 DeclaracionDeVariables:
-VAR _action_variable { ListaDeVariables ; } _action_cierravariable
+VAR { ListaDeVariables }
 
 ListaDeVariables:
-ListaDeIdentificadores _action_Marca : EsquemaDeTipo _action_listaVariables
+ListaDeIdentificadores : EsquemaDeTipo ; _action_DeclaracionVariables
 
 DeclaracionSubprograma:
 CabeceraSubprograma ; Bloque Identificador ;
@@ -133,14 +134,14 @@ MODULE Identificador [ ExpresionConstante ] ; { ListaImportados ; } [ ListaExpor
 //		SENTENCIAS EJECUTABLES	   	//
 //----------------------------------------------//
 ParteEjecutiva:
-[ _action_Begin BEGIN SecuenciaDeSentencias ]
+[ BEGIN SecuenciaDeSentencias ]
 
 SecuenciaDeSentencias:
 Sentencia { ; Sentencia }
 
 Sentencia:
 _epsilon_
-SentenciaAsignacion _action_SentenciaAsignacion
+SentenciaAsignacion
 SentenciaIF
 SentenciaCASE
 SentenciaWHILE
@@ -153,14 +154,14 @@ SentenciaRETURN
 EXIT
 
 SentenciaAsignacion:
-Identificador _action_Identificador RestoSentenciaAsignacion _action_RestoSentenciaAsignacion
+Identificador RestoSentenciaAsignacion 
 
 RestoSentenciaAsignacion:
-ParteIzquierda RestoSentenciaRestoAsignacion _action_RestoSentenciaRestoAsignacion
+ParteIzquierda RestoSentenciaRestoAsignacion
 
 RestoSentenciaRestoAsignacion:
 _epsilon_
-:= Expresion _action_Expresion
+:= Expresion 
 ParametrosDeLlamada
 
 ParteIzquierda:
@@ -174,10 +175,10 @@ Identificador
 LlamadaProcedimientoPredefinido
 
 SentenciaIF:
-IF Expresion _action_expresionIf THEN SecuenciaDeSentencias RestoSentenciaIF END
+IF Expresion THEN SecuenciaDeSentencias RestoSentenciaIF END
 
 RestoSentenciaIF:
-{ ELSIF Expresion _action_expresionElsIf THEN SecuenciaDeSentencias } [ ELSE SecuenciaDeSentencias ]
+{ ELSIF Expresion THEN SecuenciaDeSentencias } [ ELSE SecuenciaDeSentencias ]
 
 SentenciaCASE:
 CASE Expresion OF Caso { | Caso } [ ELSE SecuenciaDeSentencias ] END
@@ -186,33 +187,32 @@ Caso:
 ListaDeValores : SecuenciaDeSentencias
 
 SentenciaWHILE:
-WHILE Expresion DO SecuenciaDeSentencias END _action_SentenciaWHILE
+WHILE Expresion DO SecuenciaDeSentencias END 
 
 SentenciaREPEAT:
-REPEAT SecuenciaDeSentencias UNTIL Expresion _action_SentenciaREPEAT
+REPEAT SecuenciaDeSentencias UNTIL Expresion 
 
 SentenciaLOOP:
-LOOP SecuenciaDeSentencias END _action_SentenciaLOOP
+LOOP SecuenciaDeSentencias END 
 
 SentenciaFOR:
-FOR Identificador := Expresion _action_exprFor TO Expresion _action_exprTo [ BY ExpresionConstante ] DO SecuenciaDeSentencias END _action_SentenciaFOR
+FOR Identificador := Expresion TO Expresion [ BY ExpresionConstante ] DO SecuenciaDeSentencias END
 
 SentenciaWITH:
-WITH Identificador ParteIzquierda DO SecuenciaDeSentencias END _action_SentenciaWITH
-
+WITH Identificador ParteIzquierda DO SecuenciaDeSentencias END 
 
 SentenciaRETURN:
-RETURN [ Expresion ] _action_SentenciaRETURN
+RETURN [ Expresion ] 
 
-//----------------------------------------------//
-//		EXPRESIONES		   	//
-//----------------------------------------------//
+//----------------------------------//
+//		EXPRESIONES			//
+//----------------------------------//
 ListaDeValores:
-Valores RestoListaValores _action_ListaDeValores
+Valores RestoListaValores 
 
 RestoListaValores:
-_epsilon_ _action_vacio
-, Valores RestoListaValores _action_RestoValores
+_epsilon_ 
+, Valores RestoListaValores 
 
 Valores:
 ExpresionConstante RestoValores
@@ -247,29 +247,29 @@ Expresion RestoListaDeExpresiones
 
 RestoListaDeExpresiones:
 _epsilon_
-, Expresion _action_Expresion RestoListaDeExpresiones
+, Expresion RestoListaDeExpresiones
 
 Expresion:
-ExpresionSimple RestoExpresion _action_RestoExpresion
+ExpresionSimple RestoExpresion 
 
 RestoExpresion:
 _epsilon_
-OperadorComparador ExpresionSimple _action_ExpresionSimple
+OperadorComparador ExpresionSimple 
 
 ExpresionSimple:
 Signo Termino RestoExpresionSimple 
 
 RestoExpresionSimple:
-_epsilon_ _action_RestoExpresionSimple
-OperadorSumador  Termino  _action_termino RestoExpresionSimple 
+_epsilon_ 
+OperadorSumador Termino
 
 Signo:
 _epsilon_
-+ _action_unitSuma
-- _action_unitResta
++ 
+- 
 
 Termino:
-Factor _action_factor RestoTermino
+Factor RestoTermino
 
 RestoTermino:
 _epsilon_
@@ -278,7 +278,7 @@ OperadorMultiplicador Factor RestoTermino
 Factor:
 Identificador RestoFactor
 ConstantePredefinida
-Numero _action_numero
+Numero 
 TipoPredefinido \{ ListaDeElementos \}
 Cadena
 Caracter
@@ -292,41 +292,41 @@ ParametrosDeLlamada
 ParteIzquierda
 
 OperadorComparador:
-= _action_igual
-<> _action_distinto
-# _action_distinto2
-< _action_menor
-<= _action_menorIgual
-> _action_mayor
->= _action_mayorIgual
-IN _action_operadorIn
+= 
+<> 
+# 
+< 
+<= 
+> 
+>= 
+IN 
 
 OperadorSumador:
-+ _action_suma
-- _action_resta
-OR _action_operadorOr
++ 
+- 
+OR 
 
 OperadorMultiplicador:
-* _action_mult
-/ _action_division
-DIV _action_divisionEntera
-MOD _action_operadorModulo
-& _action_ampersand
-AND _action_operadorAnd
+* 
+/ 
+DIV 
+MOD 
+& 
+AND 
 
 OperadorUnario:
-NOT _action_operadorNot
-~ _action_operadorComplemento
+NOT 
+~ 
 
 //----------------------------------------------//
-//		ELEMENTOS BASICOS	   	//
+//		ELEMENTOS BASICOS			   	//
 //----------------------------------------------//
 TipoFormal:
 [ ARRAY OF ] IdentificadorDeTipo
 
 Numero:
-NumeroEntero _action_numEntero
-NumeroReal _action_numReal
+NumeroEntero 
+NumeroReal 
 
 ListaDeElementos:
 [ Elementos { , Elementos } ]
@@ -336,36 +336,36 @@ ExpresionConstante [ .. ExpresionConstante ]
 
 // TIPOS
 IdentificadorDeTipo:
-TipoPredefinido _action_tipoPredefinido
-Identificador
+TipoPredefinido 
+Identificador _action_TipoPredefinidoPorUsuario
 
 TipoPredefinido:
-BITSET _action_bitset
-BOOLEAN _action_booleano
-CARDINAL _action_cardinal
-CHAR _action_caracter
-INTEGER _action_entero
-LONGINT _action_longint
-LONGREAL _action_longreal
-PROC _action_proc
-REAL _action_real
+BITSET _action_BITSET
+BOOLEAN _action_BOOLEAN
+CARDINAL _action_CARDINAL
+CHAR _action_CHAR
+INTEGER _action_INTEGER
+LONGINT _action_LONGINT
+LONGREAL _action_LONGREAL
+PROC _action_PROC
+REAL _action_REAL
 
 // CONSTANTES
 ConstantePredefinida:
-TRUE _action_verdadero
-FALSE _action_falso
-NIL _action_nil
+TRUE _action_TRUE
+FALSE _action_FALSE
+NIL _action_NIL
 
 ListaDeIdentificadores:
-Identificador _action_identificador RestoListaIdentificadores
+Identificador _action_marcaInicioLista RestoListaIdentificadores
 
 RestoListaIdentificadores:
-_epsilon_ _action_vacio
-, Identificador _action_identificador RestoListaIdentificadores
+_epsilon_ 
+, Identificador RestoListaIdentificadores
 
-//--------------------------------------------------------------------------------------//
-//		IMPORTACIONES DE PROCEDIMIENTOS Y FUNCIONES PREDEFINIDAS		//
-//--------------------------------------------------------------------------------------//
+//----------------------------------------------------------------------------------//
+//		IMPORTACIONES DE PROCEDIMIENTOS Y FUNCIONES PREDEFINIDAS			//
+//----------------------------------------------------------------------------------//
 // Los procedimientos predefinidos del lenguaje no se importan
 IdentDeProc:
 Identificador

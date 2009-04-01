@@ -17,7 +17,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import observadores.ObservadorLexico;
-import parser.PilaNodos;
+import semantico.PilaNodos;
 
 /**
  * Ventana principal del compilador.

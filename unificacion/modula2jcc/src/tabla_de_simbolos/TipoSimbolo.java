@@ -6,12 +6,10 @@ package tabla_de_simbolos;
  */
 public enum TipoSimbolo {
     
-    Constante,
-    Variable,
-    Tipo,
-    Procedimiento,
-    Funcion,
-    Enumerado,
-    Error,
-    ElementoEnumerado
+    CONSTANTE,
+    VARIABLE,
+    TIPO,
+    PROCEDIMIENTO,
+    FUNCION,
+    TIPO_PREDEFINIDO
 }

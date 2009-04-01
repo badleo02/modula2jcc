@@ -2,7 +2,7 @@ package main;
 
 import gestor_de_errores.GestorErrores;
 import gui.Ventana;
-import parser.PilaNodos;
+import semantico.PilaNodos;
 import tabla_de_simbolos.TablaSimbolos;
 
 //***************************************************************************//

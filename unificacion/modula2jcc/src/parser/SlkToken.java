@@ -1,7 +1,8 @@
 package parser;
 
+import semantico.Nodo;
+import semantico.PilaNodos;
 import gestor_de_errores.GestorErrores;
-import java.util.ArrayList;
 import java.util.Vector;
 import observadores.ObservadorLexico;
 import scanner.Scanner;
@@ -66,6 +67,7 @@ public class SlkToken {
             _token = _analizadorLexico.get_token();
             avisarTokenGenerado(_token.toString());
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
         // Insertamos el token reconocido en la pila menos los signos de puntuacion,
@@ -407,51 +409,17 @@ public class SlkToken {
         _observadoresLexico.removeElement(obs);
     }
 
-    private TipoToken getTipoToken() {
-        return _token.getTipoToken();
-    }
-
     /**
      * Crea e inserta un nuevo nodo en la pila.
+     * EL TIPO SEMANTICO SE COMPLETARA EN LAS ACCIONES CORRESPONDIENTES
      */
     private void insertarNodo() {
-        Nodo nodo = null;
-        switch (getTipoToken()) {
-            case TIPO_SIMPLE:
-                // Creamos el nodo a apilar con los datos del token recibido del scanner.
-                nodo = new Nodo(_token.getAtributo(),
-                        _token.getAtributo(),
-                        _token._linea,
-                        _token._columna);
-                break;
-            case CONSTANTE_PREDEFINIDA:
-                String semantico = "";
-                if ((_token.getAtributo().equals("FALSE")) || (_token.getAtributo().equals("TRUE"))) {
-                    semantico = "BOOLEAN";
-                } else {
-                    semantico = "PUNTERO";
-                }
-                nodo = new Nodo(semantico,
-                        _token.getAtributo(),
-                        _token._linea,
-                        _token._columna);
-                break;
-
-            default:
-                nodo = new Nodo(_token.getTipoToken().name(),
-                        _token.getAtributo(),
-                        _token._linea,
-                        _token._columna);
-                break;
-        }
-
         // Creamos el nodo a apilar con los datos del token recibido del scanner.
-//        Nodo nodo = new Nodo(getTipoSemantico(),
-//                             _token.getAtributo(),
-//                             _token._linea,
-//                             _token._columna);
-//
+        Nodo nodo = nodo = new Nodo(_token.getTipoToken(),_token.getAtributo(),
+                        _token._linea,
+                        _token._columna);
         // Apilamos el nuevo nodo en la pila
         _pilaNodos.push(nodo);
+        
     }
 }

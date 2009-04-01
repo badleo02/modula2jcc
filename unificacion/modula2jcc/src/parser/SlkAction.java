@@ -1,13 +1,12 @@
 package parser;
 
+import semantico.PilaNodos;
 import gestor_de_errores.GestorErrores;
 import gestor_de_errores.TErrorSemantico;
 import java.util.ArrayList;
-
-import Semantico.ExpresionTipo;
-import Semantico.Nodo;
-import Semantico.TiposBasicos;
 import scanner.TipoToken;
+import semantico.Nodo;
+import semantico.TipoSemantico;
 import tabla_de_simbolos.TablaSimbolos;
 //import org.apache.log4j.Logger;
 import tabla_de_simbolos.TipoSimbolo;
@@ -34,9 +33,7 @@ public class SlkAction {
 
         _tablaSimbolos = tabla;
         _gestorDeErrores = gestorDeErrores;
-        _pilaNodos = pilaNodos; 
-        
-        
+        _pilaNodos = pilaNodos;
     }
 
     /**
@@ -45,22 +42,104 @@ public class SlkAction {
      * 
      * @param number La accion semantica correspondiente.
      */
-    public void execute ( int  number )
-    {
-      switch ( number ) {
-        case 1:  AsociacionConstante();  break;
-        case 2:  DefinicionDeTipo();  break;
-        case 3:  TipoSimple_Enumerado();  break;
-        case 4:  TipoEnumerado();  break;
-        case 5:  TipoConjunto();  break;
-        case 6:  TipoPuntero();  break;
-        case 7:  DeclaracionVariables();  break;
-        case 8:  TRUE();  break;
-        case 9:  FALSE();  break;
-        case 10:  NIL();  break;
-        case 11:  marcaInicioLista();  break;
-        case 12:  EliminarMarcaLista();  break;
-      }
+    public void execute(int number) {
+        switch (number) {
+            case 1:
+                FinDeModulo();
+                break;
+            case 2:
+                ComienzoDeModulo();
+                break;
+            case 3:
+                AsociacionConstante();
+                break;
+            case 4:
+                DefinicionDeTipo();
+                break;
+            case 5:
+                TipoConjunto();
+                break;
+            case 6:
+                TipoPuntero();
+                break;
+            case 7:
+                DeclaracionVariables();
+                break;
+            case 8:
+                TipoPredefinidoPorUsuario();
+                break;
+            case 9:
+                BITSET();
+                break;
+            case 10:
+                BOOLEAN();
+                break;
+            case 11:
+                CARDINAL();
+                break;
+            case 12:
+                CHAR();
+                break;
+            case 13:
+                INTEGER();
+                break;
+            case 14:
+                LONGINT();
+                break;
+            case 15:
+                LONGREAL();
+                break;
+            case 16:
+                PROC();
+                break;
+            case 17:
+                REAL();
+                break;
+            case 18:
+                TRUE();
+                break;
+            case 19:
+                FALSE();
+                break;
+            case 20:
+                NIL();
+                break;
+            case 21:
+                marcaInicioLista();
+                break;
+        }
+    }
+
+    /**
+     * Abre un nuevo ambito y actualiza el nombre de la nueva tabla 
+     * correspondiente a dicho ambito.
+     */
+    private void ComienzoDeModulo() {
+
+        Nodo nodo = _pilaNodos.pop();
+        _tablaSimbolos.crearAmbito(nodo.getLexema());
+    }
+
+    /**
+     * Comprueba que el nombre de la tabla y el del identificador despues del
+     * END sean el mismo. Ademas cierra el ambito actual.
+     */
+    private void FinDeModulo() {
+
+        Nodo nodo = _pilaNodos.pop();
+
+        // Si se llaman igual el de arriba que el de abajo
+        if (nodo.getLexema().equals(_tablaSimbolos.getNombre())) {
+            _tablaSimbolos.cerrarAmbitoModulo(nodo.getLexema());
+        } else {
+
+            Nodo n = new Nodo();
+            n.addTipo(TipoSemantico.ERROR.name());
+            _pilaNodos.add(n);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Identificador de modulo <" + nodo.getLexema() + "> incorrecto, se esperaba <" + _tablaSimbolos.getNombre() + ">",
+                    nodo.getLinea(),
+                    nodo.getColumna()));
+        }
     }
 
     private void AsociacionConstante() {
@@ -72,9 +151,9 @@ public class SlkAction {
             Nodo izquierda = _pilaNodos.pop(); // parte izq, en nm de la funcion
 
             // comprobaci√≥n de errores:
-            if (derecha.getTipoBasico().equals(TipoSimbolo.Error.toString())) {
+            if (derecha.esError()) {
                 Nodo n = new Nodo();
-                n.addTipo(TipoSimbolo.Error.toString());
+                n.addTipo(TipoSemantico.ERROR.name());
                 _pilaNodos.add(n);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo <" + derecha.getLexema() + "> no es una definicion de tipo",
                         derecha.getLinea(),
@@ -95,31 +174,29 @@ public class SlkAction {
             Nodo derecha = _pilaNodos.pop();
 
             // comprueba si hay errores en la definicion del tipo (parte derecha)
-            if (derecha.esError()) {
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("la definicion de tipos no es correcta",
-                        derecha.getLinea(),
-                        derecha.getColumna()));
-            } else {
+            if (!derecha.esError()) {
+            
                 Nodo id;
                 // desapilamos identificadores hasta llegar a la marca.
                 // SIEMPRE hay por lo menos uno!
+                // Aqui se desapila el nodo de marca tambi√©n
                 do {
                     id = _pilaNodos.pop();
                     // completamos la definicion de la variable
-                    _tablaSimbolos.completaVariable(id.getLexema(), derecha.getTipos());
-
-                } while (!_pilaNodos.isEmpty());
+                    if (!id.esInicioListaIdentificadores()) {
+                        _tablaSimbolos.completaVariable(id.getLexema(), derecha.getTipos());
+                    }
+                } while (!id.esInicioListaIdentificadores());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    
     private void DefinicionDeTipo() {
-    	//REGLA: DefinicionDeTipo: Identificador = EsquemaDeTipo
-        
-    	try {
+        //REGLA: DefinicionDeTipo: Identificador = EsquemaDeTipo
+
+        try {
 
             Nodo derecha = _pilaNodos.pop(); // parte derecha, el valor
 
@@ -131,10 +208,10 @@ public class SlkAction {
             // si se da un error llamamos al gestor de errores y no lo apilamos error
             // si la parte derecha es un identificador debemos comprobar que sea
             // una definicion de tipo.
-            if (!_tablaSimbolos.esDeTipo(derecha.getLexema(), TipoSimbolo.Tipo)) {
+            if (derecha._tipoToken.equals(TipoToken.IDENTIFICADOR) && !_tablaSimbolos.esDeTipo(derecha.getLexema(), TipoSimbolo.TIPO)) {
                 // lo de la derecha no es un tipo
                 Nodo n = new Nodo();
-                n.addTipo(TipoSimbolo.Error.toString());
+                n.addTipo(TipoSemantico.ERROR.name());
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo <" + derecha.getLexema() + "> no es una definicion de tipo",
                         derecha.getLinea(),
                         derecha.getColumna()));
@@ -149,13 +226,8 @@ public class SlkAction {
         }
     }
 
-    private void EliminarMarcaLista() {
-    	//REGLA: RestoListaIdentificadores:	_epsilon_ _action_EliminarMarcaLista
-        
-    }
-
     private void TipoConjunto() {
-    	//REGLA TipoConjunto: SET OF TipoSimple
+        //REGLA TipoConjunto: SET OF TipoSimple
 
         try {
 
@@ -173,68 +245,51 @@ public class SlkAction {
         }
     }
 
-    private void TipoEnumerado() {
-    	//REGLA TTipoEnumerado:\( ListaDeIdentificadores \)
-
-        // TODO: MARCADOR EN LISTA DE VARIABLES!!!!
-        try {
-            Nodo n = null;
-            ArrayList<String> tipoSemantico = null;
-
-            // Desapilamos cada elemento identificador del enumerado
-            // Siempre tiene que haber al menos 1!!
-            do {
-
-                n = _pilaNodos.pop(); // Identificador de Enumerado
-
-                if (!n.esMarcador()) {
-                    // Completamos el array de tipo semantico de cada identificador de enumerado
-                    tipoSemantico = n.getTipos();
-                    tipoSemantico.add(TipoSimbolo.ElementoEnumerado.name());
-                    _tablaSimbolos.completaTipo(n.getLexema(), tipoSemantico);
-                }
-            } while (!n.esMarcador());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
-     * 
+     * Comprobamos que el identificador que representa el tipo
+     * predefinido haya sido como marcado en la tabla de simbolos
+     * como tipo. Si no ha sido marcado como tipo significa que no
+     * se ha declarado en la parte del TYPE y por lo tanto es un
+     * tipo incorrecto.
      */
-    private void TipoSimple_Enumerado() {
-    	
-    	//REGLA: TipoSimple: TipoEnumerado
+    private void TipoPredefinidoPorUsuario() {
 
-        // TODO: MARCADOR EN LISTA DE VARIABLES!!!!
         try {
-
-            Nodo n = _pilaNodos.pop();
-
-            // Completamos el tipo semantico del nodo indicandole que es un enumerado
-            // para asignarselo a la regla superior
-            ArrayList<String> tipoSemantico = n.getTipos();
-            tipoSemantico.add(TipoSimbolo.Enumerado.name());
-            n.setTipo(tipoSemantico);
-
-            // Se lo pasamos a la regla superior
-            _pilaNodos.push(n);
+            
+            Nodo tipoPredefinido = _pilaNodos.pop(); // TIPO PREDEFINIDO
+            
+            if(_tablaSimbolos.esDeTipo(tipoPredefinido.getLexema(), TipoSimbolo.TIPO)){
+            
+                // Obtenemos el tipo semantico del identificador predefinido
+                tipoPredefinido.setTipo(_tablaSimbolos.getTipoSemanticoSimbolo(tipoPredefinido.getLexema()));
+                
+                // Lo apilamos
+                _pilaNodos.push(tipoPredefinido);
+            }
+            else{
+            
+                Nodo n = new Nodo();
+                n.addTipo(TipoSemantico.ERROR.name());
+                _pilaNodos.add(n);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El tipo <" + tipoPredefinido.getLexema() + "> no est√° definido",
+                        tipoPredefinido.getLinea(),
+                        tipoPredefinido.getColumna()));
+            }         
         } catch (Exception e) {
+
             e.printStackTrace();
         }
-
     }
 
     private void TipoPuntero() {
-    	//REGLA: TipoPuntero:POINTER TO EsquemaDeTipo
+        //REGLA: TipoPuntero:POINTER TO EsquemaDeTipo
         try {
 
             Nodo n = _pilaNodos.pop();
 
             // si no es error completamos diciendole que es de tipo puntero
             if (!n.esError()) {
-                n.addTipo("PUNTERO");
+                n.addTipo(TipoSemantico.PUNTERO.name());
             }
             // Si hay un error lo propagamos
             _pilaNodos.push(n);
@@ -244,64 +299,162 @@ public class SlkAction {
         }
     }
 
+    /**
+     * A√±ade una marca en la pila para poder desapilar la lista hasta este 
+     * elemento.
+     */
     private void marcaInicioLista() {
-    	//REGLA: ListaDeIdentificadores: _action_marcaInicioLista Identificador RestoListaIdentificadores
-        // a√±ade una marca en la pila para poder desapilar la lista hasta este
-        // elemento.
+
+        // Quitamos el primer identificador de la lista para meter la marca en 
+        // su lugar
+        Nodo primerIdenDeLaLista = _pilaNodos.pop();
+
+        // Creamos y apilamos el nodo de marca de inicio de la lista
         Nodo n = new Nodo();
-        n.creaMarcador();
+        n.creaInicioListaIdentificadores();
+        _pilaNodos.push(n);
+
+        // Apilamos el primer identificador de la lista, consiguiendo tener todos 
+        // los identificadores encima del nodo de marca de inicio de la lista de 
+        // identificadores 
+        _pilaNodos.push(primerIdenDeLaLista);
+    }
+
+    private void TRUE() {
+
+        _pilaNodos.pop(); // Operador 
+        Nodo n = new Nodo(); // NIL
+
+        ArrayList<String> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.NULO.name());
+        n.setTipo(tipoSemantico);
+
         _pilaNodos.push(n);
     }
-//
-//    private void inicioListaVariables() {
-//        try {
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-    
-    //AÒade un  nodo constante predefinida con valor TRUE y 
-    //tipo semantico booleano
-    public void TRUE() {
 
-		//REGLA: ConstantePredefinida: TRUE 
-		 
-    	_PilaNodos.pop(); // ]] ] 
-		Nodo n = new Nodo("ConstantePredefinida");
-		tipoSemantico = n.getTipos();
-        tipoSemantico.add(TipoSimbolo.Constante);
-        _tablaSimbolos.completaTipo(n.getLexema(), tipoSemantico);
-		n.setTipo(new ExpresionTipo(TiposBasicos.BOOLEAN));
-		n.setValor("TRUE");
-		_PilaNodos.push(n); // ]]] <- expression
-    }
-    //AÒade un  nodo constante predefinida con valor FALSE y 
-    //tipo semantico booleano    
-    public void FALSE(){
-		//REGLA: ConstantePredefinida: FALSE
-    	_PilaNodos.pop(); // ]] ] 
-		Nodo n = new Nodo("ConstantePredefinida");
-		tipoSemantico = n.getTipos();
-        tipoSemantico.add(TipoSimbolo.Constante);
-        _tablaSimbolos.completaTipo(n.getLexema(), tipoSemantico);
-		n.setTipo(new ExpresionTipo(TiposBasicos.BOOLEAN));
-		n.setValor("FALSE");
-		_PilaNodos.push(n); // ]]] <- expression
+    private void FALSE() {
+
+        _pilaNodos.pop(); // Operador 
+        Nodo n = new Nodo(); // FALSE
+
+        ArrayList<String> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.BOOLEANO.name());
+        n.setTipo(tipoSemantico);
+
+        _pilaNodos.push(n);
     }
 
-    //AÒade un  nodo constante predefinida con valor NIL  y 
-    //tipo semantico VOID?ø?ø?ø? <-- DUDA!!!!!!!!!	
-    public void NIL() {
-		//REGLA: ConstantePredefinida: NIL
-    	_PilaNodos.pop(); // ]] ] 
-		Nodo n = new Nodo("ConstantePredefinida");
-		tipoSemantico = n.getTipos();
-        tipoSemantico.add(TipoSimbolo.Constante);
-        _tablaSimbolos.completaTipo(n.getLexema(), tipoSemantico);
-		n.setTipo(new ExpresionTipo(TiposBasicos.VOID));
-		n.setValor("NIL");
-		_PilaNodos.push(n); // ]]] <- expression    	
+    private void NIL() {
+
+        _pilaNodos.pop(); // Operador 
+        Nodo n = new Nodo(); // NIL
+
+        ArrayList<String> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.NULO.name());
+        n.setTipo(tipoSemantico);
+
+        _pilaNodos.push(n);
     }
+
+    private void BITSET() {
+
+        Nodo n = _pilaNodos.pop();
+
+        ArrayList<String> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.BITSET.name());
+        n.setTipo(tipoSemantico);
+
+        _pilaNodos.push(n);
+    }
+
+    private void BOOLEAN() {
+
+        Nodo n = _pilaNodos.pop();
+
+        ArrayList<String> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.BOOLEANO.name());
+        n.setTipo(tipoSemantico);
+
+        _pilaNodos.push(n);
+    }
+
+    private void CARDINAL() {
+
+        Nodo n = _pilaNodos.pop();
+
+        ArrayList<String> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.CARDINAL.name());
+        n.setTipo(tipoSemantico);
+
+        _pilaNodos.push(n);
+    }
+
+    private void CHAR() {
+
+        Nodo n = _pilaNodos.pop();
+
+        ArrayList<String> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.CARACTER.name());
+        n.setTipo(tipoSemantico);
+
+        _pilaNodos.push(n);
+    }
+
+    private void INTEGER() {
+
+        Nodo n = _pilaNodos.pop();
+
+        ArrayList<String> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.ENTERO.name());
+        n.setTipo(tipoSemantico);
+
+        _pilaNodos.push(n);
+    }
+
+    private void LONGINT() {
+
+        Nodo n = _pilaNodos.pop();
+
+        ArrayList<String> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.ENTERO_LARGO.name());
+        n.setTipo(tipoSemantico);
+
+        _pilaNodos.push(n);
+    }
+
+    private void LONGREAL() {
+
+        Nodo n = _pilaNodos.pop();
+
+        ArrayList<String> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.REAL_LARGO.name());
+        n.setTipo(tipoSemantico);
+
+        _pilaNodos.push(n);
+    }
+
+    private void PROC() {
+
+        Nodo n = _pilaNodos.pop();
+
+        ArrayList<String> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.CARDINAL.name());
+        n.setTipo(tipoSemantico);
+
+        _pilaNodos.push(n);
+    }
+
+    private void REAL() {
+
+        Nodo n = _pilaNodos.pop();
+
+        ArrayList<String> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.REAL.name());
+        n.setTipo(tipoSemantico);
+
+        _pilaNodos.push(n);
+    }
+
     /**
      * Comprueba que los dos nodos sean de tipo booleano
      * @param nodo1 Primer nodo a comprobar

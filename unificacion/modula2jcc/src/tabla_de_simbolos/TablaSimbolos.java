@@ -1,22 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tabla_de_simbolos;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 import org.apache.log4j.Logger;
-import scanner.TipoToken;
 
 /**
  * Tabla de simbolos del compilador.
  *
- * @author Grupo 3
+ * @author Grupo 3, Grupo 11
  */
 public class TablaSimbolos {
 
@@ -27,36 +20,39 @@ public class TablaSimbolos {
     private Hashtable<String, ArrayList<Object>> _palabrasReservadas;
     private Hashtable<String, ArrayList<Object>> _funcionesPredefinidas;
     private Hashtable<String, ArrayList<Object>> _procedimientosPredefinidos;
+    
+    /**
+     * Puntero a la tabla en el ambito actual
+     */
     private static TablaSimbolos _tablaSimbolosActual;
+    
     /**
      * nombre de la tabla de simbolos
      */
     private String _nombre;
+    
+    /**
+     * Tabla asociada a cada simbolo de la tabla.
+     */
     private Hashtable<String, Simbolo> _tabla;
-    private ArrayList _exportadas;
+    
+    /**
+     * Lexemas de las variables exportadas en los modulos
+     */
+    private ArrayList<String> _exportadas;
+    
+    /**
+     * 
+     */
     private TablaSimbolos _tablaContinente;
+    
+    /**
+     * Puntero a la tabla que lo contiene.
+     */
     private TablaSimbolos _tablaPadre;
 
-    /**
-     * Devuelve la instancia unica de la clase TablaSimbolos.
-     * 
-     * @return La instancia unica de la clase TablaSimbolos.
-     */
-    public static TablaSimbolos getInstance() {
-
-        if (_tablaSimbolosActual == null) {
-            _tablaSimbolosActual = new TablaSimbolos();
-            return _tablaSimbolosActual;
-        } else {
-            return _tablaSimbolosActual;
-        }
-    }
-
-    /**
-     * Constructor por defecto de la clase TablaSimbolos.
-     */
-    public TablaSimbolos() {
-
+    private void iniciaPalabrasFuncionesProcedimientos(){
+    
         // Creamos la tabla de palabras reservadas asociadas a la tabla
         _palabrasReservadas = new Hashtable<String, ArrayList<Object>>();
 
@@ -66,9 +62,6 @@ public class TablaSimbolos {
         // Creamos la tabla de procedimientos predefinidos asociadss a la tabla
         _procedimientosPredefinidos = new Hashtable<String, ArrayList<Object>>();
 
-        _tabla = new Hashtable();
-        _exportadas = new ArrayList();
-
         // Añade las palabras reservadas a la tabla
         generaListaPalabrasReservadas();
 
@@ -76,9 +69,21 @@ public class TablaSimbolos {
         generaListaFuncionesPredefinidas();
 
         // Añade los procedimientos predifinidos a la tabla
-        generaListaProcedimientosPredefinidos();
+        generaListaProcedimientosPredefinidos();        
+    }
+    
+    /**
+     * Constructor por defecto de la clase TablaSimbolos.
+     */
+    public TablaSimbolos() {
 
-        _nombre = "nombreDefecto";
+        _nombre = "ModuloPrincipal";
+        _tablaSimbolosActual = this;
+        _tablaContinente = null;
+        _tablaPadre = null;
+        _tabla = new Hashtable();
+        _exportadas = new ArrayList();        
+        iniciaPalabrasFuncionesProcedimientos();
     }
 
     /**
@@ -88,29 +93,13 @@ public class TablaSimbolos {
      */
     public TablaSimbolos(String nombre) {
 
-        // Creamos la tabla de palabras reservadas asociadas a la tabla
-        _palabrasReservadas = new Hashtable<String, ArrayList<Object>>();
-
-        // Creamos la tabla de funciones predefinidas asociadas a la tabla
-        _funcionesPredefinidas = new Hashtable<String, ArrayList<Object>>();
-
-        // Creamos la tabla de procedimientos predefinidos asociadss a la tabla
-        _procedimientosPredefinidos = new Hashtable<String, ArrayList<Object>>();
-
         _nombre = nombre;
-        _tabla = new Hashtable();
+        _tablaSimbolosActual = this;
         _tablaContinente = null;
         _tablaPadre = null;
-        _exportadas = new ArrayList();
-
-        // Añade las palabras reservadas a la tabla
-        generaListaPalabrasReservadas();
-
-        // Añade las funciones predefinidas a la tabla
-        generaListaFuncionesPredefinidas();
-
-        // Añade los procedimientos predifinidos a la tabla
-        generaListaProcedimientosPredefinidos();
+        _tabla = new Hashtable();
+        _exportadas = new ArrayList();        
+        iniciaPalabrasFuncionesProcedimientos();
     }
 
     /**
@@ -122,45 +111,13 @@ public class TablaSimbolos {
      */
     public TablaSimbolos(String nombre, TablaSimbolos continente, TablaSimbolos modPadre) {
 
-        // Creamos la tabla de palabras reservadas asociadas a la tabla
-        _palabrasReservadas = new Hashtable<String, ArrayList<Object>>();
-
-        // Creamos la tabla de funciones predefinidas asociadas a la tabla
-        _funcionesPredefinidas = new Hashtable<String, ArrayList<Object>>();
-
-        // Creamos la tabla de procedimientos predefinidos asociadss a la tabla
-        _procedimientosPredefinidos = new Hashtable<String, ArrayList<Object>>();
-
         _nombre = nombre;
+        _tablaSimbolosActual = this;
         _tablaContinente = continente;
         _tablaPadre = modPadre;
-        _exportadas = new ArrayList();
         _tabla = new Hashtable();
-
-        // Añade las palabras reservadas a la tabla
-        generaListaPalabrasReservadas();
-
-        // Añade las funciones predefinidas a la tabla
-        generaListaFuncionesPredefinidas();
-
-        // Añade los procedimientos predifinidos a la tabla
-        generaListaProcedimientosPredefinidos();
-    }
-
-    /**
-     * Comprueba que el simbolo de la tabla sea de tipo "tipo". 
-     * @param lexema Lexema del simbolo de la tabla.
-     * @param Tipo Tipo del simbolo de la tabla.
-     * 
-     * @return Verdadero si el simbolo de la tabla asociado al lexema 
-     * es de tipo "tipo".
-     */
-    public boolean esDeTipo(String lexema, TipoSimbolo Tipo) {
-    
-        if(lexema != null)
-            return _tabla.get(lexema).getTipoSimbolo().equals(Tipo);   
-        else
-            return false;
+        _exportadas = new ArrayList();        
+        iniciaPalabrasFuncionesProcedimientos();
     }
 
     /**
@@ -253,13 +210,23 @@ public class TablaSimbolos {
     }
 
     /**
-     * Inicializa la tabla de simbolos.
+     * Comprueba que el simbolo de la tabla sea de tipo correspondiente.
+     * La primera comprobacion se hace porque si pones un identificador
+     * que no has establecido del tipo correspondiente lanzará un null
+     * pointer exception y la segunda condicion es la que comprueba en si
+     * si se ha establecido antes. 
+     * 
+     * @param lexema Lexema del simbolo de la tabla.
+     * @param Tipo Tipo del simbolo de la tabla.
+     * 
+     * @return Verdadero si el simbolo de la tabla asociado al lexema 
+     * es de tipo "tipo".
      */
-    public void inicializarTabla() {
-
-        _tablaSimbolosActual = null;
+    public boolean esDeTipo(String lexema, TipoSimbolo Tipo) {
+    
+        return _tabla.get(lexema).getTipoSimbolo() != null && _tabla.get(lexema).getTipoSimbolo().equals(Tipo);
     }
-
+    
     /**
      * Inserta una variable exportada en el array de variables exportadas.
      *
@@ -271,7 +238,8 @@ public class TablaSimbolos {
     }
 
     /**
-     * Devuelve el puntero a la tabla de simbolos inferior.
+     * Devuelve el puntero a la tabla de simbolos inferior identificada
+     * por el nombre.
      *
      * @param nombre Nombre de la tabla de simbolos inferior.
      *
@@ -281,30 +249,26 @@ public class TablaSimbolos {
 
         Simbolo arg = (Simbolo) _tabla.get(nombre);
 
-        if (arg != null) {
+        // Buscamos mas abajo
+        if (arg != null)
             return arg.getContenido();
-        } else {
-            return null;
-        }
+        else
+            return null; // No existe
     }
 
     /**
      * Cierra el ámbito abierto por un módulo.
      */
-    public void cerrarAmbitoModulo() {
-
-        if (_logger.isDebugEnabled()) {
-            _logger.debug("Cerrando módulo");
-        }
+    public void cerrarAmbitoModulo(String lexema) {
 
         // Intentamos cerrar la _tabla principal
-        if (_tablaPadre == null && _tablaContinente == null) {
-            _logger.debug("Cerrando la tabla principal.");
-        } else if (_tablaPadre != null) {
+        if (!esModuloPrincipal())
             _tablaSimbolosActual = _tablaPadre;
-        } else {
-            _logger.error("Intentando cerrar un módulo que no se puede cerrar.");
-        }
+        else
+            _tablaSimbolosActual = null;
+        
+        // Eliminamos ese identificador ya que es el del modulo
+        _tabla.remove(lexema);
     }
 
     /**
@@ -312,15 +276,8 @@ public class TablaSimbolos {
      */
     public void cerrarAmbitoProcedimiento() {
 
-        if (_logger.isDebugEnabled()) {
-            _logger.debug("Cerrando procedimiento");
-        }
-
-        if (_tablaContinente != null) {
-            _tablaSimbolosActual = _tablaContinente;
-        } else {
-            _logger.error("Intentando cerrar un procedimiento que no se puede cerrar.");
-        }
+        if (_tablaContinente != null)
+            _tablaSimbolosActual = _tablaContinente;     
     }
 
     /**
@@ -663,8 +620,6 @@ public class TablaSimbolos {
      */
     public String contenidoTabla(String excluir) {
 
-        Collection valores = _tabla.values();
-        Enumeration valor = _tabla.keys();
         Set keySet = _tabla.keySet();
         String salida = "---------Nombre tabla: " + this.getNombre() + "---------" + '\n';
 
@@ -731,10 +686,11 @@ public class TablaSimbolos {
      * @param lexema Lexema del identificador.
      */
     public void insertarIdentificador(String lexema) {
-        if (!_tabla.containsKey(lexema) && !_nombre.equals(lexema)) {
-            _logger.debug("Insertando identificador en la tabla del modulo " + _nombre + " y lexema " + lexema);
-            _tabla.put(lexema, new Simbolo(lexema));
-        }
+        
+        // Si no esta declarado y no se llama igual que el ambito donde
+        // se encuentra
+        if (!_tabla.containsKey(lexema) && !_nombre.equals(lexema))
+            _tabla.put(lexema, new Simbolo());
     }
 
     /**
@@ -757,62 +713,34 @@ public class TablaSimbolos {
     }
 
     /**
-     * Indica si el modulo ya estaContenida definido ya en la tabla de simbolos.
+     * Comprueba si el nuevo actual es Modulo Principal o no.
      * 
-     * @param lexema Nombre del modulo a comprobar.
-     * 
-     * @return Verdadero si el modulo estaContenida definido y falso en caso contrario.
-     */
-    public boolean estaDefinido(String lexema) {
-
-        return _tabla.contains(lexema) || _nombre.equals(lexema);
-    }
-
-    /**
-     * Comprueba si el modulo actual es Modulo Principal o no.
-     * 
-     * @return Verdadero si es modulo principal y falso en caso contrario.
+     * @return Verdadero si es nuevo principal y falso en caso contrario.
      */
     public boolean esModuloPrincipal() {
 
         return _tablaContinente == null && _tablaPadre == null;
     }
 
-//    /**
-//     * Inserta un nuevo modulo en la tabla.
-//     *
-//     * @param lexema Nombre del modulo a insertar.
-//     */
-//    public void insertarModulo(String lexema) {
-//
-//        TablaSimbolos modulo = new TablaSimbolos(lexema, null, this);
-//        _tabla.put(lexema, new Simbolo(modulo));
-//        _logger.debug("Insertando modulo");
-//        _tablaSimbolosActual = modulo;
-//    }
+    /**
+     * Crea un nuevo ambito en la tabla. Si es estamos en el 
+     * ambito prinicipal solo actualizara el nombre con el identificador
+     * despues de MODULE. Si no 
+     *
+     * @param lexema Nombre del nuevo a insertar.
+     */
+    public void crearAmbito(String lexema) {
 
-//    /**
-//     * Inserta un nuevo procedimiento en la tabla de simbolos.
-//     *
-//     * @param lexema Lexema del procedimiento a insertar.
-//     *
-//     * @return La tabla de simbolose con el nuevo procedimiento ya insertado.
-//     */
-//    public TablaSimbolos insertarProcedimiento(String lexema) {
-//
-//        if (_tabla.contains(lexema) || _nombre.equals(lexema)) {
-//
-//            _logger.error("Ya esta definido el procedimiento " + lexema);
-//            return this;
-//        } else {
-//
-//            TablaSimbolos modulo = new TablaSimbolos(lexema, this, null);
-//            _tabla.put(lexema, new Simbolo(modulo));
-//            _logger.debug("insertando procedimiento");
-//
-//            return modulo;
-//        }
-//    }
+        if(!esModuloPrincipal()){
+            
+            TablaSimbolos nuevo = new TablaSimbolos(lexema, null, this);
+            _tabla.put(lexema, new Simbolo(nuevo));
+            _tablaSimbolosActual = nuevo;
+        }
+        else
+            _nombre = lexema;
+    }
+
     /**
      * Comprueba si la tabla estaContenida contenida en otra.
      *
@@ -831,21 +759,11 @@ public class TablaSimbolos {
     }
 
     /**
-     * Añade una variable exportada.
-     *
-     * @param contenido Contenido de la variable exportada.
-     */
-    public void añadirVariableExportada(String contenido) {
-
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    /**
      * Añade una varibal exportada al arrays de variables exportadas de la tabla.
      *
      * @param lexema Lexema de la variable exportada.
      */
-    public void anadirVariableExportada(String lexema) {
+    public void addExportada(String lexema) {
 
         if (!_exportadas.contains(lexema)) {
             _exportadas.add(lexema);
@@ -853,9 +771,10 @@ public class TablaSimbolos {
     }
 
     /**
-     * Construye las variables exportadas de la tabla.
+     * Construye las variables exportadas de la tabla a partir de las
+     * exportadas de un ambito superior.
      */
-    public void obtenerExportadas() {
+    public void generarExportadas() {
 
         for (Iterator it = _exportadas.iterator(); it.hasNext();) {
             String clave = (String) it.next();
@@ -895,9 +814,9 @@ public class TablaSimbolos {
     }
 
     /**
-     * Devuelve el modulo padre de la tabla.
+     * Devuelve el nuevo padre de la tabla.
      *
-     * @return El modulo padre de la tabla.
+     * @return El nuevo padre de la tabla.
      */
     public TablaSimbolos getModPadre() {
 
@@ -935,7 +854,7 @@ public class TablaSimbolos {
     }
 
     /**
-     * Establece el modulo padre de la tabla a valor <b>modPadre</b>.
+     * Establece el nuevo padre de la tabla a valor <b>modPadre</b>.
      *
      * @param modPadre Nuevo valor a establecer.
      */
@@ -966,26 +885,26 @@ public class TablaSimbolos {
 
     public void completaConstante(String lexema, ArrayList<String> tipoSemantico, String valor) {
         Simbolo s = _tabla.get(lexema);
-        s.setTipoSimbolo(TipoSimbolo.Constante);
+        s.setTipoSimbolo(TipoSimbolo.CONSTANTE);
         s.setTipos(tipoSemantico);
         s.setValor(valor);
     }
 
     public void completaVariable(String lexema, ArrayList<String> tipoSemantico) {
         Simbolo s = _tabla.get(lexema);
-        s.setTipoSimbolo(TipoSimbolo.Variable);
+        s.setTipoSimbolo(TipoSimbolo.VARIABLE);
         s.setTipos(tipoSemantico);
     }
 
     public void completaTipo(String lexema, ArrayList<String> tipoSemantico) {
         Simbolo s = _tabla.get(lexema);
-        s.setTipoSimbolo(TipoSimbolo.Tipo);
+        s.setTipoSimbolo(TipoSimbolo.TIPO);
         s.setTipos(tipoSemantico);
     }
 
     public void completaFuncion(String lexema, String tipoSemanticoRetorno, int numParam, String[] tipoSemanticoParams) {
         Simbolo s = _tabla.get(lexema);
-        s.setTipoSimbolo(TipoSimbolo.Funcion);
+        s.setTipoSimbolo(TipoSimbolo.FUNCION);
     }
 
     private void insertarIdentificador(String lexema, Simbolo reg) {
@@ -993,5 +912,19 @@ public class TablaSimbolos {
             _logger.debug("Insertando identificador en la tabla del modulo " + _nombre + " y lexema " + lexema);
             _tabla.put(lexema, reg);
         }
+    }
+    
+    /**
+     * Devuelve el tipo semantico de un simbolo de la tabla identificado
+     * por el lexema.
+     * @param lexema Lexema del simbolo.
+     * 
+     * @return El tipo semantico de un simbolo de la tabla identificado
+     * por el lexema.
+     */
+    public ArrayList<String> getTipoSemanticoSimbolo(String lexema){
+    
+       Simbolo s = _tabla.get(lexema);
+       return s.getTipos();
     }
 }

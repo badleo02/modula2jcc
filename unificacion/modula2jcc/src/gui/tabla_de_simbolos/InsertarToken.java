@@ -114,7 +114,7 @@ public class InsertarToken extends javax.swing.JPanel {
             if (_tablaDeSimbolos == null) 
                 _tablaDeSimbolos = new TablaSimbolos(contenido, null, null);
 //            else
-//                _tablaDeSimbolos.insertarModulo(contenido);
+//                _tablaDeSimbolos.crearAmbito(contenido);
         }
         if (importadas == 0) {
             
@@ -152,7 +152,7 @@ public class InsertarToken extends javax.swing.JPanel {
                 contenido = JOptionPane.showInputDialog(null,
                         "Inserte el nombre de la variable a exportar", "Nombre de la variable", JOptionPane.QUESTION_MESSAGE);
                 if (contenido != null) {
-                    _tablaDeSimbolos.añadirVariableExportada(contenido);
+                    _tablaDeSimbolos.addExportada(contenido);
                     _tablaDeSimbolos.insertarIdentificador(contenido);
                 } 
                 else 

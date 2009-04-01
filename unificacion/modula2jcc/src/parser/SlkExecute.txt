@@ -6,17 +6,26 @@
 public void execute ( int  number )
 {
   switch ( number ) {
-    case 1:  AsociacionConstante();  break;
-    case 2:  DefinicionDeTipo();  break;
-    case 3:  TipoSimple_Enumerado();  break;
-    case 4:  TipoEnumerado();  break;
+    case 1:  FinDeModulo();  break;
+    case 2:  ComienzoDeModulo();  break;
+    case 3:  AsociacionConstante();  break;
+    case 4:  DefinicionDeTipo();  break;
     case 5:  TipoConjunto();  break;
     case 6:  TipoPuntero();  break;
     case 7:  DeclaracionVariables();  break;
-    case 8:  TRUE();  break;
-    case 9:  FALSE();  break;
-    case 10:  NIL();  break;
-    case 11:  marcaInicioLista();  break;
-    case 12:  EliminarMarcaLista();  break;
+    case 8:  TipoPredefinidoPorUsuario();  break;
+    case 9:  BITSET();  break;
+    case 10:  BOOLEAN();  break;
+    case 11:  CARDINAL();  break;
+    case 12:  CHAR();  break;
+    case 13:  INTEGER();  break;
+    case 14:  LONGINT();  break;
+    case 15:  LONGREAL();  break;
+    case 16:  PROC();  break;
+    case 17:  REAL();  break;
+    case 18:  TRUE();  break;
+    case 19:  FALSE();  break;
+    case 20:  NIL();  break;
+    case 21:  marcaInicioLista();  break;
   }
 }
