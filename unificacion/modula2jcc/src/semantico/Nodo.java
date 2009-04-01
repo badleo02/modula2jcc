@@ -19,7 +19,7 @@ public class Nodo {
     /**
      * Tipo semantico del nodo
      */
-    private ArrayList<String> _tipos = null; // Tipo semántico del objeto
+    private ArrayList<TipoSemantico> _tipos = null; // Tipo semántico del objeto
     /**
      * Lexema del nodo
      */
@@ -42,7 +42,6 @@ public class Nodo {
      * Constructora por defecto de la clase Nodo. Crea el array de tipos asociado.
      */
     public Nodo() {
-
         _inicioListaIdentificadores = false;
         _tipos = new ArrayList();
     }
@@ -58,7 +57,6 @@ public class Nodo {
      * @param tipoAdelantado Tipo adelantado que espera recibir.
      */
     public Nodo(String lexema, int linea, int columna) {
-
         _tipos = new ArrayList();
         setLexema(lexema);
         setLinea(linea);
@@ -67,7 +65,6 @@ public class Nodo {
     }
 
     public Nodo(TipoToken tipoToken, String lexema, int linea, int columna) {
-    
         _tipoToken = tipoToken;
         _tipos = new ArrayList();
         setLexema(lexema);
@@ -81,8 +78,7 @@ public class Nodo {
      * 
      * @return El tipo semantico del objeto.
      */
-    public ArrayList<String> getTipos() {
-
+    public ArrayList<TipoSemantico> getTipos() {
         return _tipos;
     }
 
@@ -91,9 +87,8 @@ public class Nodo {
      * 
      * @return El primer simbolo del array de tipos semanticos.
      */
-    public String getTipoBasico() {
-
-        return (String) _tipos.get(0);
+    public TipoSemantico getTipoBasico() {
+        return _tipos.get(0);
     }
 
     /**
@@ -102,7 +97,6 @@ public class Nodo {
      * @return El lexema del objeto.
      */
     public String getLexema() {
-
         return _lexema;
     }
 
@@ -112,7 +106,6 @@ public class Nodo {
      * @return La columna del token del nodo.
      */
     public int getColumna() {
-
         return _columna;
     }
 
@@ -122,7 +115,6 @@ public class Nodo {
      * @param _columna Nuevo lexema a establecer.
      */
     public void setColumna(int columna) {
-
         _columna = columna;
     }
 
@@ -132,7 +124,6 @@ public class Nodo {
      * @return La fila del token del nodo.
      */
     public int getLinea() {
-
         return _linea;
     }
 
@@ -142,7 +133,6 @@ public class Nodo {
      * @param fila Nuevo lexema a establecer.
      */
     public void setLinea(int fila) {
-
         _linea = fila;
     }
 
@@ -152,7 +142,6 @@ public class Nodo {
      * @param lexema Nuevo lexema a establecer.
      */
     public void setLexema(String valor) {
-
         _lexema = valor;
     }
 
@@ -162,7 +151,6 @@ public class Nodo {
      * @param tipos Tipo Nuevo lexema a establecer.
      */
     public void setTipo(ArrayList tipos) {
-
         _tipos = tipos;
     }
 
@@ -171,8 +159,7 @@ public class Nodo {
      * 
      * @param tipo Tipo a concatenar.
      */
-    public void addTipo(String tipo) {
-
+    public void addTipo(TipoSemantico tipo) {
         if (_tipos == null) {
             _tipos = new ArrayList();
         }

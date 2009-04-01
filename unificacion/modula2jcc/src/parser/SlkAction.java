@@ -134,7 +134,7 @@ public class SlkAction {
         } else {
 
             Nodo n = new Nodo();
-            n.addTipo(TipoSemantico.ERROR.name());
+            n.addTipo(TipoSemantico.ERROR);
             _pilaNodos.add(n);
             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Identificador de modulo <" + nodo.getLexema() + "> incorrecto, se esperaba <" + _tablaSimbolos.getNombre() + ">",
                     nodo.getLinea(),
@@ -153,7 +153,7 @@ public class SlkAction {
             // comprobación de errores:
             if (derecha.esError()) {
                 Nodo n = new Nodo();
-                n.addTipo(TipoSemantico.ERROR.name());
+                n.addTipo(TipoSemantico.ERROR);
                 _pilaNodos.add(n);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo <" + derecha.getLexema() + "> no es una definicion de tipo",
                         derecha.getLinea(),
@@ -195,13 +195,9 @@ public class SlkAction {
 
     private void DefinicionDeTipo() {
         //REGLA: DefinicionDeTipo: Identificador = EsquemaDeTipo
-
         try {
-
             Nodo derecha = _pilaNodos.pop(); // parte derecha, el valor
-
             _pilaNodos.pop(); // operador
-
             Nodo izquierda = _pilaNodos.pop(); // parte izq, en nm de la funcion
 
             // comprobación de errores:
@@ -211,12 +207,11 @@ public class SlkAction {
             if (derecha._tipoToken.equals(TipoToken.IDENTIFICADOR) && !_tablaSimbolos.esDeTipo(derecha.getLexema(), TipoSimbolo.TIPO)) {
                 // lo de la derecha no es un tipo
                 Nodo n = new Nodo();
-                n.addTipo(TipoSemantico.ERROR.name());
+                n.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo <" + derecha.getLexema() + "> no es una definicion de tipo",
                         derecha.getLinea(),
                         derecha.getColumna()));
             } else {
-
                 // hay que completar el simbolo idetificado por el lexema de la parte izq
                 // con tipo simbolo Tipo.
                 _tablaSimbolos.completaTipo(izquierda.getLexema(), derecha.getTipos());
@@ -235,7 +230,7 @@ public class SlkAction {
 
             // si no es error completamos diciendole que es de tipo conjunto
             if (!n.esError()) {
-                n.addTipo("CONJUNTO");
+                n.addTipo(TipoSemantico.CONJUNTO);
             }
             // Si hay un error lo propagamos
             _pilaNodos.push(n);
@@ -253,13 +248,10 @@ public class SlkAction {
      * tipo incorrecto.
      */
     private void TipoPredefinidoPorUsuario() {
-
         try {
-            
             Nodo tipoPredefinido = _pilaNodos.pop(); // TIPO PREDEFINIDO
             
             if(_tablaSimbolos.esDeTipo(tipoPredefinido.getLexema(), TipoSimbolo.TIPO)){
-            
                 // Obtenemos el tipo semantico del identificador predefinido
                 tipoPredefinido.setTipo(_tablaSimbolos.getTipoSemanticoSimbolo(tipoPredefinido.getLexema()));
                 
@@ -267,9 +259,8 @@ public class SlkAction {
                 _pilaNodos.push(tipoPredefinido);
             }
             else{
-            
                 Nodo n = new Nodo();
-                n.addTipo(TipoSemantico.ERROR.name());
+                n.addTipo(TipoSemantico.ERROR);
                 _pilaNodos.add(n);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El tipo <" + tipoPredefinido.getLexema() + "> no está definido",
                         tipoPredefinido.getLinea(),
@@ -284,12 +275,11 @@ public class SlkAction {
     private void TipoPuntero() {
         //REGLA: TipoPuntero:POINTER TO EsquemaDeTipo
         try {
-
             Nodo n = _pilaNodos.pop();
 
             // si no es error completamos diciendole que es de tipo puntero
             if (!n.esError()) {
-                n.addTipo(TipoSemantico.PUNTERO.name());
+                n.addTipo(TipoSemantico.PUNTERO);
             }
             // Si hay un error lo propagamos
             _pilaNodos.push(n);
@@ -304,7 +294,6 @@ public class SlkAction {
      * elemento.
      */
     private void marcaInicioLista() {
-
         // Quitamos el primer identificador de la lista para meter la marca en 
         // su lugar
         Nodo primerIdenDeLaLista = _pilaNodos.pop();
@@ -321,137 +310,104 @@ public class SlkAction {
     }
 
     private void TRUE() {
-
         _pilaNodos.pop(); // Operador 
         Nodo n = new Nodo(); // NIL
-
-        ArrayList<String> tipoSemantico = n.getTipos();
-        tipoSemantico.add(TipoSemantico.NULO.name());
+        ArrayList<TipoSemantico> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.NULO);
         n.setTipo(tipoSemantico);
-
         _pilaNodos.push(n);
     }
 
     private void FALSE() {
-
         _pilaNodos.pop(); // Operador 
         Nodo n = new Nodo(); // FALSE
-
-        ArrayList<String> tipoSemantico = n.getTipos();
-        tipoSemantico.add(TipoSemantico.BOOLEANO.name());
+        ArrayList<TipoSemantico> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.BOOLEANO);
         n.setTipo(tipoSemantico);
-
         _pilaNodos.push(n);
     }
 
     private void NIL() {
-
         _pilaNodos.pop(); // Operador 
         Nodo n = new Nodo(); // NIL
-
-        ArrayList<String> tipoSemantico = n.getTipos();
-        tipoSemantico.add(TipoSemantico.NULO.name());
+        ArrayList<TipoSemantico> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.NULO);
         n.setTipo(tipoSemantico);
-
         _pilaNodos.push(n);
     }
 
     private void BITSET() {
-
         Nodo n = _pilaNodos.pop();
-
-        ArrayList<String> tipoSemantico = n.getTipos();
-        tipoSemantico.add(TipoSemantico.BITSET.name());
+        ArrayList<TipoSemantico> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.BITSET);
         n.setTipo(tipoSemantico);
-
         _pilaNodos.push(n);
     }
 
     private void BOOLEAN() {
-
         Nodo n = _pilaNodos.pop();
-
-        ArrayList<String> tipoSemantico = n.getTipos();
-        tipoSemantico.add(TipoSemantico.BOOLEANO.name());
+        ArrayList<TipoSemantico> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.BOOLEANO);
         n.setTipo(tipoSemantico);
-
         _pilaNodos.push(n);
     }
 
     private void CARDINAL() {
-
         Nodo n = _pilaNodos.pop();
-
-        ArrayList<String> tipoSemantico = n.getTipos();
-        tipoSemantico.add(TipoSemantico.CARDINAL.name());
+        ArrayList<TipoSemantico> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.CARDINAL);
         n.setTipo(tipoSemantico);
-
         _pilaNodos.push(n);
     }
 
     private void CHAR() {
-
         Nodo n = _pilaNodos.pop();
-
-        ArrayList<String> tipoSemantico = n.getTipos();
-        tipoSemantico.add(TipoSemantico.CARACTER.name());
+        ArrayList<TipoSemantico> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.CARACTER);
         n.setTipo(tipoSemantico);
 
         _pilaNodos.push(n);
     }
 
     private void INTEGER() {
-
         Nodo n = _pilaNodos.pop();
-
-        ArrayList<String> tipoSemantico = n.getTipos();
-        tipoSemantico.add(TipoSemantico.ENTERO.name());
+        ArrayList<TipoSemantico> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.ENTERO);
         n.setTipo(tipoSemantico);
 
         _pilaNodos.push(n);
     }
 
     private void LONGINT() {
-
         Nodo n = _pilaNodos.pop();
-
-        ArrayList<String> tipoSemantico = n.getTipos();
-        tipoSemantico.add(TipoSemantico.ENTERO_LARGO.name());
+        ArrayList<TipoSemantico> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.ENTERO_LARGO);
         n.setTipo(tipoSemantico);
-
         _pilaNodos.push(n);
     }
 
     private void LONGREAL() {
-
         Nodo n = _pilaNodos.pop();
-
-        ArrayList<String> tipoSemantico = n.getTipos();
-        tipoSemantico.add(TipoSemantico.REAL_LARGO.name());
+        ArrayList<TipoSemantico> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.REAL_LARGO);
         n.setTipo(tipoSemantico);
 
         _pilaNodos.push(n);
     }
 
     private void PROC() {
-
         Nodo n = _pilaNodos.pop();
-
-        ArrayList<String> tipoSemantico = n.getTipos();
-        tipoSemantico.add(TipoSemantico.CARDINAL.name());
+        ArrayList<TipoSemantico> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.CARDINAL);
         n.setTipo(tipoSemantico);
-
         _pilaNodos.push(n);
     }
 
     private void REAL() {
-
         Nodo n = _pilaNodos.pop();
-
-        ArrayList<String> tipoSemantico = n.getTipos();
-        tipoSemantico.add(TipoSemantico.REAL.name());
+        ArrayList<TipoSemantico> tipoSemantico = n.getTipos();
+        tipoSemantico.add(TipoSemantico.REAL);
         n.setTipo(tipoSemantico);
-
         _pilaNodos.push(n);
     }
 
@@ -463,7 +419,7 @@ public class SlkAction {
      */
     private boolean sonBooleanos(Nodo nodo1, Nodo nodo2) {
         if (nodo1 != null && nodo2 != null) {
-            if (nodo1.getTipoBasico().equals("BOOLEAN") && nodo1.getTipoBasico().equals("BOOLEAN")) {
+            if (nodo1.getTipoBasico() == TipoSemantico.ENTERO && nodo1.getTipoBasico() == TipoSemantico.ENTERO) {
                 return true;
             }
             return false;
@@ -477,7 +433,7 @@ public class SlkAction {
      * @return true si el nodo es de tipo booleano, false en otro caso
      */
     private boolean esBooleano(Nodo nodo) {
-        if (nodo != null && nodo.getTipoBasico().equals("BOOLEAN")) {
+        if (nodo != null && nodo.getTipoBasico() == TipoSemantico.ENTERO) {
             return true;
         }
         return false;
@@ -491,7 +447,7 @@ public class SlkAction {
      */
     private boolean sonEnteros(Nodo nodo1, Nodo nodo2) {
         if (nodo1 != null && nodo2 != null) {
-            if (nodo1.getTipoBasico().equals("INTEGER") && nodo1.getTipoBasico().equals("INTEGER")) {
+            if (nodo1.getTipoBasico() == TipoSemantico.ENTERO && nodo1.getTipoBasico() == TipoSemantico.ENTERO) {
                 return true;
             }
             return false;
@@ -505,7 +461,7 @@ public class SlkAction {
      * @return true si el nodo es de tipo entero, false en otro caso
      */
     private boolean esEntero(Nodo nodo) {
-        if (nodo != null && nodo.getTipoBasico().equals("INTEGER")) {
+        if (nodo != null && nodo.getTipoBasico() == TipoSemantico.ENTERO) {
             return true;
         }
         return false;
@@ -519,7 +475,7 @@ public class SlkAction {
      */
     private boolean sonReales(Nodo nodo1, Nodo nodo2) {
         if (nodo1 != null && nodo2 != null) {
-            if (nodo1.getTipoBasico().equals("REAL") && nodo1.getTipoBasico().equals("REAL")) {
+            if (nodo1.getTipoBasico() == TipoSemantico.REAL && nodo1.getTipoBasico() == TipoSemantico.REAL) {
                 return true;
             }
             return false;
@@ -533,7 +489,7 @@ public class SlkAction {
      * @return true si el nodo es de tipo real, false en otro caso
      */
     private boolean esReal(Nodo nodo) {
-        if (nodo != null && nodo.getTipoBasico().equals("REAL")) {
+        if (nodo != null && nodo.getTipoBasico() == TipoSemantico.REAL) {
             return true;
         }
         return false;
@@ -547,7 +503,7 @@ public class SlkAction {
      */
     private boolean sonChars(Nodo nodo1, Nodo nodo2) {
         if (nodo1 != null && nodo2 != null) {
-            if (nodo1.getTipoBasico().equals("CHAR") && nodo1.getTipoBasico().equals("CHAR")) {
+            if ((nodo1.getTipoBasico() == TipoSemantico.CARACTER) && nodo1.getTipoBasico() == TipoSemantico.CARACTER) {
                 return true;
             }
             return false;

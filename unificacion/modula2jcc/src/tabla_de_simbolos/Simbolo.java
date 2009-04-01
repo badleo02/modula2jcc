@@ -2,6 +2,7 @@ package tabla_de_simbolos;
 
 import java.util.ArrayList;
 import org.apache.log4j.Logger;
+import semantico.TipoSemantico;
 
 /**
  *
@@ -13,7 +14,7 @@ public class Simbolo {
     /**
      * Array de tipos semanticos del simbolo para simbolos compuestos.
      */
-    private ArrayList<String> _tipoSemantico;
+    private ArrayList<TipoSemantico> _tipoSemantico;
 
     /**
      * valor en el caso de las constantes
@@ -30,7 +31,7 @@ public class Simbolo {
     /**
      * tipo semantico de los argumentos funciones y procedimientos
      */
-    private ArrayList<ArrayList<String>> _tiposArgumentos;
+    private ArrayList<ArrayList<TipoSemantico>> _tiposArgumentos;
     /**
      * modo de paso de los argumentos en funciones y procedimientos
      */
@@ -49,7 +50,6 @@ public class Simbolo {
      * Constructor por defecto de la clase Argumentos.
      */
     public Simbolo() {
-
         _contenido = null;
     }
 
@@ -179,8 +179,7 @@ public class Simbolo {
      * 
      * @return El tipo semantico del simbolo.
      */
-    public ArrayList<String> getTipos() {
-        
+    public ArrayList<TipoSemantico> getTipos() {
         return _tipoSemantico;
     }
 
@@ -189,7 +188,7 @@ public class Simbolo {
      * 
      * @param tipos Nuevo valor a establecer.
      */
-    public void setTipos(ArrayList<String> tipos) {
+    public void setTipos(ArrayList<TipoSemantico> tipos) {
         
         _tipoSemantico = tipos;
     }

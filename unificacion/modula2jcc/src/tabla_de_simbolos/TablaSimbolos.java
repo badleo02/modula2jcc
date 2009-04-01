@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 import org.apache.log4j.Logger;
+import semantico.TipoSemantico;
 
 /**
  * Tabla de simbolos del compilador.
@@ -883,20 +884,20 @@ public class TablaSimbolos {
         _nombre = nombre;
     }
 
-    public void completaConstante(String lexema, ArrayList<String> tipoSemantico, String valor) {
+    public void completaConstante(String lexema, ArrayList<TipoSemantico> tipoSemantico, String valor) {
         Simbolo s = _tabla.get(lexema);
         s.setTipoSimbolo(TipoSimbolo.CONSTANTE);
         s.setTipos(tipoSemantico);
         s.setValor(valor);
     }
 
-    public void completaVariable(String lexema, ArrayList<String> tipoSemantico) {
+    public void completaVariable(String lexema, ArrayList<TipoSemantico> tipoSemantico) {
         Simbolo s = _tabla.get(lexema);
         s.setTipoSimbolo(TipoSimbolo.VARIABLE);
         s.setTipos(tipoSemantico);
     }
 
-    public void completaTipo(String lexema, ArrayList<String> tipoSemantico) {
+    public void completaTipo(String lexema, ArrayList<TipoSemantico> tipoSemantico) {
         Simbolo s = _tabla.get(lexema);
         s.setTipoSimbolo(TipoSimbolo.TIPO);
         s.setTipos(tipoSemantico);
@@ -922,7 +923,7 @@ public class TablaSimbolos {
      * @return El tipo semantico de un simbolo de la tabla identificado
      * por el lexema.
      */
-    public ArrayList<String> getTipoSemanticoSimbolo(String lexema){
+    public ArrayList<TipoSemantico> getTipoSemanticoSimbolo(String lexema){
     
        Simbolo s = _tabla.get(lexema);
        return s.getTipos();
