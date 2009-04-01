@@ -247,7 +247,6 @@ public class SlkAction {
         //REGLA TipoConjunto: SET OF TipoSimple
 
         try {
-
             Nodo n = _pilaNodos.pop();
 
             // si no es error completamos diciendole que es de tipo conjunto
