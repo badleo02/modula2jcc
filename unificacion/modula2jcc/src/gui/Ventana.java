@@ -16,6 +16,8 @@ import java.io.StringReader;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import observadores.ObservadorLexico;
 import semantico.PilaNodos;
 
@@ -52,6 +54,26 @@ public class Ventana extends JFrame  implements ObservadorLexico{
         
         // Asignamos la pila para el analisis semantico de la aplicacion
         _pilaNodos = pilaNodos;
+
+        // Configuramos el panel de texto para que muestre fila y columna
+
+        _txtEditor.addCaretListener(
+                new CaretListener(){
+            public void caretUpdate(CaretEvent caretEvent){
+                int numLinea, numColumna = 1;
+                try{
+                    int cursor = _txtEditor.getCaretPosition();
+                    numLinea = _txtEditor.getLineOfOffset(cursor);
+                    numColumna = cursor - _txtEditor.getLineStartOffset(numLinea);
+                    numLinea++;
+                    actualizarLineaColumna(numLinea, numColumna);
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
 
     /** This method is called from within the constructor to
@@ -80,6 +102,7 @@ public class Ventana extends JFrame  implements ObservadorLexico{
         _scrollPanelSemantico = new javax.swing.JScrollPane();
         _txtSemantico = new javax.swing.JTextArea();
         _lblTiempoEjecucion = new javax.swing.JLabel();
+        _LineaColumna = new javax.swing.JLabel();
         _barraMenu = new javax.swing.JMenuBar();
         _menuArchivo = new javax.swing.JMenu();
         _opcionNuevo = new javax.swing.JMenuItem();
@@ -105,6 +128,11 @@ public class Ventana extends JFrame  implements ObservadorLexico{
         _txtEditor.setFont(new java.awt.Font("Courier New", 0, 14)); // NOI18N
         _txtEditor.setLineWrap(true);
         _txtEditor.setRows(5);
+        _txtEditor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _txtEditorMouseClicked(evt);
+            }
+        });
         _scrollPanelEditor.setViewportView(_txtEditor);
 
         javax.swing.GroupLayout _panelEditorLayout = new javax.swing.GroupLayout(_panelEditor);
@@ -125,11 +153,11 @@ public class Ventana extends JFrame  implements ObservadorLexico{
             _panelEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(_panelEditorLayout.createSequentialGroup()
                 .addComponent(_lblFichero)
-                .addContainerGap(307, Short.MAX_VALUE))
+                .addContainerGap(306, Short.MAX_VALUE))
             .addGroup(_panelEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(_panelEditorLayout.createSequentialGroup()
                     .addGap(21, 21, 21)
-                    .addComponent(_scrollPanelEditor, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+                    .addComponent(_scrollPanelEditor, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -157,11 +185,11 @@ public class Ventana extends JFrame  implements ObservadorLexico{
         );
         _panelLexicoLayout.setVerticalGroup(
             _panelLexicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 76, Short.MAX_VALUE)
+            .addGap(0, 77, Short.MAX_VALUE)
             .addGroup(_panelLexicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(_panelLexicoLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(_scrollPanelLexico, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+                    .addComponent(_scrollPanelLexico, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -187,11 +215,11 @@ public class Ventana extends JFrame  implements ObservadorLexico{
         );
         _panelSintacticoLayout.setVerticalGroup(
             _panelSintacticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 76, Short.MAX_VALUE)
+            .addGap(0, 77, Short.MAX_VALUE)
             .addGroup(_panelSintacticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(_panelSintacticoLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(_scrollPanelSintactico, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+                    .addComponent(_scrollPanelSintactico, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -217,17 +245,20 @@ public class Ventana extends JFrame  implements ObservadorLexico{
         );
         _panelSemanticoLayout.setVerticalGroup(
             _panelSemanticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 76, Short.MAX_VALUE)
+            .addGap(0, 77, Short.MAX_VALUE)
             .addGroup(_panelSemanticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(_panelSemanticoLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(_scrollPanelSemantico, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+                    .addComponent(_scrollPanelSemantico, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
         _tabbedPanelOutput.addTab("Analisis Semantico", _panelSemantico);
 
         _lblTiempoEjecucion.setText("Tiempo de Ejecucion:");
+
+        _LineaColumna.setText("Línea: 0 Columna: 0");
+        _LineaColumna.setName(""); // NOI18N
 
         javax.swing.GroupLayout _panelOutputLayout = new javax.swing.GroupLayout(_panelOutput);
         _panelOutput.setLayout(_panelOutputLayout);
@@ -236,16 +267,23 @@ public class Ventana extends JFrame  implements ObservadorLexico{
             .addGroup(_panelOutputLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(_panelOutputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(_tabbedPanelOutput, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
-                    .addComponent(_lblTiempoEjecucion))
-                .addContainerGap())
+                    .addGroup(_panelOutputLayout.createSequentialGroup()
+                        .addComponent(_tabbedPanelOutput, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(_panelOutputLayout.createSequentialGroup()
+                        .addComponent(_lblTiempoEjecucion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
+                        .addComponent(_LineaColumna)
+                        .addGap(93, 93, 93))))
         );
         _panelOutputLayout.setVerticalGroup(
             _panelOutputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, _panelOutputLayout.createSequentialGroup()
-                .addComponent(_lblTiempoEjecucion)
+                .addGroup(_panelOutputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(_lblTiempoEjecucion)
+                    .addComponent(_LineaColumna))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(_tabbedPanelOutput, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                .addComponent(_tabbedPanelOutput, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -373,6 +411,9 @@ private void _opcionCompilarActionPerformed(java.awt.event.ActionEvent evt) {//G
 
     
     if (!_txtEditor.getText().equals("")) {
+
+        // Vaciamos la tabla de símbolos tras cada compilación
+        _tablaSimbolos = new TablaSimbolos();
         
         // Borramos el resultado de la ejecucion anterior de las pestañas
         borrarResultadoEjecucionAnterior();
@@ -433,6 +474,11 @@ private void _opcionCompilarActionPerformed(java.awt.event.ActionEvent evt) {//G
                 JOptionPane.ERROR_MESSAGE);
     }
 }//GEN-LAST:event__opcionCompilarActionPerformed
+
+private void _txtEditorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event__txtEditorMouseClicked
+    // TODO add your handling code here:
+
+}//GEN-LAST:event__txtEditorMouseClicked
 
     /**
      * Guardar el código del editor de texto en el fichero especificado.
@@ -566,7 +612,13 @@ private void _opcionCompilarActionPerformed(java.awt.event.ActionEvent evt) {//G
         
         _lblTiempoEjecucion.setText("Tiempo de Ejecucion: " + (System.currentTimeMillis() - inicio) + " milisegundos");
     }
-
+    
+    /**
+     *
+     */
+    private void actualizarLineaColumna(int linea, int columna) {
+        _LineaColumna.setText("Linea: " + linea + " Columna: " + columna);
+    }
     /**
      * Vacia los campos de texto donde se muestra el resultado de la compilacion.
      */
@@ -581,6 +633,7 @@ private void _opcionCompilarActionPerformed(java.awt.event.ActionEvent evt) {//G
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel _LineaColumna;
     private javax.swing.JMenuBar _barraMenu;
     private javax.swing.JLabel _lblFichero;
     private javax.swing.JLabel _lblTiempoEjecucion;
