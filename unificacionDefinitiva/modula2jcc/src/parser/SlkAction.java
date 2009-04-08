@@ -56,87 +56,34 @@ public class SlkAction {
      */
     public void execute(int number) {
         switch (number) {
-            case 1:
-                FinDeModulo();
-                break;
-            case 2:
-                ComienzoDeModulo();
-                break;
-            case 3:
-                DefinicionDeTipo();
-                break;
-            case 4:
-                AsociacionConstante();
-                break;
-            case 5:
-                TipoConjunto();
-                break;
-            case 6:
-                TipoPuntero();
-                break;
-            case 7:
-                ponerMarcaListaVariables();
-                break;
-            case 8:
-                quitarMarcaListaVariables();
-                break;
-            case 9:
-                DeclaracionVariables();
-                break;
-            case 10:
-                InicioDeclaraciónProcedure();
-                break;
-            case 11:
-                Cadena();
-                break;
-            case 12:
-                Caracter();
-                break;
-            case 13:
-                NumeroEntero();
-                break;
-            case 14:
-                NumeroReal();
-                break;
-            case 15:
-                TipoPredefinidoPorUsuario();
-                break;
-            case 16:
-                BITSET();
-                break;
-            case 17:
-                BOOLEAN();
-                break;
-            case 18:
-                CARDINAL();
-                break;
-            case 19:
-                CHAR();
-                break;
-            case 20:
-                INTEGER();
-                break;
-            case 21:
-                LONGINT();
-                break;
-            case 22:
-                LONGREAL();
-                break;
-            case 23:
-                PROC();
-                break;
-            case 24:
-                REAL();
-                break;
-            case 25:
-                TRUE();
-                break;
-            case 26:
-                FALSE();
-                break;
-            case 27:
-                NIL();
-                break;
+    case 1:  FinDeModulo();  break;
+    case 2:  ComienzoDeModulo();  break;
+    case 3:  DefinicionDeTipo();  break;
+    case 4:  AsociacionConstante();  break;
+    case 5:  TipoConjunto();  break;
+    case 6:  TipoPuntero();  break;
+    case 7:  ponerMarcaListaVariables();  break;
+    case 8:  quitarMarcaListaVariables();  break;
+    case 9:  DeclaracionVariables();  break;
+    case 10:  InicioDeclaraciónProcedure();  break;
+    case 11:  CabeceraDeProcedure();  break;
+    case 12:  Cadena();  break;
+    case 13:  Caracter();  break;
+    case 14:  NumeroEntero();  break;
+    case 15:  NumeroReal();  break;
+    case 16:  TipoPredefinidoPorUsuario();  break;
+    case 17:  BITSET();  break;
+    case 18:  BOOLEAN();  break;
+    case 19:  CARDINAL();  break;
+    case 20:  CHAR();  break;
+    case 21:  INTEGER();  break;
+    case 22:  LONGINT();  break;
+    case 23:  LONGREAL();  break;
+    case 24:  PROC();  break;
+    case 25:  REAL();  break;
+    case 26:  TRUE();  break;
+    case 27:  FALSE();  break;
+    case 28:  NIL();  break;
         }
     }
 
@@ -185,6 +132,7 @@ public class SlkAction {
             _tablaGlobalNombrada = true;
         }
     }
+
 
     /**
      * Comprueba que el nombre de la tabla y el del identificador despues del
@@ -338,10 +286,34 @@ public class SlkAction {
     // CabeceraSubprograma:
     // PROCEDURE Identificador _action_InicioDeclaraciónProcedure [ ParametrosFormales ]
       
-        _pilaNodos.peek(); 
+        // si en la cabecera de la pila hay un error, continua ahi
+        if (_pilaNodos.peek().getTipoBasico() == TipoSemantico.ERROR)
+            return;
+      
+        // sacamos el identificador para el procedimiento
+        Nodo nodo = _pilaNodos.peek(); 
+        
+        // comprobamos unicidad
+        if (_tablaActual.estaModuloDeclarado(nodo.getLexema()))
+             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador \"" + nodo.getLexema() + "\" esta siendo redefinido.",
+                        nodo.getLinea(),
+                        nodo.getColumna()));
+        
+        // abrimos ambito.       
+        _tablaActual.abrirAmbito(_tablaActual);
+        _tablaActual.setNombre(nodo.getLexema());
+    }
+
+    
+    /** 
+     * 
+     * completa la definicion de un modulo
+     */
+    private void CabeceraDeProcedure() {
         
     }
 
+    
     /**
      * Se completa el tipo semantico del id con tipo CONJUNTO.
      * Si viene un marca lo propagamos volviendolo a apilar.
