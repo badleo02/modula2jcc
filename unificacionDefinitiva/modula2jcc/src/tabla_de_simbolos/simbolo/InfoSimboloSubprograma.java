@@ -17,25 +17,25 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
     /**
      * Tipo semantico de los argumentos funciones y procedimientos
      */
-    private ArrayList<ArrayList<String>> _tipoArgumentos;
+    private ArrayList<ArrayList<TipoSimbolo>> _tipoArgumentos;
     /**
      * Modo de paso de los argumentos en funciones y procedimientos.
      * POR REFERENCIA, POR VALOR.
      */
-    private ArrayList<String> _pasoArgumentos;
+    private ArrayList<TipoPasoParametro> _pasoArgumentos;
     /**
-     * Tipo de retorno del Subprograma. Si es VOID es PROCEDURE.
+     * Tipo de retorno del Subprograma. a los PROCEDURE se les pone VOID.
      */
-    private ArrayList<String> _valorRetorno;
+    private ArrayList<TipoSimbolo> _valorRetorno;
     
     /**
      * Constructor por defecto de la clase InfoSimboloSubprograma.
      */
     public InfoSimboloSubprograma() {
 
-        _tipoArgumentos = new ArrayList<ArrayList<String>>(); 
-        _pasoArgumentos = new ArrayList<String>();
-        _valorRetorno = new ArrayList<String>();
+        _tipoArgumentos = new ArrayList<ArrayList<TipoSimbolo>>(); 
+        _pasoArgumentos = new ArrayList<TipoPasoParametro>();
+        _valorRetorno = new ArrayList<TipoSimbolo>();
         _numArgs = 0;
     }
         
@@ -44,7 +44,7 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
      * 
      * @return El tipo de valor de retorno del subprograma.
      */
-    public ArrayList<String> getValorRetorno() {
+    public ArrayList<TipoSimbolo> getValorRetorno() {
 
         return _valorRetorno;
     }
@@ -54,7 +54,7 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
      * 
      * @param valorRetorno Nuevo valor a establecer.
      */
-    public void setValorRetorno(ArrayList<String> valorRetorno) {
+    public void setValorRetorno(ArrayList<TipoSimbolo> valorRetorno) {
        
         _valorRetorno = valorRetorno;
     }
@@ -100,11 +100,11 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
     }
 
     /**
-     * Establece el paso de argumentos a valor <b>pasoArgumentos</b>.
+     * EsttoStringablece el paso de argumentos a valor <b>pasoArgumentos</b>.
      * 
      * @param pasoArgumentos Nuevo valor a establecer.
      */
-    public void setPasoArgumentos(ArrayList pasoArgumentos) {
+    public void setPasoArgumentos(ArrayList<TipoPasoParametro> pasoArgumentos) {
 
         _pasoArgumentos = pasoArgumentos;
     }
@@ -114,7 +114,7 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
      * 
      * @param tipoArgumentos Nuevo valor a establecer.
      */
-    public void setTipoArgumentos(ArrayList tipoArgumentos) {
+    public void setTipoArgumentos(ArrayList<ArrayList<TipoSimbolo>> tipoArgumentos) {
 
         _tipoArgumentos = tipoArgumentos;
     }

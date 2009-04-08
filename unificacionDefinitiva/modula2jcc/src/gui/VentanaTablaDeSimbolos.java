@@ -1,13 +1,9 @@
 package gui;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
-import javax.swing.JOptionPane;
 import tabla_de_simbolos.TablaDeSimbolos;
-import tabla_de_simbolos.TablaSimbolos;
 import tabla_de_simbolos.simbolo.InfoSimbolo;
-import tabla_de_simbolos.simbolo.InfoSimboloSubprograma;
 
 /**
  * Ventana de utilidad para ver la tabla de simbolos.

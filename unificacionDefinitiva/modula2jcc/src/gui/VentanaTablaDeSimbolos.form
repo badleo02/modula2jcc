@@ -98,7 +98,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="_scrollPaneAmbitoActual" alignment="0" pref="589" max="32767" attributes="0"/>
+                      <Component id="_scrollPaneAmbitoActual" alignment="0" pref="593" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="_btnAmbitoSuperior" min="-2" max="-2" attributes="0"/>
                           <EmptySpace pref="371" max="32767" attributes="0"/>
@@ -185,11 +185,11 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="609" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="617" max="32767" attributes="0"/>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="_scrollPaneAmbitoInferior" pref="589" max="32767" attributes="0"/>
+                      <Component id="_scrollPaneAmbitoInferior" pref="593" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -197,11 +197,11 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="179" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="177" max="32767" attributes="0"/>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="_scrollPaneAmbitoInferior" pref="157" max="32767" attributes="0"/>
+                      <Component id="_scrollPaneAmbitoInferior" pref="153" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>

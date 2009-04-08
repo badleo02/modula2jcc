@@ -15,7 +15,7 @@ public class Nodo {
     /**
      * Tipo semantico del nodo
      */
-    private ArrayList<String> _tipoSemantico = null;     
+    private ArrayList<TipoSemantico> _tipoSemantico = null;     
     /**
      * Nodo marcador para las listas de identificadores
      */
@@ -31,7 +31,7 @@ public class Nodo {
     public Nodo() {
 
         _marcaListaIdentificadores = false;
-        _tipoSemantico = new ArrayList<String>();
+        _tipoSemantico = new ArrayList<TipoSemantico>();
     }
 
     /**
@@ -50,7 +50,7 @@ public class Nodo {
         _columna = columna;
         _tipoToken = tipoToken;
    
-        _tipoSemantico = new ArrayList<String>();
+        _tipoSemantico = new ArrayList<TipoSemantico>();
         _marcaListaIdentificadores = false;
     }
   
@@ -59,7 +59,7 @@ public class Nodo {
      * 
      * @return El tipo semantico del objeto.
      */
-    public ArrayList<String> getTipoSemantico() {
+    public ArrayList<TipoSemantico> getTipoSemantico() {
 
         return _tipoSemantico;
     }
@@ -79,9 +79,9 @@ public class Nodo {
      * 
      * @return El primer simbolo del array de tipos semanticos.
      */
-    public String getTipoBasico() {
+    public TipoSemantico getTipoBasico() {
 
-        return (String) _tipoSemantico.get(0);
+        return (TipoSemantico) _tipoSemantico.get(0);
     }
 
     /**
@@ -89,7 +89,7 @@ public class Nodo {
      * 
      * @param tipo Tipo a concatenar.
      */
-    public void addTipo(String tipo) {
+    public void addTipo(TipoSemantico tipo) {
 
         if (_tipoSemantico == null) {
             _tipoSemantico = new ArrayList();

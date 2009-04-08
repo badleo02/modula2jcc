@@ -84,54 +84,57 @@ public class SlkAction {
                 DeclaracionVariables();
                 break;
             case 10:
-                Cadena();
+                InicioDeclaraciónProcedure();
                 break;
             case 11:
-                Caracter();
+                Cadena();
                 break;
             case 12:
-                NumeroEntero();
+                Caracter();
                 break;
             case 13:
-                NumeroReal();
+                NumeroEntero();
                 break;
             case 14:
-                TipoPredefinidoPorUsuario();
+                NumeroReal();
                 break;
             case 15:
-                BITSET();
+                TipoPredefinidoPorUsuario();
                 break;
             case 16:
-                BOOLEAN();
+                BITSET();
                 break;
             case 17:
-                CARDINAL();
+                BOOLEAN();
                 break;
             case 18:
-                CHAR();
+                CARDINAL();
                 break;
             case 19:
-                INTEGER();
+                CHAR();
                 break;
             case 20:
-                LONGINT();
+                INTEGER();
                 break;
             case 21:
-                LONGREAL();
+                LONGINT();
                 break;
             case 22:
-                PROC();
+                LONGREAL();
                 break;
             case 23:
-                REAL();
+                PROC();
                 break;
             case 24:
-                TRUE();
+                REAL();
                 break;
             case 25:
-                FALSE();
+                TRUE();
                 break;
             case 26:
+                FALSE();
+                break;
+            case 27:
                 NIL();
                 break;
         }
@@ -157,8 +160,8 @@ public class SlkAction {
                 
                 // Completamos el tipo semantico del identificador
                 InfoSimboloModulo info = (InfoSimboloModulo)_tablaActual.busca(id.getLexema());
-                ArrayList<String> tipo = new ArrayList<String>();
-                tipo.add(TipoSemantico.MODULO.name());
+                ArrayList<TipoSemantico> tipo = new ArrayList<TipoSemantico>();
+                tipo.add(TipoSemantico.MODULO);
                 info.setTipoSemantico(tipo);
                 
                 // Se abre un ambito
@@ -329,6 +332,17 @@ public class SlkAction {
     }
 
     /**
+     * se comineza con un procedimineto
+     */
+    private void InicioDeclaraciónProcedure() {
+    // CabeceraSubprograma:
+    // PROCEDURE Identificador _action_InicioDeclaraciónProcedure [ ParametrosFormales ]
+      
+        _pilaNodos.peek(); 
+        
+    }
+
+    /**
      * Se completa el tipo semantico del id con tipo CONJUNTO.
      * Si viene un marca lo propagamos volviendolo a apilar.
      */
@@ -341,7 +355,7 @@ public class SlkAction {
 
             // si no es marca completamos diciendole que es de valor conjunto
             if (!tipo.esError()) {
-                tipo.addTipo(TipoSemantico.CONJUNTO.name());
+                tipo.addTipo(TipoSemantico.CONJUNTO);
             }
             // Si hay un marca lo propagamos
             _pilaNodos.push(tipo);
@@ -403,7 +417,7 @@ public class SlkAction {
 
             // si no es marca completamos diciendole que es de valor puntero
             if (!tipo.esError()) {
-                tipo.addTipo(TipoSemantico.PUNTERO.name());
+                tipo.addTipo(TipoSemantico.PUNTERO);
             }
             // Si hay un marca lo propagamos
             _pilaNodos.push(tipo);
@@ -416,82 +430,82 @@ public class SlkAction {
 
     private void TRUE() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.BOOLEANO.name());
+        _pilaNodos.peek().addTipo(TipoSemantico.BOOLEANO);
     }
 
     private void FALSE() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.BOOLEANO.name());
+        _pilaNodos.peek().addTipo(TipoSemantico.BOOLEANO);
     }
 
     private void NIL() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.PUNTERO.name());
+        _pilaNodos.peek().addTipo(TipoSemantico.PUNTERO);
     }
 
     private void BITSET() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.BITSET.name());
+        _pilaNodos.peek().addTipo(TipoSemantico.BITSET);
     }
 
     private void BOOLEAN() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.BOOLEANO.name());
+        _pilaNodos.peek().addTipo(TipoSemantico.BOOLEANO);
     }
 
     private void CARDINAL() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.CARDINAL.name());
+        _pilaNodos.peek().addTipo(TipoSemantico.CARDINAL);
     }
 
     private void CHAR() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.CARACTER.name());
+        _pilaNodos.peek().addTipo(TipoSemantico.CARACTER);
     }
 
     private void INTEGER() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.ENTERO.name());
+        _pilaNodos.peek().addTipo(TipoSemantico.ENTERO);
     }
 
     private void LONGINT() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.ENTERO_LARGO.name());
+        _pilaNodos.peek().addTipo(TipoSemantico.ENTERO_LARGO);
     }
 
     private void LONGREAL() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.REAL_LARGO.name());
+        _pilaNodos.peek().addTipo(TipoSemantico.REAL_LARGO);
     }
 
     private void PROC() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.PROCEDIMIENTO.name());
+        _pilaNodos.peek().addTipo(TipoSemantico.PROCEDIMIENTO);
     }
 
     private void REAL() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.REAL.name());
+        _pilaNodos.peek().addTipo(TipoSemantico.REAL);
     }
 
     private void Cadena() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.CADENA.name());
+        _pilaNodos.peek().addTipo(TipoSemantico.CADENA);
     }
 
     private void Caracter() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.CARACTER.name());
+        _pilaNodos.peek().addTipo(TipoSemantico.CARACTER);
     }
 
     private void NumeroEntero() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.ENTERO.name());
+        _pilaNodos.peek().addTipo(TipoSemantico.ENTERO);
     }
 
     private void NumeroReal() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.REAL.name());
+        _pilaNodos.peek().addTipo(TipoSemantico.REAL);
     }
 
     /**
@@ -504,7 +518,7 @@ public class SlkAction {
                                 tipoPredefinido.getColumna(),
                                 tipoPredefinido.getTipoToken());
         
-        error.addTipo(TipoSemantico.ERROR.name());
+        error.addTipo(TipoSemantico.ERROR);
         _pilaNodos.add(error);
     }
 
@@ -531,4 +545,6 @@ public class SlkAction {
 
         _pilaNodos.pop();
     }
+    
+    
 }
