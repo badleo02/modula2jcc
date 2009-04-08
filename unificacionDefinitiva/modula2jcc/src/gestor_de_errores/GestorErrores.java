@@ -216,7 +216,40 @@ public class GestorErrores {
         else
             return salida = salida + "\n --> No hay Errores Semanticos.";
     }
+
+    /**
+     * Esta función devuelve el número de errores léxicos registrados
+     * durante el analisis.
+     *
+     * @return Un entero con el número de errores léxicos
+     */
     
+    public int dameNumeroErroresLexicos() {
+        return _listaErroresLexicos.size();
+    }
+    
+    /**
+     * Esta función devuelve el número de errores sintácticos registrados
+     * durante el analisis.
+     * 
+     * @return Un entero con el número de errores sintacticos
+     */
+    
+    public int dameNumeroErroresSintacticos() {
+        return _listaErroresSintacticos.size();
+    }
+    
+    /**
+     * Esta función devuelve el número de errores semanticos registrados
+     * durante el analisis.
+     * 
+     * @return Un entero con el número de errores semanticos
+     */
+    
+    public int dameNumeroErroresSemanticos() {
+        return _listaErroresSemanticos.size();
+    }
+
     /**
      * Establece el flag de mostrar errores lexicos a valor <b>valor</b>.
      * 

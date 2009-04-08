@@ -92,6 +92,11 @@ public class Ventana extends JFrame {
         _opcionAbrir = new javax.swing.JMenuItem();
         _opcionGuardar = new javax.swing.JMenuItem();
         _opcionGuardarComo = new javax.swing.JMenuItem();
+        _menuEdicion = new javax.swing.JMenu();
+        _opcionCopiar = new javax.swing.JMenuItem();
+        _opcionCortar = new javax.swing.JMenuItem();
+        _separador2 = new javax.swing.JSeparator();
+        _opcionPegar = new javax.swing.JMenuItem();
         _menuCompilador = new javax.swing.JMenu();
         _opcionCompilar = new javax.swing.JMenuItem();
         _menuUtilidades = new javax.swing.JMenu();
@@ -116,17 +121,12 @@ public class Ventana extends JFrame {
                 _txtEditorCaretUpdate(evt);
             }
         });
-        _txtEditor.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                _txtEditorKeyPressed(evt);
-            }
-        });
         _scrollPanelEditor.setViewportView(_txtEditor);
 
         _lblFichero.setFont(new java.awt.Font("Tahoma", 1, 11));
         _lblFichero.setText("nuevo.mod");
 
-        _lblCaretPosition.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        _lblCaretPosition.setFont(new java.awt.Font("Tahoma", 1, 11));
         _lblCaretPosition.setText("Linea: Columna");
 
         javax.swing.GroupLayout _panelEditorLayout = new javax.swing.GroupLayout(_panelEditor);
@@ -146,7 +146,7 @@ public class Ventana extends JFrame {
             .addGroup(_panelEditorLayout.createSequentialGroup()
                 .addComponent(_lblFichero)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(_scrollPanelEditor, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                .addComponent(_scrollPanelEditor, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(_lblCaretPosition))
         );
@@ -175,11 +175,11 @@ public class Ventana extends JFrame {
         );
         _panelLexicoLayout.setVerticalGroup(
             _panelLexicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 76, Short.MAX_VALUE)
+            .addGap(0, 73, Short.MAX_VALUE)
             .addGroup(_panelLexicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(_panelLexicoLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(_scrollPanelLexico, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+                    .addComponent(_scrollPanelLexico, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -205,11 +205,11 @@ public class Ventana extends JFrame {
         );
         _panelSintacticoLayout.setVerticalGroup(
             _panelSintacticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 76, Short.MAX_VALUE)
+            .addGap(0, 73, Short.MAX_VALUE)
             .addGroup(_panelSintacticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(_panelSintacticoLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(_scrollPanelSintactico, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+                    .addComponent(_scrollPanelSintactico, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -235,11 +235,11 @@ public class Ventana extends JFrame {
         );
         _panelSemanticoLayout.setVerticalGroup(
             _panelSemanticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 76, Short.MAX_VALUE)
+            .addGap(0, 73, Short.MAX_VALUE)
             .addGroup(_panelSemanticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(_panelSemanticoLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(_scrollPanelSemantico, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+                    .addComponent(_scrollPanelSemantico, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -306,6 +306,35 @@ public class Ventana extends JFrame {
         _menuArchivo.add(_opcionGuardarComo);
 
         _barraMenu.add(_menuArchivo);
+
+        _menuEdicion.setText("Edicion");
+
+        _opcionCopiar.setText("Copiar");
+        _opcionCopiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                _opcionCopiarActionPerformed(evt);
+            }
+        });
+        _menuEdicion.add(_opcionCopiar);
+
+        _opcionCortar.setText("Cortar");
+        _opcionCortar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                _opcionCortarActionPerformed(evt);
+            }
+        });
+        _menuEdicion.add(_opcionCortar);
+        _menuEdicion.add(_separador2);
+
+        _opcionPegar.setText("Pegar");
+        _opcionPegar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                _opcionPegarActionPerformed(evt);
+            }
+        });
+        _menuEdicion.add(_opcionPegar);
+
+        _barraMenu.add(_menuEdicion);
 
         _menuCompilador.setText("Compilador");
 
@@ -499,9 +528,17 @@ private void _txtEditorCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRS
 
 }//GEN-LAST:event__txtEditorCaretUpdate
 
-private void _txtEditorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event__txtEditorKeyPressed
+private void _opcionCopiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__opcionCopiarActionPerformed
+    _txtEditor.copy();
+}//GEN-LAST:event__opcionCopiarActionPerformed
 
-}//GEN-LAST:event__txtEditorKeyPressed
+private void _opcionCortarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__opcionCortarActionPerformed
+    _txtEditor.cut();
+}//GEN-LAST:event__opcionCortarActionPerformed
+
+private void _opcionPegarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__opcionPegarActionPerformed
+    _txtEditor.paste();
+}//GEN-LAST:event__opcionPegarActionPerformed
 
     /**
      * Guardar el código del editor de texto en el fichero especificado.
@@ -604,14 +641,37 @@ private void _txtEditorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
      */
     private void mostrarResultadoAnalisis() {
 
+        int numErrLexicos, numErrSintacticos, numErrSemanticos = 0;
+
         // Muestra el resultado del analisis lexico
+        numErrLexicos = _gestorDeErrores.dameNumeroErroresLexicos();
+        if (numErrLexicos > 0)
+            if (numErrLexicos == 1)
+                _tabbedPanelOutput.setTitleAt(0, "Analisis Lexico (" + numErrLexicos + " error)");
+            else
+                _tabbedPanelOutput.setTitleAt(0, "Analisis Lexico (" + numErrLexicos + " errores)");
+
         String resultadoLexico = _gestorDeErrores.dameErroresLexicos() + "\n";
         _txtLexico.setText(resultadoLexico);
 
         // Muestra el resultado del analisis sintactico
+        numErrSintacticos = _gestorDeErrores.dameNumeroErroresSintacticos();
+        if (numErrSintacticos > 0)
+            if (numErrSintacticos == 1)
+                _tabbedPanelOutput.setTitleAt(1, "Analisis Sintactico (" + numErrSintacticos + " error)");
+            else
+                _tabbedPanelOutput.setTitleAt(1, "Analisis Sintactico (" + numErrSintacticos + " errores)");
+
         _txtSintactico.setText(_gestorDeErrores.dameErroresSintacticos());
 
         // Muestra el resultado del analisis semantico
+        numErrSemanticos = _gestorDeErrores.dameNumeroErroresSemanticos();
+        if (numErrSemanticos > 0)
+            if (numErrSemanticos == 1)
+                _tabbedPanelOutput.setTitleAt(2, "Analisis Semantico (" + numErrSemanticos + " error)");
+            else
+                _tabbedPanelOutput.setTitleAt(2, "Analisis Semantico (" + numErrSemanticos + " errores)");
+
         _txtSemantico.setText(_gestorDeErrores.dameErroresSemanticos());
     }
 
@@ -633,6 +693,11 @@ private void _txtEditorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
         _txtLexico.setText("");
         _txtSintactico.setText("");
         _txtSemantico.setText("");
+
+        _tabbedPanelOutput.setTitleAt(0, "Analisis Lexico");
+        _tabbedPanelOutput.setTitleAt(1, "Analisis Sintactico");
+        _tabbedPanelOutput.setTitleAt(2, "Analisis Semantico");
+
         
         _ventanaTokens.reiniciar();
         _tablaDeSimbolos = new TablaDeSimbolos();   
@@ -646,12 +711,16 @@ private void _txtEditorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private javax.swing.JLabel _lblTiempoEjecucion;
     private javax.swing.JMenu _menuArchivo;
     private javax.swing.JMenu _menuCompilador;
+    private javax.swing.JMenu _menuEdicion;
     private javax.swing.JMenu _menuUtilidades;
     private javax.swing.JMenuItem _opcionAbrir;
     private javax.swing.JMenuItem _opcionCompilar;
+    private javax.swing.JMenuItem _opcionCopiar;
+    private javax.swing.JMenuItem _opcionCortar;
     private javax.swing.JMenuItem _opcionGuardar;
     private javax.swing.JMenuItem _opcionGuardarComo;
     private javax.swing.JMenuItem _opcionNuevo;
+    private javax.swing.JMenuItem _opcionPegar;
     private javax.swing.JMenuItem _opcionVerListaTokens;
     private javax.swing.JMenuItem _opcionVerTablaDeSimbolos;
     private javax.swing.JPanel _panelEditor;
@@ -664,6 +733,7 @@ private void _txtEditorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private javax.swing.JScrollPane _scrollPanelSemantico;
     private javax.swing.JScrollPane _scrollPanelSintactico;
     private javax.swing.JSeparator _separador1;
+    private javax.swing.JSeparator _separador2;
     private javax.swing.JSplitPane _splitPanel;
     private javax.swing.JTabbedPane _tabbedPanelOutput;
     private javax.swing.JTextArea _txtEditor;

@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/main/Main.java</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/observadores/ObservadorLexico.java</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/parser/Gramatica.txt</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/parser/SlkAction.java</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/parser/SlkConstants.java</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/parser/SlkError.java</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/parser/SlkExecute.txt</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/parser/SlkLog.java</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/parser/SlkParser.java</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/parser/SlkString.java</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/parser/SlkToken.java</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/parser/generaParse.bat</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/scanner/TipoOperadorSumador.java</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/scanner/Token.java</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/semantico/Nodo.java</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/semantico/PilaNodos.java</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/semantico/TipoSemantico.java</file>
+        <file>file:/H:/Documentos/PLg/Práctica/Modula2/unificacion/modula2jcc/src/tabla_de_simbolos/TablaSimbolos.java</file>
+    </open-files>
 </project-private>
