@@ -23,6 +23,7 @@ public class TablaDeSimbolos {
      * Nombre asociado de la tabla de símbolos.
      */
     private String _nombre;
+    
     /**
      * Estructura de datos que contiene al menos un registro por cada identificador
      * del programa fuente con campos para cada uno de los atributos del mismo.
@@ -32,19 +33,23 @@ public class TablaDeSimbolos {
     /**
      * Tabla adjunta solo para palabras reservadas.
      */
+    
     private Hashtable<String, Integer> _palabrasReservadas;
     /**
      * Tabla adjunta solo para funciones predefinidas.
      */
+    
     private Hashtable<String, Integer> _funcionesPredefinidas;
     /**
      * Tabla adjunta solo para procedimientos predefinidos.
      */
+    
     private Hashtable<String, Integer> _procedimientosPredefinidos;
     /**
      * Puntero a la TS que almacena la información de un ámbito superior, en 
      * el que se contiene el que gestiona la TS actual. 
      */
+    
     private TablaDeSimbolos _continente;
     /**
      * Lista de punteros a las TS que almacena la información de un ámbito inferior,
@@ -214,24 +219,24 @@ public class TablaDeSimbolos {
 
     /**
      * Crea una nueva tabla (ámbito) en la tabla de símbolos.
-     * 
-     * @param tabla Puntero a la tabla activa en ese momento.
-     * 
+
      * @return Un puntero a la nueva tabla activa que acaba de crearse para
      * un amito mas interno.
      */
-    public TablaDeSimbolos abrirAmbito(TablaDeSimbolos tabla) {
-
+    public TablaDeSimbolos abrirAmbito() {
+               
         // Se crea la nueva tabla de simbolos
         TablaDeSimbolos nuevaTabla = new TablaDeSimbolos();
 
         // Añadimos un nuevo puntero de contenido a la tabla activa hacia la nueva tabla
-        ArrayList<TablaDeSimbolos> punteros = tabla.getContenido();
-        punteros.add(nuevaTabla);
-        tabla.setContenido(punteros);
+        this._contenido.add(nuevaTabla);
+        
+//        ArrayList<TablaDeSimbolos> punteros = tabla.getContenido();
+//        punteros.add(nuevaTabla);
+//        tabla.setContenido(punteros);
 
         // Su tabla continente es la que estaba activa en ese momento
-        nuevaTabla.setContinente(tabla);
+        nuevaTabla.setContinente(this);
 
         // Se devuelve el puntero de la nueva tabla para que sea ahora la tabla activa
         return nuevaTabla;
@@ -240,19 +245,11 @@ public class TablaDeSimbolos {
     /**
      * Cierra una tabla (ámbito) en la tabla de símbolos.
      * 
-     * @param tabla Puntero a la tabla que deja de ser activa, pasando a serlo
-     * la tabla del ámbito que contiene la primera que la representa.
-     * 
      * @return Un puntero a la nueva tabla activa, que es la del continente 
      * que se desactiva.
      */
-    public TablaDeSimbolos cerrarAmbito(TablaDeSimbolos tabla) {
-
-        if(tabla.getContinente() != null)
-            return tabla.getContinente();
-        else
-            // Devolvemos un puntero a la tabla GLOBAL
-            return this;
+    public TablaDeSimbolos cerrarAmbito() {
+            return this._continente;
     }
 
     /**

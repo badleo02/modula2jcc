@@ -123,10 +123,10 @@ DeclaracionSubprograma:
 CabeceraSubprograma ; Bloque Identificador ; 
 
 CabeceraSubprograma:
-PROCEDURE Identificador _action_InicioDeclaraciónProcedure [ ParametrosFormales ] _action_CabeceraDeProcedure
+PROCEDURE Identificador _action_InicioDeclaraciónProcedure [ ParametrosFormales ] 
 
 ParametrosFormales:
-( [ GrupoDeParametros { ; GrupoDeParametros } ] ) [ : IdentificadorDeTipo ]
+( [ GrupoDeParametros { ; GrupoDeParametros } ] ) [ : IdentificadorDeTipo ] _action_CabeceraDeProcedure
 
 GrupoDeParametros:
 [ VAR ] ListaDeIdentificadores : TipoFormal

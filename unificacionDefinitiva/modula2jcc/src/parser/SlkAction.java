@@ -112,7 +112,7 @@ public class SlkAction {
                 info.setTipoSemantico(tipo);
                 
                 // Se abre un ambito
-                _tablaActual = _tablaActual.abrirAmbito(_tablaActual);
+                _tablaActual = _tablaActual.abrirAmbito();
                 _tablaActual.setNombre(id.getLexema());
 
             } else {
@@ -143,7 +143,7 @@ public class SlkAction {
         Nodo id = _pilaNodos.pop();
 
         if (_tablaActual.getNombre().equals(id.getLexema())) {
-            _tablaActual = _tablaActual.cerrarAmbito(_tablaActual);
+            _tablaActual = _tablaActual.cerrarAmbito();
         } else {
 
             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Simbolo \"" + id.getLexema() + "\" incorrecto, se esperaba \"" + _tablaActual.getNombre() + "\"",
@@ -286,10 +286,6 @@ public class SlkAction {
     // CabeceraSubprograma:
     // PROCEDURE Identificador _action_InicioDeclaraciónProcedure [ ParametrosFormales ]
       
-        // si en la cabecera de la pila hay un error, continua ahi
-        if (_pilaNodos.peek().getTipoBasico() == TipoSemantico.ERROR)
-            return;
-      
         // sacamos el identificador para el procedimiento
         Nodo nodo = _pilaNodos.peek(); 
         
@@ -300,7 +296,7 @@ public class SlkAction {
                         nodo.getColumna()));
         
         // abrimos ambito.       
-        _tablaActual.abrirAmbito(_tablaActual);
+        _tablaActual = _tablaActual.abrirAmbito();
         _tablaActual.setNombre(nodo.getLexema());
     }
 
@@ -310,9 +306,60 @@ public class SlkAction {
      * completa la definicion de un modulo
      */
     private void CabeceraDeProcedure() {
+        // extrae elementos hasta que extraigo el nombre de la tabla de simbolos.
+        // en ese momento puedo parar y definir el procedure.
+         Nodo nodo = _pilaNodos.pop(); 
+         String lexema = _tablaActual.getNombre();
+         
+         // inicializo los parametros
+         int numArgs = 0;
+         ArrayList<TipoPasoParametro> pasoArgumentos = new ArrayList<TipoPasoParametro>();
+         ArrayList<ArrayList<TipoSemantico>> tipoArgumentos = new ArrayList<ArrayList<TipoSemantico>>();
+         
+         InfoSimboloGeneral param;
+         
+         // mientras que no sea el nombre de la tabla
+         while (!nodo.getLexema().equals(lexema)){
+             
+             // si no es error:
+             if (nodo.getTipoBasico() == TipoSemantico.ERROR){
+                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("error aqui " +
+                                                    nodo.getLexema(),
+                                                    nodo.getLinea(),
+                                                    nodo.getColumna()));
+                 return;
+             }
+             
+             //un tipo, y un identificador.
+             // primero el tipo:
+            tipoArgumentos.add(nodo.getTipoSemantico());
+              // TODO: necesito las palabras reservadas en la pila para saber cuando es paso por referencia
+            pasoArgumentos.add(TipoPasoParametro.VALOR);
+                       
+            // despues el identificador:
+            nodo = _pilaNodos.pop();
+  
+            _tablaActual.inserta(nodo.getLexema(), TipoSimbolo.GENERAL);
+            param = (InfoSimboloGeneral) _tablaActual.busca(nodo.getLexema());
+            
+             numArgs ++;
+             nodo = _pilaNodos.pop(); 
+         }
+         
+         // cierra el ambito
+         TablaDeSimbolos ambitoProc = _tablaActual;         
+         _tablaActual = _tablaActual.cerrarAmbito();
+         
+         // completa el simbolo
+         _tablaActual.inserta(lexema, TipoSimbolo.SUBPROGRAMA);
+         InfoSimboloSubprograma info = (InfoSimboloSubprograma) _tablaActual.busca(lexema);
+         
+         info.setNumArgs(numArgs);
         
+         info.setPasoArgumentos(pasoArgumentos);
+         info.setTipoArgumentos(tipoArgumentos);
+         info.setAmbito (ambitoProc);
     }
-
     
     /**
      * Se completa el tipo semantico del id con tipo CONJUNTO.

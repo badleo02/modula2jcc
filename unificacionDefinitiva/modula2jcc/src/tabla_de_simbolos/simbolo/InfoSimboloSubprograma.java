@@ -1,6 +1,8 @@
 package tabla_de_simbolos.simbolo;
 
 import java.util.ArrayList;
+import semantico.TipoSemantico;
+import tabla_de_simbolos.TablaDeSimbolos;
 
 /**
  * Clase que gestiona la informacion relativa a un identificador de la TS que
@@ -17,7 +19,7 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
     /**
      * Tipo semantico de los argumentos funciones y procedimientos
      */
-    private ArrayList<ArrayList<TipoSimbolo>> _tipoArgumentos;
+    private ArrayList<ArrayList<TipoSemantico>> _tipoArgumentos;
     /**
      * Modo de paso de los argumentos en funciones y procedimientos.
      * POR REFERENCIA, POR VALOR.
@@ -29,11 +31,16 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
     private ArrayList<TipoSimbolo> _valorRetorno;
     
     /**
+     * la tabla de simbolos de este ambito
+     */
+    private TablaDeSimbolos _tablaSimbolos;
+    
+    /**
      * Constructor por defecto de la clase InfoSimboloSubprograma.
      */
     public InfoSimboloSubprograma() {
 
-        _tipoArgumentos = new ArrayList<ArrayList<TipoSimbolo>>(); 
+        _tipoArgumentos = new ArrayList<ArrayList<TipoSemantico>>(); 
         _pasoArgumentos = new ArrayList<TipoPasoParametro>();
         _valorRetorno = new ArrayList<TipoSimbolo>();
         _numArgs = 0;
@@ -47,6 +54,16 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
     public ArrayList<TipoSimbolo> getValorRetorno() {
 
         return _valorRetorno;
+    }
+
+    /**
+     * establece el ambito de este procedimiento, el arrea donde estan
+     * definidos sus simbolos.
+     * 
+     * @param tabla la tabla donde estan sus simbolos
+     */
+    public void setAmbito(TablaDeSimbolos tabla) {
+        _tablaSimbolos =tabla;
     }
 
     /**
@@ -114,7 +131,7 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
      * 
      * @param tipoArgumentos Nuevo valor a establecer.
      */
-    public void setTipoArgumentos(ArrayList<ArrayList<TipoSimbolo>> tipoArgumentos) {
+    public void setTipoArgumentos(ArrayList<ArrayList<TipoSemantico>> tipoArgumentos) {
 
         _tipoArgumentos = tipoArgumentos;
     }
@@ -124,9 +141,25 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
      */
     @Override
     public String toString() {
+      
+        String cadena = "Procedimiento (";
+                
+        for (ArrayList<TipoSemantico> arrayList : _tipoArgumentos) {
+            cadena += "[";
+            for (TipoSemantico tipoSemantico : arrayList) {
+                cadena += tipoSemantico.name();
+                cadena += ",";
+            }
+            cadena += "]";
+        }
+       
+        cadena += ")";
+        if (!_valorRetorno.isEmpty()){
+             cadena += ":"; 
+              cadena += super.toString();
+        }
         
-        String cadena = super.toString();
-        
+        cadena += "\n";
         return cadena;
     }
 }

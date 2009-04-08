@@ -19,7 +19,7 @@ public abstract class InfoSimbolo {
      * Array de tipos semanticos del simbolo para simbolos compuestos.
      */
     private ArrayList<TipoSemantico> _tipoSemantico;
-    
+
     /**
      * Devuelve el tipo semantico asociado a un identificador en la TS.
      * 
