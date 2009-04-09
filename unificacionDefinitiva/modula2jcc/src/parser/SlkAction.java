@@ -56,34 +56,105 @@ public class SlkAction {
      */
     public void execute(int number) {
         switch (number) {
-    case 1:  FinDeModulo();  break;
-    case 2:  ComienzoDeModulo();  break;
-    case 3:  DefinicionDeTipo();  break;
-    case 4:  AsociacionConstante();  break;
-    case 5:  TipoConjunto();  break;
-    case 6:  TipoPuntero();  break;
-    case 7:  ponerMarcaListaVariables();  break;
-    case 8:  quitarMarcaListaVariables();  break;
-    case 9:  DeclaracionVariables();  break;
-    case 10:  InicioDeclaraciónProcedure();  break;
-    case 11:  CabeceraDeProcedure();  break;
-    case 12:  Cadena();  break;
-    case 13:  Caracter();  break;
-    case 14:  NumeroEntero();  break;
-    case 15:  NumeroReal();  break;
-    case 16:  TipoPredefinidoPorUsuario();  break;
-    case 17:  BITSET();  break;
-    case 18:  BOOLEAN();  break;
-    case 19:  CARDINAL();  break;
-    case 20:  CHAR();  break;
-    case 21:  INTEGER();  break;
-    case 22:  LONGINT();  break;
-    case 23:  LONGREAL();  break;
-    case 24:  PROC();  break;
-    case 25:  REAL();  break;
-    case 26:  TRUE();  break;
-    case 27:  FALSE();  break;
-    case 28:  NIL();  break;
+            case 1:
+                FinDeModulo();
+                break;
+            case 2:
+                ComienzoDeModulo();
+                break;
+            case 3:
+                DefinicionDeTipo();
+                break;
+            case 4:
+                AsociacionConstante();
+                break;
+            case 5:
+                TipoConjunto();
+                break;
+            case 6:
+                TipoPuntero();
+                break;
+            case 7:
+                ponerMarcaListaVariables();
+                break;
+            case 8:
+                quitarMarcaListaVariables();
+                break;
+            case 9:
+                DeclaracionVariables();
+                break;
+            case 10:
+                InicioDeclaraciónProcedure();
+                break;
+            case 11:
+                CabeceraDeProcedure();
+                break;
+            case 12:
+                ExpresionIF();
+                break;
+            case 13:
+                SentenciaIF();
+                break;
+            case 14:
+                ExpresionELSIF();
+                break;
+            case 15:
+                RestoSentenciaELSIF();
+                break;
+            case 16:
+                RestoSentenciaELSE();
+                break;
+            case 17:
+                Cadena();
+                break;
+            case 18:
+                Caracter();
+                break;
+            case 19:
+                NumeroEntero();
+                break;
+            case 20:
+                NumeroReal();
+                break;
+            case 21:
+                TipoPredefinidoPorUsuario();
+                break;
+            case 22:
+                BITSET();
+                break;
+            case 23:
+                BOOLEAN();
+                break;
+            case 24:
+                CARDINAL();
+                break;
+            case 25:
+                CHAR();
+                break;
+            case 26:
+                INTEGER();
+                break;
+            case 27:
+                LONGINT();
+                break;
+            case 28:
+                LONGREAL();
+                break;
+            case 29:
+                PROC();
+                break;
+            case 30:
+                REAL();
+                break;
+            case 31:
+                TRUE();
+                break;
+            case 32:
+                FALSE();
+                break;
+            case 33:
+                NIL();
+                break;
         }
     }
 
@@ -131,6 +202,64 @@ public class SlkAction {
             // correspondientes.
             _tablaGlobalNombrada = true;
         }
+    }
+
+    private void ExpresionELSIF() {
+        //RestoSentenciaIF:
+        //{ ELSIF Expresion _action_ExpresionELSIF THEN SecuenciaDeSentencias _action_RestoSentenciaELSIF } [ ELSE SecuenciaDeSentencias _action_RestoSentenciaELSE ]
+             
+        /*para hacer pruebas
+        System.out.println("ExpresionELSIF");
+        Nodo nodoElsIf = new Nodo();
+        _pilaNodos.push(nodoElsIf);
+        Nodo expresion = new Nodo();
+        expresion.addTipo(TipoSemantico.BOOLEANO);
+        _pilaNodos.push(expresion);
+        /*para hacer pruebas*/
+
+        Nodo nodo1 = _pilaNodos.pop(); //Expresion
+        Nodo nuevo = new Nodo();
+
+        if (nodo1.getTipoBasico().equals(TipoSemantico.BOOLEANO)) {
+            nuevo.addTipo(TipoSemantico.VOID);
+            _pilaNodos.push(nuevo);
+        } else {
+            nuevo.addTipo(TipoSemantico.ERROR);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipo no booleano en la expresion ELSIF",
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));
+            _pilaNodos.push(nuevo);
+        }
+        
+    }
+
+    private void ExpresionIF() {
+        //SentenciaIF:
+        //IF Expresion _action_ExpresionIF THEN SecuenciaDeSentencias RestoSentenciaIF END _action_SentenciaIF
+        
+        /*para hacer pruebas
+        System.out.println("ExpresionIF");
+        Nodo nodoIf = new Nodo();
+        _pilaNodos.push(nodoIf);
+        Nodo expresion = new Nodo();
+        expresion.addTipo(TipoSemantico.BOOLEANO);
+        _pilaNodos.push(expresion);
+        /*para hacer pruebas*/
+
+        Nodo nodo1 = _pilaNodos.pop();
+        Nodo nuevo = new Nodo();
+
+        if (nodo1.getTipoBasico().equals(TipoSemantico.BOOLEANO)) {
+            nuevo.addTipo(TipoSemantico.VOID);
+            _pilaNodos.push(nuevo);
+        } else {
+            nuevo.addTipo(TipoSemantico.ERROR);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipo no booleano en la expresion if",
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));
+            _pilaNodos.push(nuevo);
+        }
+
     }
 
 
@@ -359,6 +488,113 @@ public class SlkAction {
          info.setPasoArgumentos(pasoArgumentos);
          info.setTipoArgumentos(tipoArgumentos);
          info.setAmbito (ambitoProc);
+    }
+
+    private void RestoSentenciaELSE() {
+        //RestoSentenciaIF:
+        //{ ELSIF Expresion _action_ExpresionELSIF THEN SecuenciaDeSentencias _action_RestoSentenciaELSIF } [ ELSE SecuenciaDeSentencias _action_RestoSentenciaELSE ]
+
+        /*pruebas
+        System.out.println("RestoSEntenciasELSE");
+        Nodo SecuenciaDeSentencias = new Nodo();
+        SecuenciaDeSentencias.addTipo(TipoSemantico.VOID);
+        Nodo nodoElse = new Nodo();
+        //Metemos esto para probarlo
+        _pilaNodos.push(nodoElse);
+        _pilaNodos.push(SecuenciaDeSentencias);
+        /*FIN pruebas*/
+
+        Nodo nodo1 = _pilaNodos.pop(); //SecuenciaDeSentencias
+        _pilaNodos.pop(); //ELSE
+
+        Nodo nuevo = new Nodo();
+        if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)) {
+            nuevo.addTipo(TipoSemantico.VOID);
+            _pilaNodos.push(nuevo);
+        } else {
+            nuevo.addTipo(TipoSemantico.ERROR);
+            _pilaNodos.push(nuevo);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia ELSE mal tipada",
+                    nuevo.getLinea(),
+                    nuevo.getColumna()));
+        }
+
+    }
+
+    private void RestoSentenciaELSIF() {
+        //RestoSentenciaIF:
+        //{ ELSIF Expresion _action_ExpresionELSIF THEN SecuenciaDeSentencias _action_RestoSentenciaELSIF } [ ELSE SecuenciaDeSentencias _action_RestoSentenciaELSE ]
+
+        /*pruebas
+        System.out.println("RestoSentenciaELSIF");
+        Nodo SecuenciaDeSentencias = new Nodo();
+        SecuenciaDeSentencias.addTipo(TipoSemantico.VOID);
+        Nodo nodoThen = new Nodo();
+        //Metemos esto para probarlo
+        _pilaNodos.push(nodoThen);
+        _pilaNodos.push(SecuenciaDeSentencias);        
+        /*FIN pruebas*/
+
+        Nodo nodo1 = _pilaNodos.pop(); //SecuenciaDeSentencias
+        _pilaNodos.pop(); //THEN
+        Nodo nodo2 = _pilaNodos.pop(); //Expresion
+        _pilaNodos.pop(); //ELSIF
+
+        Nodo nuevo = new Nodo();
+        if (nodo1.getTipoBasico().equals(TipoSemantico.VOID) &&
+                nodo2.getTipoBasico().equals(TipoSemantico.VOID)) {
+            nuevo.addTipo(TipoSemantico.VOID);
+            _pilaNodos.push(nuevo);
+        } else {
+            nuevo.addTipo(TipoSemantico.ERROR);
+            _pilaNodos.push(nuevo);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia ELSIF mal tipada",
+                    nuevo.getLinea(),
+                    nuevo.getColumna()));
+        }
+        
+    }
+
+    private void SentenciaIF() {
+        //SentenciaIF:
+        //IF Expresion _action_ExpresionIF THEN SecuenciaDeSentencias RestoSentenciaIF END _action_SentenciaIF
+
+        /*pruebas
+        System.out.println("SentenciaIF");
+        Nodo RestoSentenciaIF = new Nodo();
+        RestoSentenciaIF.addTipo(TipoSemantico.VOID);
+        Nodo SecuenciaDeSentencias = new Nodo();
+        SecuenciaDeSentencias.addTipo(TipoSemantico.VOID);
+        Nodo end = new Nodo();
+        Nodo nodoThen = new Nodo();
+        //Metemos esto para probarlo
+        _pilaNodos.push(nodoThen);
+        _pilaNodos.push(RestoSentenciaIF);
+        _pilaNodos.push(SecuenciaDeSentencias);
+        _pilaNodos.push(end);        
+        /*FIN pruebas*/
+        
+        _pilaNodos.pop(); //END
+        Nodo nodo1 = _pilaNodos.pop(); //RestoSentenciaIF
+        Nodo nodo2 = _pilaNodos.pop(); //SecuenciaDeSentencias
+        _pilaNodos.pop(); //THEN       
+        Nodo nodo3 = _pilaNodos.pop(); //Expresion
+        _pilaNodos.pop(); //IF
+
+        Nodo nuevo = new Nodo();
+        if (nodo1.getTipoBasico().equals(TipoSemantico.VOID) &&
+                nodo2.getTipoBasico().equals(TipoSemantico.VOID) &&
+                nodo3.getTipoBasico().equals(TipoSemantico.VOID)) {
+            nuevo.addTipo(TipoSemantico.VOID);
+            _pilaNodos.push(nuevo);
+        } else {
+            nuevo.addTipo(TipoSemantico.ERROR);
+            _pilaNodos.push(nuevo);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia IF mal tipada",
+                    nuevo.getLinea(),
+                    nuevo.getColumna()));
+        }
+
     }
     
     /**
