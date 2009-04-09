@@ -194,7 +194,7 @@ SentenciaWHILE:
 WHILE Expresion _action_ExpresionWHILE DO SecuenciaDeSentencias END _action_SentenciaWHILE
 
 SentenciaREPEAT:
-REPEAT SecuenciaDeSentencias UNTIL Expresion 
+REPEAT SecuenciaDeSentencias UNTIL Expresion _action_ExpresionREPEAT _action_SentenciaREPEAT
 
 SentenciaLOOP:
 LOOP SecuenciaDeSentencias END _action_SentenciaLOOP

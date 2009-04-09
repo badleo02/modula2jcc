@@ -56,7 +56,7 @@ public class SlkAction {
      */
     public void execute(int number) {
         switch (number) {
-    case 1:  FinDeModulo();  break;
+        case 1:  FinDeModulo();  break;
     case 2:  ComienzoDeModulo();  break;
     case 3:  DefinicionDeTipo();  break;
     case 4:  AsociacionConstante();  break;
@@ -74,24 +74,26 @@ public class SlkAction {
     case 16:  RestoSentenciaELSE();  break;
     case 17:  ExpresionWHILE();  break;
     case 18:  SentenciaWHILE();  break;
-    case 19:  SentenciaLOOP();  break;
-    case 20:  Cadena();  break;
-    case 21:  Caracter();  break;
-    case 22:  NumeroEntero();  break;
-    case 23:  NumeroReal();  break;
-    case 24:  TipoPredefinidoPorUsuario();  break;
-    case 25:  BITSET();  break;
-    case 26:  BOOLEAN();  break;
-    case 27:  CARDINAL();  break;
-    case 28:  CHAR();  break;
-    case 29:  INTEGER();  break;
-    case 30:  LONGINT();  break;
-    case 31:  LONGREAL();  break;
-    case 32:  PROC();  break;
-    case 33:  REAL();  break;
-    case 34:  TRUE();  break;
-    case 35:  FALSE();  break;
-    case 36:  NIL();  break;
+    case 19:  ExpresionREPEAT();  break;
+    case 20:  SentenciaREPEAT();  break;
+    case 21:  SentenciaLOOP();  break;
+    case 22:  Cadena();  break;
+    case 23:  Caracter();  break;
+    case 24:  NumeroEntero();  break;
+    case 25:  NumeroReal();  break;
+    case 26:  TipoPredefinidoPorUsuario();  break;
+    case 27:  BITSET();  break;
+    case 28:  BOOLEAN();  break;
+    case 29:  CARDINAL();  break;
+    case 30:  CHAR();  break;
+    case 31:  INTEGER();  break;
+    case 32:  LONGINT();  break;
+    case 33:  LONGREAL();  break;
+    case 34:  PROC();  break;
+    case 35:  REAL();  break;
+    case 36:  TRUE();  break;
+    case 37:  FALSE();  break;
+    case 38:  NIL();  break;
         }
     }
 
@@ -192,6 +194,40 @@ public class SlkAction {
         } else {
             nuevo.addTipo(TipoSemantico.ERROR);
             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipo no booleano en la expresion if",
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));
+            _pilaNodos.push(nuevo);
+        }
+
+    }
+
+    private void ExpresionREPEAT() {
+        //SentenciaREPEAT:
+        //REPEAT SecuenciaDeSentencias UNTIL Expresion _action_ExpresionREPEAT _action_SentenciaREPEAT
+
+        /*para hacer pruebas*
+        Nodo nodoRepeat = new Nodo();
+        Nodo nodoUntil = new Nodo();
+        Nodo SecuenciaDeSentencias = new Nodo();
+        SecuenciaDeSentencias.addTipo(TipoSemantico.VOID);
+        System.out.println("ExpresionREPEAT");
+        Nodo expresion = new Nodo();
+        expresion.addTipo(TipoSemantico.BOOLEANO);
+        _pilaNodos.push(nodoRepeat);
+        _pilaNodos.push(SecuenciaDeSentencias);
+        _pilaNodos.push(nodoUntil);
+        _pilaNodos.push(expresion);
+        /*para hacer pruebas*/
+
+        Nodo nodo1 = _pilaNodos.pop(); //Expresion
+        Nodo nuevo = new Nodo();
+
+        if (nodo1.getTipoBasico().equals(TipoSemantico.BOOLEANO)) {
+            nuevo.addTipo(TipoSemantico.VOID);
+            _pilaNodos.push(nuevo);
+        } else {
+            nuevo.addTipo(TipoSemantico.ERROR);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipo no booleano en la expresion REPEAT",
                     nodo1.getLinea(),
                     nodo1.getColumna()));
             _pilaNodos.push(nuevo);
@@ -591,6 +627,34 @@ public class SlkAction {
             nuevo.addTipo(TipoSemantico.ERROR);
             _pilaNodos.push(nuevo);
             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia LOOP mal tipada",
+                    nuevo.getLinea(),
+                    nuevo.getColumna()));
+        }
+
+    }
+
+    private void SentenciaREPEAT() {
+        //SentenciaREPEAT:
+        //REPEAT SecuenciaDeSentencias UNTIL Expresion _action_ExpresionREPEAT _action_SentenciaREPEAT
+
+        /*pruebas*
+        System.out.println("SentenciaREPEAT");
+        /*FIN pruebas*/
+
+        Nodo nodo1 = _pilaNodos.pop(); //Expresion
+        _pilaNodos.pop(); //UNTIL
+        Nodo nodo2 = _pilaNodos.pop(); //SecuenciaDeSentencias
+        _pilaNodos.pop(); //REPEAT
+
+        Nodo nuevo = new Nodo();
+        if (nodo1.getTipoBasico().equals(TipoSemantico.VOID) &&
+                nodo2.getTipoBasico().equals(TipoSemantico.VOID)) {
+            nuevo.addTipo(TipoSemantico.VOID);
+            _pilaNodos.push(nuevo);
+        } else {
+            nuevo.addTipo(TipoSemantico.ERROR);
+            _pilaNodos.push(nuevo);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia REPEAT mal tipada",
                     nuevo.getLinea(),
                     nuevo.getColumna()));
         }
