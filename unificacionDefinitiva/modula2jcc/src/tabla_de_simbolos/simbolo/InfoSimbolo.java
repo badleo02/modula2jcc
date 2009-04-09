@@ -11,14 +11,14 @@ import semantico.TipoSemantico;
  * deja como abstracta proporcionando a los que hereden de ella el tipo semantico
  * que es un campo comun a todos ellos.
  * 
- * @author Javier Salcedo Gomez.
+ * @author Javier Salcedo Gomez. Luis Ayuso
  */
 public abstract class InfoSimbolo {
 
     /**
      * Array de tipos semanticos del simbolo para simbolos compuestos.
      */
-    private ArrayList<TipoSemantico> _tipoSemantico;
+    protected ArrayList<TipoSemantico> _tipoSemantico;
 
     /**
      * Devuelve el tipo semantico asociado a un identificador en la TS.
@@ -30,15 +30,6 @@ public abstract class InfoSimbolo {
         return _tipoSemantico;
     }
 
-    /**
-     * Establece el tipo semantico a valor <b>tipoSemantico</b>.
-     * 
-     * @param tipoSemantico Nuevo valor a establecer.
-     */
-    public void setTipoSemantico(ArrayList<TipoSemantico> tipoSemantico) {
-        
-        _tipoSemantico = tipoSemantico;
-    }   
     
     /**
      * Devuelve el tipo semantico básico de un identificador en la TS.
@@ -52,21 +43,8 @@ public abstract class InfoSimbolo {
     }
     
     /**
-     * @see Object.toString().
+     * recupera el tipo de este simbolo, tipo de simbolo, <b>NO</b> semantico
+     * @return el tipo del simbolo
      */
-    @Override
-    public String toString() {
-        
-        String cadena = "   TIPO -> (";
-        
-        
-        if(_tipoSemantico != null){
-            for(TipoSemantico tipo : _tipoSemantico){
-                cadena += tipo.name() + ", ";
-            }
-        }
-        cadena += ")\n";
-        
-        return cadena;
-    }
+    public abstract TipoSimbolo getTipoSimbolo();
 }

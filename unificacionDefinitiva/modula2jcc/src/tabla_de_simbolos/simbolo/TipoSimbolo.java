@@ -12,5 +12,7 @@ public enum TipoSimbolo {
     ARRAY,
     REGISTRO,
     ENUMERADO,
-    GENERAL
+    VARIABLE,
+    CONSTANTE,
+    TIPO
 }

@@ -65,7 +65,7 @@ public class SlkAction {
     case 7:  ponerMarcaListaVariables();  break;
     case 8:  quitarMarcaListaVariables();  break;
     case 9:  DeclaracionVariables();  break;
-    case 10:  InicioDeclaraciónProcedure();  break;
+    case 10:  InicioDeclaracionProcedure();  break;
     case 11:  CabeceraDeProcedure();  break;
     case 12:  ExpresionIF();  break;
     case 13:  SentenciaIF();  break;
@@ -109,38 +109,47 @@ public class SlkAction {
         // Si la tabla GLOBAL ha sido nombrada
         if (_tablaGlobalNombrada) {
 
+            boolean error = false;
+
             // Si el modulo no está declarado
-            if (!_tablaActual.estaModuloDeclarado(id.getLexema())) {
+            if (_tablaActual.estaModuloDeclarado(id.getLexema())) {
 
                 // Insertamos el identificador del modulo en la tabla de simbolos actuales
-                _tablaActual.inserta(id.getLexema(), TipoSimbolo.MODULO);
-                
-                // Completamos el tipo semantico del identificador
-                InfoSimboloModulo info = (InfoSimboloModulo)_tablaActual.busca(id.getLexema());
-                ArrayList<TipoSemantico> tipo = new ArrayList<TipoSemantico>();
-                tipo.add(TipoSemantico.MODULO);
-                info.setTipoSemantico(tipo);
-                
-                // Se abre un ambito
-                _tablaActual = _tablaActual.abrirAmbito();
-                _tablaActual.setNombre(id.getLexema());
+                if (_tablaActual.declaraSimbolo(id.getLexema())) {
 
+                    // Completamos el tipo semantico del identificador
+                    if (_tablaActual.completaModulo(id.getLexema())) {
+
+                        // Se abre un ambito
+                        _tablaActual = _tablaActual.abrirAmbito();
+                        _tablaActual.setNombre(id.getLexema());
+                    } else {
+                        error = true;
+                    }
+                } else {
+                    error = true;
+                }
             } else {
-
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
+                error = true;
+            }
+            if (error) {
+                _gestorDeErrores.insertaErrorSemantico(
+                        new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
                         id.getLinea(),
                         id.getColumna()));
-            }
-        } else { // NO SE INSERTA EL IDENTIFICADOR EN LA TS GLOBAL!!
-            
-            // Completamos el nombre de la tabla GLOBAL
-            _tablaActual.setNombre(id.getLexema());
 
-            // Marcamos que ya esta nombrada por lo que ya siempre entrará
-            // por el IF de arriba y creará los ambitos de los módulos 
-            // correspondientes.
-            _tablaGlobalNombrada = true;
+            } else { // NO SE INSERTA EL IDENTIFICADOR EN LA TS GLOBAL!!
+
+                // Completamos el nombre de la tabla GLOBAL
+                _tablaActual.setNombre(id.getLexema());
+
+                // Marcamos que ya esta nombrada por lo que ya siempre entrará
+                // por el IF de arriba y creará los ambitos de los módulos 
+                // correspondientes.
+                _tablaGlobalNombrada = true;
+            }
         }
+        _tablaActual.setNombre(id.getLexema());
     }
 
     private void ExpresionELSIF() {
@@ -288,7 +297,7 @@ public class SlkAction {
      * a valor Tipo CONSTANTE y el valor de la constante.                
      */
     private void AsociacionConstante() {
-
+        boolean error = false;
         try {
 
             Nodo valor = _pilaNodos.pop();
@@ -296,27 +305,22 @@ public class SlkAction {
             Nodo id = _pilaNodos.pop();
 
             if (!valor.esError()) {
-
-                // Insertamos y completamos su informacion
-                if (_tablaActual.inserta(id.getLexema(), TipoSimbolo.GENERAL)) {
-
-                    // Obtenemos la informacion y la completamos
-                    InfoSimboloGeneral info = (InfoSimboloGeneral) _tablaActual.busca(id.getLexema());
-                    info.setTipoSemantico(valor.getTipoSemantico());
-                    info.setEsConstante(true);
-
+                // Insertamos el identificador de la constante en la tabla de simbolos actuales
+                if (_tablaActual.declaraSimbolo(id.getLexema())) {
+                    // Completamos el tipo semantico y el valor
+                    if (!_tablaActual.completaConstate(id.getLexema(), valor.getTipoSemantico(), valor.getLexema())) 
+                        error = true;
                 } else {
-
-                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
-                            valor.getLinea(),
-                            valor.getColumna()));
+                    error = true;
                 }
-
             } else {
-
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El tipo \"" + valor.getLexema() + "\" no esta definido.",
-                        valor.getLinea(),
-                        valor.getColumna()));
+                error = true;
+            }
+            if (error) {
+                _gestorDeErrores.insertaErrorSemantico(
+                        new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
+                        id.getLinea(),
+                        id.getColumna()));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -341,12 +345,13 @@ public class SlkAction {
                     id = _pilaNodos.pop();
 
                     if (!id.esMarcaListaIdentificadores()) {
+                        
+                        if (_tablaActual.declaraSimbolo(id.getLexema())){
 
-                        // Insertamos y completamos su informacion
-                        if (_tablaActual.inserta(id.getLexema(), TipoSimbolo.GENERAL)) {
-
-                            // Obtenemos la informacion y la completamos
-                            _tablaActual.busca(id.getLexema()).setTipoSemantico(tipo.getTipoSemantico());
+                            if (!_tablaActual.completaVariable(id.getLexema(), tipo.getTipoSemantico())) 
+                                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
+                                        id.getLinea(),
+                                        id.getColumna()));
                         } else {
 
                             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
@@ -374,36 +379,25 @@ public class SlkAction {
     private void DefinicionDeTipo() {
         //REGLA: DefinicionDeTipo: Identificador = EsquemaDeTipo
 
+        boolean error = false;
+
         try {
 
             Nodo tipo = _pilaNodos.pop();
             _pilaNodos.pop(); // operador
             Nodo id = _pilaNodos.pop();
 
-            InfoSimboloGeneral infoTipo = (InfoSimboloGeneral) _tablaActual.busca(tipo.getLexema());
-
-            // Si es IDENTIFICADOR y no es de Tipo TIPO
-            if (tipo.getTipoToken().equals(TipoToken.IDENTIFICADOR) && infoTipo != null && !infoTipo.getEsTipo()) {
-
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El tipo \"" + tipo.getLexema() + "\" no está definido.",
-                        tipo.getLinea(),
-                        tipo.getColumna()));
-            } else {
-
-                // Insertamos y completamos su informacion
-                if (_tablaActual.inserta(id.getLexema(), TipoSimbolo.GENERAL)) {
-
-                    // Completamos su informacion
-                    InfoSimboloGeneral infoId = (InfoSimboloGeneral) _tablaActual.busca(id.getLexema());
-                    infoId.setTipoSemantico(tipo.getTipoSemantico());
-                    infoId.setEsTipo(true);
-                } else {
-
-                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
-                            id.getLinea(),
-                            id.getColumna()));
-                }
+            if (_tablaActual.declaraSimbolo(id.getLexema())){
+                if (!_tablaActual.completaTipo(id.getLexema(),tipo.getTipoSemantico()))
+                    error = true;
             }
+            else
+                error = true;
+
+            if (error)
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
+                                id.getLinea(),
+                                id.getColumna()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -413,7 +407,7 @@ public class SlkAction {
     /**
      * se comineza con un procedimineto
      */
-    private void InicioDeclaraciónProcedure() {
+    private void InicioDeclaracionProcedure() {
     // CabeceraSubprograma:
     // PROCEDURE Identificador _action_InicioDeclaraciónProcedure [ ParametrosFormales ]
       
@@ -421,7 +415,7 @@ public class SlkAction {
         Nodo nodo = _pilaNodos.peek(); 
         
         // comprobamos unicidad
-        if (_tablaActual.estaModuloDeclarado(nodo.getLexema()))
+        if (!_tablaActual.declaraSimbolo(nodo.getLexema()))
              _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador \"" + nodo.getLexema() + "\" esta siendo redefinido.",
                         nodo.getLinea(),
                         nodo.getColumna()));
@@ -449,6 +443,8 @@ public class SlkAction {
          
          InfoSimboloGeneral param;
          
+         ArrayList<TipoSemantico> retorno = new ArrayList<TipoSemantico>();
+         
          // mientras que no sea el nombre de la tabla
          while (!nodo.getLexema().equals(lexema)){
              
@@ -470,11 +466,11 @@ public class SlkAction {
             // despues el identificador:
             nodo = _pilaNodos.pop();
   
-            _tablaActual.inserta(nodo.getLexema(), TipoSimbolo.GENERAL);
-            param = (InfoSimboloGeneral) _tablaActual.busca(nodo.getLexema());
-            
-             numArgs ++;
-             nodo = _pilaNodos.pop(); 
+//            _tablaActual.inserta(nodo.getLexema(), TipoSimbolo.GENERAL);
+//            param = (InfoSimboloGeneral) _tablaActual.busca(nodo.getLexema());
+//            
+//             numArgs ++;
+//             nodo = _pilaNodos.pop(); 
          }
          
          // cierra el ambito
@@ -482,14 +478,11 @@ public class SlkAction {
          _tablaActual = _tablaActual.cerrarAmbito();
          
          // completa el simbolo
-         _tablaActual.inserta(lexema, TipoSimbolo.SUBPROGRAMA);
-         InfoSimboloSubprograma info = (InfoSimboloSubprograma) _tablaActual.busca(lexema);
-         
-         info.setNumArgs(numArgs);
-        
-         info.setPasoArgumentos(pasoArgumentos);
-         info.setTipoArgumentos(tipoArgumentos);
-         info.setAmbito (ambitoProc);
+         if (_tablaActual.completaSubprograma(lexema,numArgs,pasoArgumentos,tipoArgumentos,ambitoProc,retorno)){
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador \"" + lexema + "\" esta siendo redefinido.",
+                    nodo.getLinea(),
+                    nodo.getColumna()));
+         }
     }
 
     private void RestoSentenciaELSE() {
@@ -734,9 +727,9 @@ public class SlkAction {
 
             Nodo tipoPredefinido = _pilaNodos.pop(); // TIPO PREDEFINIDO
 
-            InfoSimboloGeneral info = (InfoSimboloGeneral) _tablaActual.busca(tipoPredefinido.getLexema());
+            InfoSimbolo info = (InfoSimbolo) _tablaActual.busca(tipoPredefinido.getLexema());
 
-            if (info.getEsTipo()) {
+            if (info.getTipoSimbolo() == TipoSimbolo.TIPO) {
 
                 // Obtenemos el valor semantico del identificador predefinido
                 tipoPredefinido.setTipo(info.getTipoSemantico());

@@ -2,6 +2,7 @@ package tabla_de_simbolos;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import semantico.TipoSemantico;
 import tabla_de_simbolos.simbolo.*;
 
 
@@ -45,25 +46,35 @@ public class TablaDeSimbolos {
      */
     
     private Hashtable<String, Integer> _procedimientosPredefinidos;
+    
     /**
      * Puntero a la TS que almacena la información de un ámbito superior, en 
      * el que se contiene el que gestiona la TS actual. 
      */
-    
     private TablaDeSimbolos _continente;
+    
     /**
      * Lista de punteros a las TS que almacena la información de un ámbito inferior,
      * contenido en el que se gestiona la TS en cuestión.
      */
     private ArrayList<TablaDeSimbolos> _contenido;
 
+    /**
+     * los simbolos que no han sido completados estan aqui. 
+     * cuando se cierre la zona de declaraciones se debe haber quedado vacia esta 
+     * tabla
+     */
+    private ArrayList<String> _pendientes;
+    
     public TablaDeSimbolos() {
 
         _nombre = "TS Por Defecto";
         _continente = null;
         _contenido = new ArrayList<TablaDeSimbolos>();
+        _pendientes = new ArrayList<String>();
         _TS = new Hashtable<String, InfoSimbolo>();
         iniciaPalabrasFuncionesProcedimientos();
+        
     }
 
     /**
@@ -163,38 +174,191 @@ public class TablaDeSimbolos {
         return _procedimientosPredefinidos.containsKey(identificador);
     }
 
+//    /**
+//     * Inserta un identificador en la TS. Devuelve cierto si se ha insertado
+//     * y falso en caso contrario.
+//     *
+//     * @param lexema Lexema del identificador.
+//     * 
+//     * @return Verdadero si se ha conseguido insertar el identificador en la tabla
+//     * de simbolos actual y falso en caso contrario.
+//     */
+//    public boolean inserta(String lexema, TipoSimbolo tipo) {
+//
+//        // Si no esta declarado en el ambito actual y no se llama igual que 
+//        // ningun Modulo de ningun ambito superior
+//        if (!_TS.containsKey(lexema) && !estaModuloDeclarado(lexema)){
+//
+//            switch (tipo) {
+//
+//                case SUBPROGRAMA:
+//                    _TS.put(lexema, new InfoSimboloSubprograma());
+//                    break;
+//                case MODULO:
+//                    _TS.put(lexema, new InfoSimboloModulo());
+//                    break;
+//                case GENERAL:
+//                    _TS.put(lexema, new InfoSimboloGeneral());
+//                    break;
+//            }
+//            return true;
+//        }
+//        return false;
+//    }
+
     /**
-     * Inserta un identificador en la TS. Devuelve cierto si se ha insertado
-     * y falso en caso contrario.
-     *
-     * @param lexema Lexema del identificador.
+     * declara un simbolo que esta identificado por un lexema,
+     * si ya se ha declarado ese lexema, devuelve <b>FALSE</b>
      * 
-     * @return Verdadero si se ha conseguido insertar el identificador en la tabla
-     * de simbolos actual y falso en caso contrario.
+     * por lo que comprueba la unicidad
+     * 
+     * @param lexema el lexema que identifica un simbolo
+     * @return si ha sido declarado correctamente <b>TRUE</b>
      */
-    public boolean inserta(String lexema, TipoSimbolo tipo) {
-
-        // Si no esta declarado en el ambito actual y no se llama igual que 
-        // ningun Modulo de ningun ambito superior
-        if (!_TS.containsKey(lexema) && !estaModuloDeclarado(lexema)){
-
-            switch (tipo) {
-
-                case SUBPROGRAMA:
-                    _TS.put(lexema, new InfoSimboloSubprograma());
-                    break;
-                case MODULO:
-                    _TS.put(lexema, new InfoSimboloModulo());
-                    break;
-                case GENERAL:
-                    _TS.put(lexema, new InfoSimboloGeneral());
-                    break;
-            }
+    public boolean declaraSimbolo (String lexema){
+        // si esta pendiente de completar.
+        if (_pendientes.contains(lexema))
+            return false;
+        
+        
+        // si esta ya definido 
+        // NOTA: solo busca en el ambito actual, ya que puede sobreescribir 
+        // un ambito superior
+        if (_TS.containsKey(lexema))
+            return false;
+        
+        // si no, pues se añade
+        _pendientes.add(lexema);
+        return true;
+    }
+    
+    /**
+     * completa la declaracion de un modulo de nombre lexema.
+     * 
+     * @param lexema el nombre del modulo
+     * @return si se ha completadoc correctamente
+     */
+    public boolean completaModulo(String lexema) {
+        if (_pendientes.contains(lexema)){
+            _pendientes.remove(lexema);
+            
+            InfoSimbolo var =new InfoSimboloModulo();
+            
+            _TS.put(lexema, var);
             return true;
         }
-        return false;
+        else
+            return false;
+    }
+   
+       /**
+     * completa los datos para una constate, con esto, pasa a estar definida
+     * completamente.
+     * Es necesario que antes se haya declarado el símbolo, para poder 
+     * comprobar la unicidad.
+     * 
+     * @param lexema el lexema que identifica la variable
+     * @param tipoSemantico el tipo semantico de esta variable
+       @param el valor que contiene
+     * @return si se ha completadoc correctamente
+     */ 
+    public boolean completaConstate(String lexema, ArrayList<TipoSemantico> tipoSemantico, String valor) {
+        
+        if (_pendientes.contains(lexema)){
+            _pendientes.remove(lexema);
+            
+            InfoSimbolo var =new InfoSimboloConst(tipoSemantico,valor);
+            
+            _TS.put(lexema, var);
+            
+            return true;
+        }
+        else
+            return false;
     }
 
+
+    
+    /**
+     * completa los datos para una variable, con esto, pasa a estar definida
+     * completamente.
+     * Es necesario que antes se haya declarado el símbolo, para poder 
+     * comprobar la unicidad.
+     * 
+     * @param lexema el lexema que identifica la variable
+     * @param tipoSemantico el tipo semantico de esta variable
+     * @return si se ha completadoc correctamente
+     */
+    public boolean completaVariable (String lexema, ArrayList<TipoSemantico> tipoSemantico){
+        
+        if (_pendientes.contains(lexema)){
+            _pendientes.remove(lexema);
+            
+            InfoSimbolo var =new InfoSimboloVar(tipoSemantico);
+            
+            _TS.put(lexema, var);
+            
+            return true;
+        }
+        else
+            return false;
+    }
+    
+    /**
+     * completa los datos para un tipo, con esto, pasa a estar definida
+     * completamente.
+     * Es necesario que antes se haya declarado el símbolo, para poder completarlo
+     * y comprobar la unicidad.
+     *       
+     * @param lexema el lexema que identifica un tipo
+     * @param tipoSemantico el tipo que se nombra
+     */
+    public boolean completaTipo(String lexema, ArrayList<TipoSemantico> tipoSemantico) {
+           
+        if (_pendientes.contains(lexema)){
+            _pendientes.remove(lexema);
+            
+            InfoSimbolo var =new InfoSimboloTipo(tipoSemantico);
+            
+            _TS.put(lexema, var);
+            
+            return true;
+        }
+        else
+            return false;
+    }
+    /**
+     * completa un procedimiento
+     * 
+     * @param lexema el identificador del procedimiento
+     * @param numArgs numero de argumentos
+     * @param pasoArgumentos paso de los argumentos
+     * @param tipoArgumentos tipo de los argumentos
+     * @param ambitoProc tabla de simbolos asociada
+     * @param retorno el tipo del retorno de haberlo
+     * @return si se ha completado correctamente
+     */
+    public boolean completaSubprograma(String lexema, 
+                                       int numArgs, 
+                                       ArrayList<TipoPasoParametro> pasoArgumentos,
+                                       ArrayList<ArrayList<TipoSemantico>> tipoArgumentos, 
+                                       TablaDeSimbolos ambitoProc,
+                                       ArrayList<TipoSemantico> retorno) {
+       if (_pendientes.contains(lexema)){
+            _pendientes.remove(lexema);
+            
+            InfoSimbolo var =new InfoSimboloSubprograma(numArgs,pasoArgumentos,tipoArgumentos,ambitoProc,retorno);
+            
+            _TS.put(lexema, var);
+            
+            return true;
+        }
+        else
+            return false; 
+    }
+
+    
+    
     /**
      * Busca el lexema del identificador asociado en el ambito actual y en
      * los superiores y devuelve la entrada correspondiente de su TS. Si no lo
@@ -395,7 +559,7 @@ public class TablaDeSimbolos {
      * 
      * @return
      */
-    public Hashtable<String, Integer> getProcedimientosPredefinidos() {
+    private Hashtable<String, Integer> getProcedimientosPredefinidos() {
 
         return _procedimientosPredefinidos;
     }
@@ -404,7 +568,7 @@ public class TablaDeSimbolos {
      * 
      * @param procedimientosPredefinidos
      */
-    public void setProcedimientosPredefinidos(Hashtable<String, Integer> procedimientosPredefinidos) {
+    private void setProcedimientosPredefinidos(Hashtable<String, Integer> procedimientosPredefinidos) {
 
         _procedimientosPredefinidos = procedimientosPredefinidos;
     }

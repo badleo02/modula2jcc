@@ -8,7 +8,7 @@ import tabla_de_simbolos.TablaDeSimbolos;
  * Clase que gestiona la informacion relativa a un identificador de la TS que
  * representa un tipo SUBPROGRAMA.
  * 
- * @author Javier Salcedo Gómez
+ * @author Javier Salcedo Gómez, Luis Ayuso
  */
 public class InfoSimboloSubprograma extends InfoSimbolo{
 
@@ -28,7 +28,7 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
     /**
      * Tipo de retorno del Subprograma. a los PROCEDURE se les pone VOID.
      */
-    private ArrayList<TipoSimbolo> _valorRetorno;
+    private ArrayList<TipoSemantico> _valorRetorno;
     
     /**
      * la tabla de simbolos de este ambito
@@ -38,12 +38,17 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
     /**
      * Constructor por defecto de la clase InfoSimboloSubprograma.
      */
-    public InfoSimboloSubprograma() {
-
-        _tipoArgumentos = new ArrayList<ArrayList<TipoSemantico>>(); 
-        _pasoArgumentos = new ArrayList<TipoPasoParametro>();
-        _valorRetorno = new ArrayList<TipoSimbolo>();
-        _numArgs = 0;
+    public InfoSimboloSubprograma(int numArgs, 
+                                  ArrayList<TipoPasoParametro> pasoArgumentos, 
+                                  ArrayList<ArrayList<TipoSemantico>> tipoArgumentos,
+                                  TablaDeSimbolos ambitoProc,
+                                  ArrayList<TipoSemantico> retorno) {
+        
+        _tipoArgumentos = tipoArgumentos;
+        _pasoArgumentos = pasoArgumentos;
+        _valorRetorno = retorno;
+        _numArgs = numArgs;
+        _tablaSimbolos = ambitoProc;
     }
         
     /**
@@ -51,39 +56,9 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
      * 
      * @return El tipo de valor de retorno del subprograma.
      */
-    public ArrayList<TipoSimbolo> getValorRetorno() {
+    public ArrayList<TipoSemantico> getValorRetorno() {
 
         return _valorRetorno;
-    }
-
-    /**
-     * establece el ambito de este procedimiento, el arrea donde estan
-     * definidos sus simbolos.
-     * 
-     * @param tabla la tabla donde estan sus simbolos
-     */
-    public void setAmbito(TablaDeSimbolos tabla) {
-        _tablaSimbolos =tabla;
-    }
-
-    /**
-     * Establece el valor de retorno del subprograma a valor <b>valorRetorno</b>.
-     * 
-     * @param valorRetorno Nuevo valor a establecer.
-     */
-    public void setValorRetorno(ArrayList<TipoSimbolo> valorRetorno) {
-       
-        _valorRetorno = valorRetorno;
-    }
-
-    /**
-     * Devuelve el numero de argumentos.
-     * 
-     * @return El numero de argumentos.
-     */
-    public int getNumArgs() {
-
-        return _numArgs;
     }
 
     /**
@@ -106,35 +81,6 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
         return _tipoArgumentos;
     }
 
-    /**
-     * Establece el numero de argumentos a valor <b>numArgs</b>.
-     * 
-     * @param numArgs Nuevo valor a establecer.
-     */
-    public void setNumArgs(int numArgs) {
-
-        _numArgs = numArgs;
-    }
-
-    /**
-     * EsttoStringablece el paso de argumentos a valor <b>pasoArgumentos</b>.
-     * 
-     * @param pasoArgumentos Nuevo valor a establecer.
-     */
-    public void setPasoArgumentos(ArrayList<TipoPasoParametro> pasoArgumentos) {
-
-        _pasoArgumentos = pasoArgumentos;
-    }
-
-    /**
-     * Establece el tipo de los argumentos a valor <b>tipoArgumentos</b>.
-     * 
-     * @param tipoArgumentos Nuevo valor a establecer.
-     */
-    public void setTipoArgumentos(ArrayList<ArrayList<TipoSemantico>> tipoArgumentos) {
-
-        _tipoArgumentos = tipoArgumentos;
-    }
     
     /**
      * @see Object.toString().
@@ -142,7 +88,7 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
     @Override
     public String toString() {
       
-        String cadena = "Procedimiento (";
+        String cadena = "\tProcedimiento (";
                 
         for (ArrayList<TipoSemantico> arrayList : _tipoArgumentos) {
             cadena += "[";
@@ -161,5 +107,10 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
         
         cadena += "\n";
         return cadena;
+    }
+
+    @Override
+    public TipoSimbolo getTipoSimbolo() {
+      return TipoSimbolo.SUBPROGRAMA;
     }
 }

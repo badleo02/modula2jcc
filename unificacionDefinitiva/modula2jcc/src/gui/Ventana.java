@@ -43,7 +43,8 @@ public class Ventana extends JFrame {
         initComponents();
 
         // Mostramos la ventana maximizada
-        setExtendedState(MAXIMIZED_BOTH);
+        // estoy hasta la polla de la ventana maximizada
+      //  setExtendedState(MAXIMIZED_BOTH);
 
         // Asignamos el gestor de errores
         _gestorDeErrores = gestorDeErrores;

@@ -1,6 +1,7 @@
 package tabla_de_simbolos.simbolo;
 
 import java.util.ArrayList;
+import semantico.TipoSemantico;
 
 /**
  * Clase que representa el tipo de información de un identificador de MODULE.
@@ -35,6 +36,10 @@ public class InfoSimboloModulo extends InfoSimbolo{
         _exportadas = new ArrayList<String>();    
         _esDefinition = false;
         _cualificadas = false;
+        
+        ArrayList<TipoSemantico> tipo = new ArrayList<TipoSemantico>();
+        tipo.add(TipoSemantico.MODULO);;
+        super._tipoSemantico = tipo;
     }
 
     /**
@@ -140,6 +145,11 @@ public class InfoSimboloModulo extends InfoSimbolo{
             cadena += "   DEFINITION -> NO\n";
         
         return cadena;
+    }
+
+    @Override
+    public TipoSimbolo getTipoSimbolo() {
+       return TipoSimbolo.MODULO;
     }
 
 }
