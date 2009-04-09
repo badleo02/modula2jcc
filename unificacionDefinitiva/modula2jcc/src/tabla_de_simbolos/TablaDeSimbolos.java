@@ -572,4 +572,8 @@ public class TablaDeSimbolos {
 
         _procedimientosPredefinidos = procedimientosPredefinidos;
     }
+    
+      public String toString() {
+        return _nombre;
+    }
 }

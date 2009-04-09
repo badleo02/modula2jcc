@@ -56,44 +56,45 @@ public class SlkAction {
      */
     public void execute(int number) {
         switch (number) {
-        case 1:  FinDeModulo();  break;
+  case 1:  FinDeModulo();  break;
     case 2:  ComienzoDeModulo();  break;
-    case 3:  DefinicionDeTipo();  break;
-    case 4:  AsociacionConstante();  break;
-    case 5:  TipoConjunto();  break;
-    case 6:  TipoPuntero();  break;
-    case 7:  ponerMarcaListaVariables();  break;
-    case 8:  quitarMarcaListaVariables();  break;
-    case 9:  DeclaracionVariables();  break;
-    case 10:  InicioDeclaracionProcedure();  break;
-    case 11:  CabeceraDeProcedure();  break;
-    case 12:  ExpresionIF();  break;
-    case 13:  SentenciaIF();  break;
-    case 14:  ExpresionELSIF();  break;
-    case 15:  RestoSentenciaELSIF();  break;
-    case 16:  RestoSentenciaELSE();  break;
-    case 17:  ExpresionWHILE();  break;
-    case 18:  SentenciaWHILE();  break;
-    case 19:  ExpresionREPEAT();  break;
-    case 20:  SentenciaREPEAT();  break;
-    case 21:  SentenciaLOOP();  break;
-    case 22:  Cadena();  break;
-    case 23:  Caracter();  break;
-    case 24:  NumeroEntero();  break;
-    case 25:  NumeroReal();  break;
-    case 26:  TipoPredefinidoPorUsuario();  break;
-    case 27:  BITSET();  break;
-    case 28:  BOOLEAN();  break;
-    case 29:  CARDINAL();  break;
-    case 30:  CHAR();  break;
-    case 31:  INTEGER();  break;
-    case 32:  LONGINT();  break;
-    case 33:  LONGREAL();  break;
-    case 34:  PROC();  break;
-    case 35:  REAL();  break;
-    case 36:  TRUE();  break;
-    case 37:  FALSE();  break;
-    case 38:  NIL();  break;
+    case 3:  finDeAmbito();  break;
+    case 4:  DefinicionDeTipo();  break;
+    case 5:  AsociacionConstante();  break;
+    case 6:  TipoConjunto();  break;
+    case 7:  TipoPuntero();  break;
+    case 8:  ponerMarcaListaVariables();  break;
+    case 9:  quitarMarcaListaVariables();  break;
+    case 10:  DeclaracionVariables();  break;
+    case 11:  InicioDeclaracionProcedure();  break;
+    case 12:  CabeceraDeProcedure();  break;
+    case 13:  ExpresionIF();  break;
+    case 14:  SentenciaIF();  break;
+    case 15:  ExpresionELSIF();  break;
+    case 16:  RestoSentenciaELSIF();  break;
+    case 17:  RestoSentenciaELSE();  break;
+    case 18:  ExpresionWHILE();  break;
+    case 19:  SentenciaWHILE();  break;
+    case 20:  ExpresionREPEAT();  break;
+    case 21:  SentenciaREPEAT();  break;
+    case 22:  SentenciaLOOP();  break;
+    case 23:  Cadena();  break;
+    case 24:  Caracter();  break;
+    case 25:  NumeroEntero();  break;
+    case 26:  NumeroReal();  break;
+    case 27:  TipoPredefinidoPorUsuario();  break;
+    case 28:  BITSET();  break;
+    case 29:  BOOLEAN();  break;
+    case 30:  CARDINAL();  break;
+    case 31:  CHAR();  break;
+    case 32:  INTEGER();  break;
+    case 33:  LONGINT();  break;
+    case 34:  LONGREAL();  break;
+    case 35:  PROC();  break;
+    case 36:  REAL();  break;
+    case 37:  TRUE();  break;
+    case 38:  FALSE();  break;
+    case 39:  NIL();  break;
         }
     }
 
@@ -279,19 +280,45 @@ public class SlkAction {
      * END sean el mismo. Ademas cierra el ambito actual.
      */
     private void FinDeModulo() {
-
-        Nodo id = _pilaNodos.pop();
-
-        if (_tablaActual.getNombre().equals(id.getLexema())) {
-            _tablaActual = _tablaActual.cerrarAmbito();
-        } else {
-
-            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Simbolo \"" + id.getLexema() + "\" incorrecto, se esperaba \"" + _tablaActual.getNombre() + "\"",
-                    id.getLinea(),
-                    id.getColumna()));
-        }
+        
+        
+        //esto ya lo ha hecho finDeAmbito; no preguntes por que
+        
+//
+//        Nodo id = _pilaNodos.pop();
+//
+//        if (_tablaActual.getNombre().equals(id.getLexema())) {
+//            _tablaActual = _tablaActual.cerrarAmbito();
+//        } else {
+//
+//            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Simbolo \"" + id.getLexema() + "\" incorrecto, se esperaba \"" + _tablaActual.getNombre() + "\"",
+//                    id.getLinea(),
+//                    id.getColumna()));
+//        }
     }
 
+    /**
+     * el fin de un ambito, cierra este como es debido
+     * 
+     */
+    private void finDeAmbito() {
+        //TODO: aki hay un problema con el cierre de los modulos, colisionan aki
+        // esta ñapa lo protege por ah
+        if (!_pilaNodos.isEmpty()) {
+            Nodo id = _pilaNodos.pop();
+            if (_tablaActual.getNombre().equals(id.getLexema())) {
+                _tablaActual = _tablaActual.cerrarAmbito();
+            } else {
+
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Simbolo \"" + id.getLexema() + "\" incorrecto, se esperaba \"" + _tablaActual.getNombre() + "\"",
+                        id.getLinea(),
+                        id.getColumna()));
+            }
+        }
+
+    }
+
+    
     /**
      * Se completa el tipo del simbolo identificado por el lexema del identificador 
      * a valor Tipo CONSTANTE y el valor de la constante.                
@@ -441,16 +468,17 @@ public class SlkAction {
          ArrayList<TipoPasoParametro> pasoArgumentos = new ArrayList<TipoPasoParametro>();
          ArrayList<ArrayList<TipoSemantico>> tipoArgumentos = new ArrayList<ArrayList<TipoSemantico>>();
          
-         InfoSimboloGeneral param;
-         
          ArrayList<TipoSemantico> retorno = new ArrayList<TipoSemantico>();
+         
+         // un array para los nombres de los paramtros
+         ArrayList<String> nombres = new ArrayList<String>();
          
          // mientras que no sea el nombre de la tabla
          while (!nodo.getLexema().equals(lexema)){
              
              // si no es error:
              if (nodo.getTipoBasico() == TipoSemantico.ERROR){
-                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("error aqui " +
+                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("error " +nodo.getLexema() +
                                                     nodo.getLexema(),
                                                     nodo.getLinea(),
                                                     nodo.getColumna()));
@@ -466,11 +494,22 @@ public class SlkAction {
             // despues el identificador:
             nodo = _pilaNodos.pop();
   
-//            _tablaActual.inserta(nodo.getLexema(), TipoSimbolo.GENERAL);
-//            param = (InfoSimboloGeneral) _tablaActual.busca(nodo.getLexema());
-//            
-//             numArgs ++;
-//             nodo = _pilaNodos.pop(); 
+            // comprueba la unicidad a nivel de cabecera
+            if (nombres.contains(nodo.getLexema())){
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("el parametro \""+nodo.getLexema() +"\"ya esta definido" +
+                                                    nodo.getLexema(),
+                                                    nodo.getLinea(),
+                                                    nodo.getColumna()));
+                 return;
+             }
+            nombres.add(nodo.getLexema());
+            
+            // declara la variable.
+            _tablaActual.declaraSimbolo(nodo.getLexema());
+            _tablaActual.completaVariable(nodo.getLexema(), tipoArgumentos.get(tipoArgumentos.size()-1));
+ 
+             nodo = _pilaNodos.pop(); 
+             numArgs++;
          }
          
          // cierra el ambito
@@ -478,11 +517,14 @@ public class SlkAction {
          _tablaActual = _tablaActual.cerrarAmbito();
          
          // completa el simbolo
-         if (_tablaActual.completaSubprograma(lexema,numArgs,pasoArgumentos,tipoArgumentos,ambitoProc,retorno)){
+         if (!_tablaActual.completaSubprograma(lexema,numArgs,pasoArgumentos,tipoArgumentos,ambitoProc,retorno)){
             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador \"" + lexema + "\" esta siendo redefinido.",
                     nodo.getLinea(),
                     nodo.getColumna()));
          }
+         
+         // devolvemos el ambito al del procedimineto hasta que este acabe
+         _tablaActual = ambitoProc;
     }
 
     private void RestoSentenciaELSE() {
@@ -871,6 +913,7 @@ public class SlkAction {
         _pilaNodos.add(error);
     }
 
+ 
     /**
      * Añade una marca en la pila para poder desapilar la lista hasta este 
      * elemento.
@@ -894,6 +937,5 @@ public class SlkAction {
 
         _pilaNodos.pop();
     }
-    
     
 }

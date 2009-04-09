@@ -25,10 +25,10 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
      * POR REFERENCIA, POR VALOR.
      */
     private ArrayList<TipoPasoParametro> _pasoArgumentos;
-    /**
-     * Tipo de retorno del Subprograma. a los PROCEDURE se les pone VOID.
-     */
-    private ArrayList<TipoSemantico> _valorRetorno;
+//    /**
+//     * Tipo de retorno del Subprograma. a los PROCEDURE se les pone VOID.
+//     */
+//    private ArrayList<TipoSemantico> _valorRetorno;
     
     /**
      * la tabla de simbolos de este ambito
@@ -46,7 +46,7 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
         
         _tipoArgumentos = tipoArgumentos;
         _pasoArgumentos = pasoArgumentos;
-        _valorRetorno = retorno;
+        super._tipoSemantico = retorno;
         _numArgs = numArgs;
         _tablaSimbolos = ambitoProc;
     }
@@ -58,7 +58,7 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
      */
     public ArrayList<TipoSemantico> getValorRetorno() {
 
-        return _valorRetorno;
+        return super._tipoSemantico;
     }
 
     /**
@@ -88,19 +88,26 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
     @Override
     public String toString() {
       
-        String cadena = "\tProcedimiento (";
+        String cadena = "";
+        
+        if (!super._tipoSemantico.isEmpty())
+            cadena = "\tFunicion (";
+        else
+            cadena = "\tProcedimiento (";
                 
-        for (ArrayList<TipoSemantico> arrayList : _tipoArgumentos) {
+        for (int i=0; i< _numArgs; i++) {
+            cadena += _pasoArgumentos.get(i).name();
+            
             cadena += "[";
-            for (TipoSemantico tipoSemantico : arrayList) {
+            for (TipoSemantico tipoSemantico : _tipoArgumentos.get(i)) {
                 cadena += tipoSemantico.name();
                 cadena += ",";
             }
-            cadena += "]";
+            cadena += "] ";
         }
        
         cadena += ")";
-        if (!_valorRetorno.isEmpty()){
+        if (!super._tipoSemantico.isEmpty()){
              cadena += ":"; 
               cadena += super.toString();
         }
