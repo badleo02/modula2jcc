@@ -37,6 +37,11 @@ public class SlkAction {
     private boolean _tablaGlobalNombrada = false;
 
     /**
+     * para ver si en el for hay sentencia by o no
+     */
+    private boolean sentenciaBY = false;
+
+    /**
      * Constructor de la clase SlkAction.
      * 
      * @param tabla Tabla de simbolos del compilador.
@@ -78,23 +83,27 @@ public class SlkAction {
     case 20:  ExpresionREPEAT();  break;
     case 21:  SentenciaREPEAT();  break;
     case 22:  SentenciaLOOP();  break;
-    case 23:  Cadena();  break;
-    case 24:  Caracter();  break;
-    case 25:  NumeroEntero();  break;
-    case 26:  NumeroReal();  break;
-    case 27:  TipoPredefinidoPorUsuario();  break;
-    case 28:  BITSET();  break;
-    case 29:  BOOLEAN();  break;
-    case 30:  CARDINAL();  break;
-    case 31:  CHAR();  break;
-    case 32:  INTEGER();  break;
-    case 33:  LONGINT();  break;
-    case 34:  LONGREAL();  break;
-    case 35:  PROC();  break;
-    case 36:  REAL();  break;
-    case 37:  TRUE();  break;
-    case 38:  FALSE();  break;
-    case 39:  NIL();  break;
+    case 23:  IdentificadorFOR();  break;
+    case 24:  ExpresionT0();  break;
+    case 25:  ExpresionConstanteFOR();  break;
+    case 26:  SentenciaFOR();  break;
+    case 27:  Cadena();  break;
+    case 28:  Caracter();  break;
+    case 29:  NumeroEntero();  break;
+    case 30:  NumeroReal();  break;
+    case 31:  TipoPredefinidoPorUsuario();  break;
+    case 32:  BITSET();  break;
+    case 33:  BOOLEAN();  break;
+    case 34:  CARDINAL();  break;
+    case 35:  CHAR();  break;
+    case 36:  INTEGER();  break;
+    case 37:  LONGINT();  break;
+    case 38:  LONGREAL();  break;
+    case 39:  PROC();  break;
+    case 40:  REAL();  break;
+    case 41:  TRUE();  break;
+    case 42:  FALSE();  break;
+    case 43:  NIL();  break;
         }
     }
 
@@ -151,6 +160,26 @@ public class SlkAction {
             }
         }
         _tablaActual.setNombre(id.getLexema());
+    }
+
+    private void ExpresionConstanteFOR() {
+
+        /***pruebas***/
+        Nodo nodoBy = new Nodo();
+        nodoBy.addTipo(TipoSemantico.VOID);
+        /***fin pruebas***/
+
+        Nodo nodo1 = _pilaNodos.pop(); //ExpresionConstante
+
+        /***pruebas***/
+        //para probar porque no estan echas las expresiones constantes
+        //pero las expresion para un solo numero, un solo caracter....
+        _pilaNodos.push(nodoBy);
+        /***fin pruebas***/
+
+        _pilaNodos.pop();// sacamos el nodoBy
+        _pilaNodos.push(nodo1);
+        sentenciaBY = true;
     }
 
     private void ExpresionELSIF() {
@@ -245,6 +274,39 @@ public class SlkAction {
 
     }
 
+    private void ExpresionT0() {
+        //SentenciaFOR:
+        //FOR Identificador := Expresion _action_IdentificadorFOR TO Expresion _action_ExpresionTO [ BY ExpresionConstante _action_ExpresionConstanteFOR ] DO SecuenciaDeSentencias END _action_SentenciaFOR
+        
+        Nodo nodo1 = _pilaNodos.pop(); //sacamos expresion
+        
+        /***pruebas***
+        Nodo nodoTo = new Nodo();
+        nodoTo.addTipo(TipoSemantico.VOID);
+        // para probar porque no estan echas las expresiones
+        // pero para un numero , un caracter,....
+        //nodo1.addTipo(TipoSemantico.CARACTER.name());
+        //metemos el nodoTo para pruebas en la pila
+        _pilaNodos.push(nodoTo);        
+        /***fin pruebas***/
+
+        Nodo nodo2 = _pilaNodos.pop();// sacamos nodoTo
+        Nodo nodo3 = _pilaNodos.pop(); // sacamos la expresion de la asignacion para comprobar tipos
+        // y ver que nodo1 sea mayor que nodo3
+
+        if ((nodo1.getTipoBasico().equals(nodo3.getTipoBasico())) && (nodo1.getLexema().compareTo(nodo3.getLexema()) > 0)) {
+            _pilaNodos.push(nodo1);
+        } else {
+            Nodo n = new Nodo();
+            n.addTipo(TipoSemantico.ERROR);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia ExpresionTO mal tipada",
+                    nodo2.getLinea(),
+                    nodo2.getColumna()));
+            _pilaNodos.push(n);
+        }
+
+    }
+
     private void ExpresionWHILE() {
         //SentenciaWHILE:
         //WHILE Expresion _action_ExpresionWHILE DO SecuenciaDeSentencias END _action_SentenciaWHILE
@@ -295,6 +357,120 @@ public class SlkAction {
 //                    id.getLinea(),
 //                    id.getColumna()));
 //        }
+    }
+
+    private void IdentificadorFOR() {
+        //SentenciaFOR:
+        //FOR Identificador := Expresion _action_IdentificadorFOR TO Expresion _action_ExpresionTO [ BY ExpresionConstante _action_ExpresionConstanteFOR ] DO SecuenciaDeSentencias END _action_SentenciaFOR
+
+        /***pruebas***
+        Nodo nodoFor = new Nodo();// nodoFOR
+        nodoFor.addTipo(TipoSemantico.VOID);
+        /***fin pruebas***/
+
+        //para probar porque no estan echas las expresiones
+        // pero reconoce un solo numero, un solo caracter......
+        Nodo nodo1 = _pilaNodos.pop();//saca expresion
+        _pilaNodos.pop();// saca :=
+        Nodo nodo2 = _pilaNodos.pop(); // saca identificador
+
+        /***pruebas***
+        //metemos el nodoFor en la pila
+        _pilaNodos.push(nodoFor);
+        Nodo nodo3 = _pilaNodos.pop(); // sacamos el nodoFor
+        /*** fin pruebas***/
+
+        // buscamos el tipo del identificador en la tabla
+        TipoSemantico tipo = _tablaActual.busca(nodo2.getLexema()).getTipoBasico();
+
+        // miramos si la expresion es del mismo tipo del identificador para asignarselo
+        if (tipo.equals(nodo1.getTipoBasico())) {
+            _pilaNodos.push(nodo1);
+        } else {
+            Nodo n = new Nodo();
+            n.addTipo(TipoSemantico.ERROR);
+            _pilaNodos.add(n);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia IdentificadorFOR mal tipada",
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));
+        }
+    }
+
+    private void SentenciaFOR() {
+        //SentenciaFOR:
+        //FOR Identificador := Expresion _action_IdentificadorFOR TO Expresion _action_ExpresionTO [ BY ExpresionConstante _action_ExpresionConstanteFOR ] DO SecuenciaDeSentencias END _action_SentenciaFOR
+        
+        /***pruebas***
+        Nodo SecuenciaDeSentencias = new Nodo();
+        SecuenciaDeSentencias.addTipo(TipoSemantico.VOID);
+        Nodo nodoEnd = new Nodo();
+        nodoEnd.addTipo(TipoSemantico.VOID);
+        Nodo nodoBy = new Nodo();
+        nodoBy.addTipo(TipoSemantico.VOID);
+        Nodo nodoTo = new Nodo();
+        nodoTo.addTipo(TipoSemantico.VOID);
+        //metemos en la pila el nodo END
+        _pilaNodos.push(nodoEnd);
+        /***fin pruebas***/        
+
+        _pilaNodos.pop();// sacamos END
+
+        /***pruebas***
+        // tantos pop como tenga la secuencia de sentencias
+        // en la prueba 5
+        _pilaNodos.pop();
+        _pilaNodos.pop();
+        _pilaNodos.pop();
+        _pilaNodos.pop();
+        _pilaNodos.pop();        
+        Nodo nodo = new Nodo();
+        nodo = SecuenciaDeSentencias;
+        _pilaNodos.push(nodo);
+        /***fin pruebas***/
+
+        Nodo nodo1 = _pilaNodos.pop();// sacamos secuencia de sentencias
+        _pilaNodos.pop(); //sacamos el DO
+        Nodo nodo2 = new Nodo();
+        Nodo nodo3 = new Nodo();
+
+        if (sentenciaBY) {
+            // al ser solo un numero, un caracter,...
+            nodo2 = _pilaNodos.pop(); // sacamos expresionConstante
+        }
+
+        nodo3 = _pilaNodos.pop(); // sacamos Expresion
+        _pilaNodos.pop(); //sacamos el FOR
+
+        if (sentenciaBY) {
+            // miramos si las expresiones son del mismo tipo y que secuencia de sentencias sea de tipo void
+            if (nodo2.getTipoBasico().equals(nodo3.getTipoBasico()) && nodo1.getTipoBasico().equals(TipoSemantico.VOID)) {
+                Nodo n = new Nodo();
+                n.addTipo(TipoSemantico.VOID);
+                _pilaNodos.push(n);
+            } else {
+                Nodo n = new Nodo();
+                n.addTipo(TipoSemantico.ERROR);
+                _pilaNodos.push(n);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia SentenciaFOR mal tipada",
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
+            }
+
+        } else {// miramos que la expresion no sea de tipo error y que secuencia de sentencias sea de tipo void
+            if (nodo1.getTipoBasico().equals(TipoSemantico.VOID) && !nodo3.getTipoBasico().equals(TipoSemantico.ERROR)) {
+                Nodo n = new Nodo();
+                n.addTipo(TipoSemantico.VOID);
+                _pilaNodos.push(n);
+            } else {
+                Nodo n = new Nodo();
+                n.addTipo(TipoSemantico.ERROR);
+                _pilaNodos.push(n);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia SentenciaFOR mal tipada",
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
+            }
+        }
+
     }
 
     /**

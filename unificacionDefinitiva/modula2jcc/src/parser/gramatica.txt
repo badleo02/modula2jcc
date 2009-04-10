@@ -200,7 +200,7 @@ SentenciaLOOP:
 LOOP SecuenciaDeSentencias END _action_SentenciaLOOP
 
 SentenciaFOR:
-FOR Identificador := Expresion TO Expresion [ BY ExpresionConstante ] DO SecuenciaDeSentencias END
+FOR Identificador := Expresion _action_IdentificadorFOR TO Expresion _action_ExpresionTO [ BY ExpresionConstante _action_ExpresionConstanteFOR ] DO SecuenciaDeSentencias END _action_SentenciaFOR
 
 SentenciaWITH:
 WITH Identificador ParteIzquierda DO SecuenciaDeSentencias END 
