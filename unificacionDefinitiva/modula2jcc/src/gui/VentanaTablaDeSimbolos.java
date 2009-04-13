@@ -1,7 +1,9 @@
 package gui;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+import javax.swing.JOptionPane;
 import tabla_de_simbolos.TablaDeSimbolos;
 import tabla_de_simbolos.simbolo.InfoSimbolo;
 
@@ -16,6 +18,8 @@ public class VentanaTablaDeSimbolos extends javax.swing.JFrame {
      * Tabla de simbolos de la aplicación.
      */
     private TablaDeSimbolos _tablaDeSimbolos;
+    /** Constante que contiene el mensaje inicial que se introduce en el ambito actual*/
+    private static final String AMBITO_ACTUAL = "Ambito actual";
 
     /**
      * Constructor de la clase VentanaTablaDeSimbolos.
@@ -27,6 +31,13 @@ public class VentanaTablaDeSimbolos extends javax.swing.JFrame {
         initComponents();
 
         _tablaDeSimbolos = tabla;
+
+        //Compruebo que estoy en la tabla global
+        if (!_tablaDeSimbolos.esTablaGlobal()) {
+            //Voy a la raiz de las tablas
+            while (_tablaDeSimbolos.cerrarAmbito() != null) {
+            }
+        }
 
         // Actualizamos el nombre de la tabla
         _lblNombreTabla.setText(_lblNombreTabla.getText() + _tablaDeSimbolos.getNombre());
@@ -226,26 +237,63 @@ private void _btnAmbitoSuperiorActionPerformed(java.awt.event.ActionEvent evt) {
     
     JOptionPane.showMessageDialog(this, "Has entrado a la tabla del procedimiento/modulo  " + _tablaDeSimbolos.get_nombre(), "Info", JOptionPane.INFORMATION_MESSAGE);
     }*/
+    if (_tablaDeSimbolos.esTablaGlobal()) {
+        JOptionPane.showMessageDialog(this, "No puedes acceder a un ambito superior", "Estas en el ambito principal", JOptionPane.INFORMATION_MESSAGE);
+    } else {
+        _tablaDeSimbolos = _tablaDeSimbolos.cerrarAmbito();
+        // Actualizamos el nombre de la tabla
+        _lblNombreTabla.setText(AMBITO_ACTUAL + " " + _tablaDeSimbolos.getNombre());
+
+        // Le pedimos a la tabla de simbolos que nos muestre los simbolos
+        _txtAmbitoActual.setText(contenidoTabla());
+        //obtengo las variables visibles desde el ambito al que accedemos
+        _txtVariablesVisibles.setText(variablesVisibles(_tablaDeSimbolos));
+    }
+
 }//GEN-LAST:event__btnAmbitoSuperiorActionPerformed
 
+    /**
+     * Metodo que recorre el arbol de tablas de simbolos y te devuelve la tabla de simbolos
+     * que corresponde con el nombre introducido
+     * @param nomAmbito Nombre de la tabla de simbolos a la que se quiere acceder
+     * @param actual Tabla de simbolos actual
+     * @return Tabla de simbolos que corresponde al nombre introducido. Si la tabla
+     * con el nombre introducido no existe se devolvera null.
+     */
+    private TablaDeSimbolos accederAmbitoInferior(String nomAmbito, TablaDeSimbolos actual) {
+        if (nomAmbito.equals(actual.getNombre())) {
+            return actual;
+        } else {
+            for (Iterator it = actual.getContenido().iterator(); it.hasNext();) {
+                TablaDeSimbolos tablaInferior = (TablaDeSimbolos) it.next();
+                if (tablaInferior.getNombre().equals(nomAmbito)) {
+                    return tablaInferior;
+                }
+            }
+        }
+        return null;
+    }
+
 private void _btnAmbitoInferiorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__btnAmbitoInferiorActionPerformed
-//    String ambito = JOptionPane.showInputDialog(null,
-//            "Inserte el nombre del ámbito al que quiere acceder", "Nombre del ámbito", JOptionPane.QUESTION_MESSAGE);
-//    if (ambito != null) {
-//        TablaSimbolos tablaAux = _tablaDeSimbolos.accederAmbitoInf(ambito);
-//        if (tablaAux != null) {
-//            if (tablaAux.getContinente() != null && tablaAux.getModPadre() == null) {
-//                _txtVariablesVisibles.setText(_tablaDeSimbolos.getVariablesVisibles(tablaAux.getNombre()));
-//            } else {
-//                _txtVariablesVisibles.setText("No tiene variables visibles en modulos superiores");
-//            }
-//            _tablaDeSimbolos = tablaAux;
-//            JOptionPane.showMessageDialog(this, "Has entrado a la tabla del procedimiento/modulo  " + _tablaDeSimbolos.getNombre(), "Info", JOptionPane.INFORMATION_MESSAGE);
-//           // _txtContenidoTabla.setText(_tablaDeSimbolos.contenidoTabla());
-//        } else {
-//            JOptionPane.showMessageDialog(this, "Error", "Tabla no encontrada", JOptionPane.ERROR_MESSAGE);
-//        }
-//    }
+    String ambito = JOptionPane.showInputDialog(null,
+            "Inserte el nombre del ámbito al que quiere acceder", "Nombre del ámbito", JOptionPane.QUESTION_MESSAGE);
+    if (ambito != null) {
+        TablaDeSimbolos tablaInferior = accederAmbitoInferior(ambito, _tablaDeSimbolos);
+        if (tablaInferior != null) {
+            _tablaDeSimbolos = tablaInferior;
+
+            // Actualizamos el nombre de la tabla
+            _lblNombreTabla.setText(AMBITO_ACTUAL + " " + _tablaDeSimbolos.getNombre());
+
+            // Le pedimos a la tabla de simbolos que nos muestre los simbolos
+            _txtAmbitoActual.setText(contenidoTabla());
+
+            //obtengo las variables visibles desde el ambito al que accedemos
+            _txtVariablesVisibles.setText(variablesVisibles(_tablaDeSimbolos));
+        } else {
+            JOptionPane.showMessageDialog(this, "No puedes acceder al ambito inferior introducido", "No puedes acceder al ambito inferior introducido", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }//GEN-LAST:event__btnAmbitoInferiorActionPerformed
 
 private void _opcionIdentificadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__opcionIdentificadorActionPerformed
@@ -343,7 +391,7 @@ private void _opcionModuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 //        }
 //    }
 }//GEN-LAST:event__opcionModuloActionPerformed
-    
+
     /**
      * Devuelve el contenido de una tabla.
      *
@@ -353,28 +401,75 @@ private void _opcionModuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN
      */
     /*public String contenidoTabla(String excluir) {
 
-        Set keySet = _tablaDeSimbolos.getTS().keySet();
-        String salida = "";
+    Set keySet = _tablaDeSimbolos.getTS().keySet();
+    String salida = "";
 
-        for (Iterator i = keySet.iterator(); i.hasNext();) {
+    for (Iterator i = keySet.iterator(); i.hasNext();) {
 
-            Object key = i.next();
-            InfoSimbolo info = _tablaDeSimbolos.getTS().get(key);
+    Object key = i.next();
+    InfoSimbolo info = _tablaDeSimbolos.getTS().get(key);
 
-            if (!key.equals(excluir)) {
-                if (info != null) {
-                    TablaDeSimbolos tablaInt = info.getAmbito();
-                    if (tablaInt != null) {
-                        salida = salida + key + " -->  " + tablaInt.getNombre() + '\n';
-                    } else {
-                        salida = salida + key + '\n';
+    if (!key.equals(excluir)) {
+    if (info != null) {
+    TablaDeSimbolos tablaInt = info.getAmbito();
+    if (tablaInt != null) {
+    salida = salida + key + " -->  " + tablaInt.getNombre() + '\n';
+    } else {
+    salida = salida + key + '\n';
+    }
+    }
+    }
+    }
+
+    return salida;
+    }*/
+    /**
+     * Metodo que devuelve las variables visibles para un ambito
+     * @param actual Tabla de simbolos actual
+     * @return String con todas las variables visibles para el ambito
+     */
+    private String variablesVisibles(TablaDeSimbolos actual) {
+        String variablesVisibles = "";
+        //Creo una copia para no modificar la existente
+        TablaDeSimbolos tabla = actual;
+        while (!tabla.esTablaGlobal()) {
+            tabla = tabla.getContinente();
+            String variablesActuales = "\nVariables exportadas del modulo " + tabla.getNombre();
+            Set keySet = tabla.getTS().keySet();
+
+            for (Iterator i = keySet.iterator(); i.hasNext();) {
+
+                Object key = i.next();
+                if (!esNombreModulo(tabla, (String) key)) {
+                    InfoSimbolo info = tabla.getTS().get(key);
+
+                    if (info != null) {
+                        variablesActuales = variablesActuales + "\nLexema " + key + "\n" + info.toString();
                     }
                 }
             }
+            variablesVisibles = variablesActuales + variablesVisibles;
         }
+        return variablesVisibles;
+    }
 
-        return salida;
-    }*/
+    /**
+     * Metodo auxiliar utilizado para mostrar la tabla de simbolos. Este metodo comprueba
+     * que el lexema introducido no sea el nombre de un modulo o procedimiento.
+     * @param actual Tabla de simbolos actual
+     * @param lexema Nombre del lexema a comprobar
+     * @return true si es el nombre de un modulo o procedimiento, false en otro caso.
+     */
+    private boolean esNombreModulo(TablaDeSimbolos actual, String lexema) {
+        List contenido = actual.getContenido();
+        for (Iterator it = contenido.iterator(); it.hasNext();) {
+            TablaDeSimbolos tabla = (TablaDeSimbolos) it.next();
+            if (tabla.getNombre().equals(lexema)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Devuelve el contenido de una tabla.
@@ -389,7 +484,7 @@ private void _opcionModuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN
         for (Iterator i = keySet.iterator(); i.hasNext();) {
 
             Object key = i.next();
-            
+
             InfoSimbolo info = _tablaDeSimbolos.getTS().get(key);
 
             if (info != null) {
@@ -412,13 +507,12 @@ private void _opcionModuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 //                            ", Tipo Simbolo: " + info.getTipoSimbolo() + 
 //                            "\n";
 //                }
-                salida =    salida + "Lexema: " + key + "\n" + info.toString();
+                salida = salida + "Lexema: " + key + "\n" + info.toString();
             }
         }
 
         return salida;
     }
-
     /**
      * Devuelve las variables visibles de una tabla.
      *
@@ -428,14 +522,14 @@ private void _opcionModuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN
      */
     /*public String getVariablesVisibles(String excluir) {
 
-        String salida;
+    String salida;
 
-        salida = contenidoTabla(excluir);
+    salida = contenidoTabla(excluir);
 
-        if (_tablaDeSimbolos.getContinente() != null) {
-            salida = salida + getVariablesVisibles(_tablaDeSimbolos.getContinente().getNombre());
-        }
-        return salida;
+    if (_tablaDeSimbolos.getContinente() != null) {
+    salida = salida + getVariablesVisibles(_tablaDeSimbolos.getContinente().getNombre());
+    }
+    return salida;
     }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -455,6 +549,4 @@ private void _opcionModuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN
     private javax.swing.JTextArea _txtAmbitoActual;
     private javax.swing.JTextArea _txtVariablesVisibles;
     // End of variables declaration//GEN-END:variables
-
-  
 }
