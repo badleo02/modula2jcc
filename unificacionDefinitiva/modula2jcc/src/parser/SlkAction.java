@@ -122,7 +122,7 @@ public class SlkAction {
             boolean error = false;
 
             // Si el modulo no está declarado
-            if (_tablaActual.estaModuloDeclarado(id.getLexema())) {
+            if (!_tablaActual.estaModuloDeclarado(id.getLexema())) {
 
                 // Insertamos el identificador del modulo en la tabla de simbolos actuales
                 if (_tablaActual.declaraSimbolo(id.getLexema())) {
@@ -160,6 +160,7 @@ public class SlkAction {
             }
         }
         _tablaActual.setNombre(id.getLexema());
+        _tablaGlobalNombrada = true;
     }
 
     private void ExpresionConstanteFOR() {
