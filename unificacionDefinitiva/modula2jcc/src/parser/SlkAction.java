@@ -61,7 +61,7 @@ public class SlkAction {
      */
     public void execute(int number) {
         switch (number) {
-  case 1:  FinDeModulo();  break;
+ case 1:  FinDeModulo();  break;
     case 2:  ComienzoDeModulo();  break;
     case 3:  finDeAmbito();  break;
     case 4:  DefinicionDeTipo();  break;
@@ -84,26 +84,29 @@ public class SlkAction {
     case 21:  SentenciaREPEAT();  break;
     case 22:  SentenciaLOOP();  break;
     case 23:  IdentificadorFOR();  break;
-    case 24:  ExpresionT0();  break;
+    case 24:  ExpresionTO();  break;
     case 25:  ExpresionConstanteFOR();  break;
     case 26:  SentenciaFOR();  break;
     case 27:  Cadena();  break;
     case 28:  Caracter();  break;
-    case 29:  NumeroEntero();  break;
-    case 30:  NumeroReal();  break;
-    case 31:  TipoPredefinidoPorUsuario();  break;
-    case 32:  BITSET();  break;
-    case 33:  BOOLEAN();  break;
-    case 34:  CARDINAL();  break;
-    case 35:  CHAR();  break;
-    case 36:  INTEGER();  break;
-    case 37:  LONGINT();  break;
-    case 38:  LONGREAL();  break;
-    case 39:  PROC();  break;
-    case 40:  REAL();  break;
-    case 41:  TRUE();  break;
-    case 42:  FALSE();  break;
-    case 43:  NIL();  break;
+    case 29:  expresionSinParentesisDeSuma();  break;
+    case 30:  operadorUnario();  break;
+    case 31:  expresionSinParentesisDeMultiplicacion();  break;
+    case 32:  NumeroEntero();  break;
+    case 33:  NumeroReal();  break;
+    case 34:  TipoPredefinidoPorUsuario();  break;
+    case 35:  BITSET();  break;
+    case 36:  BOOLEAN();  break;
+    case 37:  CARDINAL();  break;
+    case 38:  CHAR();  break;
+    case 39:  INTEGER();  break;
+    case 40:  LONGINT();  break;
+    case 41:  LONGREAL();  break;
+    case 42:  PROC();  break;
+    case 43:  REAL();  break;
+    case 44:  TRUE();  break;
+    case 45:  FALSE();  break;
+    case 46:  NIL();  break;
         }
     }
 
@@ -308,6 +311,10 @@ public class SlkAction {
 
     }
 
+    private void ExpresionTO() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
     private void ExpresionWHILE() {
         //SentenciaWHILE:
         //WHILE Expresion _action_ExpresionWHILE DO SecuenciaDeSentencias END _action_SentenciaWHILE
@@ -472,6 +479,33 @@ public class SlkAction {
             }
         }
 
+    }
+
+    private void expresionSinParentesisDeMultiplicacion() {
+        Nodo nodo = _pilaNodos.pop();
+        nodo = _pilaNodos.pop();
+        nodo = _pilaNodos.pop();
+        Nodo newNodo = new Nodo();
+        // TODO: Método por hacer
+        //newNodo.setLexema("resultadoExpresionParentizada");
+        _pilaNodos.push(newNodo);
+    }
+
+    private void expresionSinParentesisDeSuma() {
+        Nodo nodoOp = _pilaNodos.pop();
+        Nodo nodo = null;
+         if(nodoOp.getLexema().equals("SUMA")){
+            nodo = _pilaNodos.pop();
+         }
+        nodo = _pilaNodos.pop();
+        nodo = _pilaNodos.pop();
+        Nodo newNodo = new Nodo();
+        // TODO: Método por hacer
+        //newNodo.setValor("resultadoExpresionParentizada");
+        _pilaNodos.push(newNodo);
+        if(nodoOp.getLexema().equals("SUMA")){
+            _pilaNodos.push(nodoOp);
+        }
     }
 
     /**
@@ -1088,6 +1122,16 @@ public class SlkAction {
         
         error.addTipo(TipoSemantico.ERROR);
         _pilaNodos.add(error);
+    }
+
+    private void operadorUnario() {
+        Nodo nodo2 = _pilaNodos.pop();
+        Nodo nodo = _pilaNodos.pop();
+
+        Nodo newNodo = new Nodo();
+        // TODO: Método nuevo
+       // newNodo.setValor("resultadoOperadorUnario");
+        _pilaNodos.push(newNodo);
     }
 
  
