@@ -265,19 +265,19 @@ Signo Termino RestoExpresionSimple
 
 RestoExpresionSimple:
 _epsilon_ 
-OperadorSumador Termino
+OperadorSumador Termino _action_expresionSinParentesisDeSuma RestoExpresionSimple
 
 Signo:
 _epsilon_
-+ 
-- 
++ _action_operadorUnario
+- _action_operadorUnario
 
 Termino:
 Factor RestoTermino
 
 RestoTermino:
 _epsilon_
-OperadorMultiplicador Factor RestoTermino
+OperadorMultiplicador Factor RestoTermino _action_expresionSinParentesisDeMultiplicacion
 
 Factor:
 Identificador RestoFactor
