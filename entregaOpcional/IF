@@ -1,8 +1,0 @@
-MODULE EscribeRecursivamente ;
-	VAR
-	a : INTEGER;
-	BEGIN
-	IF a THEN
-	END;
-		
-END EscribeRecursivamente.
