@@ -19,7 +19,7 @@ public class Nodo {
     /**
      * Nodo marcador para las listas de identificadores
      */
-    private boolean _marcaListaIdentificadores;
+    private boolean _marcaListaIdentificadores, _marca;
     private String _lexema;
     private int _linea;
     private int _columna;
@@ -31,6 +31,7 @@ public class Nodo {
     public Nodo() {
 
         _marcaListaIdentificadores = false;
+        _marca = false;
         _tipoSemantico = new ArrayList<TipoSemantico>();
     }
 
@@ -139,6 +140,11 @@ public class Nodo {
         _marcaListaIdentificadores = true;
     }
 
+    public void crearMarca() {
+
+        _marca = true;
+    }
+
     /**
      * Devuelve verdadero si es un nodo de marca de inicio de lista
      * de identificadores y falso en caso contrario.
@@ -149,6 +155,11 @@ public class Nodo {
     public boolean esMarcaListaIdentificadores() {
         
         return _marcaListaIdentificadores;
+    }
+
+      public boolean esMarca() {
+
+        return _marca;
     }
     
     /**

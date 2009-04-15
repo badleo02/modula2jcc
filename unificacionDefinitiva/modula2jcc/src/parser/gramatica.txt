@@ -182,7 +182,7 @@ SentenciaIF:
 IF Expresion _action_ExpresionIF THEN SecuenciaDeSentencias RestoSentenciaIF END _action_SentenciaIF
 
 RestoSentenciaIF:
-{ ELSIF Expresion _action_ExpresionELSIF THEN SecuenciaDeSentencias _action_RestoSentenciaELSIF } [ ELSE SecuenciaDeSentencias _action_RestoSentenciaELSE ]
+{ ELSIF Expresion _action_ExpresionELSIF THEN SecuenciaDeSentencias _action_RestoSentenciaELSIF } [ ELSE SecuenciaDeSentencias _action_RestoSentenciaELSE ] _action_RestoSentenciaIF
 
 SentenciaCASE:
 CASE Expresion OF Caso { | Caso } [ ELSE SecuenciaDeSentencias ] END
