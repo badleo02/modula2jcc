@@ -141,7 +141,7 @@ ParteEjecutiva:
 [ BEGIN SecuenciaDeSentencias ]
 
 SecuenciaDeSentencias:
-Sentencia { ; Sentencia }
+Sentencia { ; Sentencia _action_SecuenciaDeSentencias2 } _action_SecuenciaDeSentencias
 
 Sentencia:
 _epsilon_
@@ -158,10 +158,10 @@ SentenciaRETURN
 EXIT
 
 SentenciaAsignacion:
-Identificador RestoSentenciaAsignacion 
+Identificador RestoSentenciaAsignacion _action_SentenciaAsignacion
 
 RestoSentenciaAsignacion:
-ParteIzquierda RestoSentenciaRestoAsignacion
+ParteIzquierda RestoSentenciaRestoAsignacion _action_RestoSentenciaAsignacion
 
 RestoSentenciaRestoAsignacion:
 _epsilon_
@@ -175,8 +175,8 @@ _epsilon_
 ^ ParteIzquierda
 
 IdentificadorOProcPredef:
-Identificador
-LlamadaProcedimientoPredefinido
+Identificador _action_IdentificadorOProcPredef_Ident
+LlamadaProcedimientoPredefinido _action_IdentificadorOProcPredef_ProcPredef
 
 SentenciaIF:
 IF Expresion _action_ExpresionIF THEN SecuenciaDeSentencias RestoSentenciaIF END _action_SentenciaIF

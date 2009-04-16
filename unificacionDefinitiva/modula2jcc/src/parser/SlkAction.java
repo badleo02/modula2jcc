@@ -68,41 +68,47 @@ public class SlkAction {
     case 10:  DeclaracionVariables();  break;
     case 11:  InicioDeclaracionProcedure();  break;
     case 12:  CabeceraDeProcedure();  break;
-    case 13:  ExpresionIF();  break;
-    case 14:  SentenciaIF();  break;
-    case 15:  ExpresionELSIF();  break;
-    case 16:  RestoSentenciaELSIF();  break;
-    case 17:  RestoSentenciaELSE();  break;
-    case 18:  RestoSentenciaIF();  break;
-    case 19:  ExpresionWHILE();  break;
-    case 20:  SentenciaWHILE();  break;
-    case 21:  ExpresionREPEAT();  break;
-    case 22:  SentenciaREPEAT();  break;
-    case 23:  SentenciaLOOP();  break;
-    case 24:  IdentificadorFOR();  break;
-    case 25:  ExpresionTO();  break;
-    case 26:  ExpresionConstanteFOR();  break;
-    case 27:  SentenciaFOR();  break;
-    case 28:  Cadena();  break;
-    case 29:  Caracter();  break;
-    case 30:  expresionSinParentesisDeSuma();  break;
-    case 31:  operadorUnario();  break;
-    case 32:  expresionSinParentesisDeMultiplicacion();  break;
-    case 33:  NumeroEntero();  break;
-    case 34:  NumeroReal();  break;
-    case 35:  TipoPredefinidoPorUsuario();  break;
-    case 36:  BITSET();  break;
-    case 37:  BOOLEAN();  break;
-    case 38:  CARDINAL();  break;
-    case 39:  CHAR();  break;
-    case 40:  INTEGER();  break;
-    case 41:  LONGINT();  break;
-    case 42:  LONGREAL();  break;
-    case 43:  PROC();  break;
-    case 44:  REAL();  break;
-    case 45:  TRUE();  break;
-    case 46:  FALSE();  break;
-    case 47:  NIL();  break;
+    case 13:  SecuenciaDeSentencias2();  break;
+    case 14:  SecuenciaDeSentencias();  break;
+    case 15:  SentenciaAsignacion();  break;
+    case 16:  RestoSentenciaAsignacion();  break;
+    case 17:  IdentificadorOProcPredef_Ident();  break;
+    case 18:  IdentificadorOProcPredef_ProcPredef();  break;
+    case 19:  ExpresionIF();  break;
+    case 20:  SentenciaIF();  break;
+    case 21:  ExpresionELSIF();  break;
+    case 22:  RestoSentenciaELSIF();  break;
+    case 23:  RestoSentenciaELSE();  break;
+    case 24:  RestoSentenciaIF();  break;
+    case 25:  ExpresionWHILE();  break;
+    case 26:  SentenciaWHILE();  break;
+    case 27:  ExpresionREPEAT();  break;
+    case 28:  SentenciaREPEAT();  break;
+    case 29:  SentenciaLOOP();  break;
+    case 30:  IdentificadorFOR();  break;
+    case 31:  ExpresionTO();  break;
+    case 32:  ExpresionConstanteFOR();  break;
+    case 33:  SentenciaFOR();  break;
+    case 34:  Cadena();  break;
+    case 35:  Caracter();  break;
+    case 36:  expresionSinParentesisDeSuma();  break;
+    case 37:  operadorUnario();  break;
+    case 38:  expresionSinParentesisDeMultiplicacion();  break;
+    case 39:  NumeroEntero();  break;
+    case 40:  NumeroReal();  break;
+    case 41:  TipoPredefinidoPorUsuario();  break;
+    case 42:  BITSET();  break;
+    case 43:  BOOLEAN();  break;
+    case 44:  CARDINAL();  break;
+    case 45:  CHAR();  break;
+    case 46:  INTEGER();  break;
+    case 47:  LONGINT();  break;
+    case 48:  LONGREAL();  break;
+    case 49:  PROC();  break;
+    case 50:  REAL();  break;
+    case 51:  TRUE();  break;
+    case 52:  FALSE();  break;
+    case 53:  NIL();  break;
         }
     }
 
@@ -356,6 +362,67 @@ public class SlkAction {
         }
     }
 
+    private void IdentificadorOProcPredef_Ident() {
+        //IdentificadorOProcPredef:
+        //Identificador _action_IdentificadorOProcPredef_Ident
+
+        Nodo nodo1 = _pilaNodos.pop(); //Identificador
+        Nodo nuevo = new Nodo();
+
+        if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)) {
+            nuevo.addTipo(TipoSemantico.VOID);
+            _pilaNodos.push(nuevo);
+        } else {
+            nuevo.addTipo(TipoSemantico.ERROR);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Identificador NO Válido",
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));
+            _pilaNodos.push(nuevo);
+        }
+
+    }
+
+    private void IdentificadorOProcPredef_ProcPredef() {
+        //IdentificadorOProcPredef:
+        //LlamadaProcedimientoPredefinido _action_IdentificadorOProcPredef_ProcPredef
+
+        Nodo nodo1 = _pilaNodos.pop(); //LlamadaProcedimientoPredefinido
+        Nodo nuevo = new Nodo();
+
+        if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)) {
+            nuevo.addTipo(TipoSemantico.VOID);
+            _pilaNodos.push(nuevo);
+        } else {
+            nuevo.addTipo(TipoSemantico.ERROR);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Llamada a Procedimiento Predefinido NO Válida",
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));
+            _pilaNodos.push(nuevo);
+        }
+
+    }
+
+    private void RestoSentenciaAsignacion() {
+        //RestoSentenciaAsignacion:
+        //ParteIzquierda RestoSentenciaRestoAsignacion _action_RestoSentenciaAsignacion
+
+        Nodo nodo1 = _pilaNodos.pop(); //RestoSentenciaRestoAsignacion
+        Nodo nodo2 = _pilaNodos.pop(); //ParteIzquierda
+
+        Nodo nuevo = new Nodo();
+        if (nodo1.getTipoBasico().equals(TipoSemantico.VOID) && nodo2.getTipoBasico().equals(TipoSemantico.VOID)) {
+            nuevo.addTipo(TipoSemantico.VOID);
+            _pilaNodos.push(nuevo);
+        } else {
+            nuevo.addTipo(TipoSemantico.ERROR);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación NO Válida",
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));
+            _pilaNodos.push(nuevo);
+        }
+
+    }
+
     private void RestoSentenciaIF() {
         //RestoSentenciaIF:
         //{ ELSIF Expresion _action_ExpresionELSIF THEN SecuenciaDeSentencias _action_RestoSentenciaELSIF } [ ELSE SecuenciaDeSentencias _action_RestoSentenciaELSE ] _action_RestoSentenciaIF
@@ -412,6 +479,114 @@ public class SlkAction {
             Nodo n = new Nodo();
             n.addTipo(TipoSemantico.VOID);
             _pilaNodos.push(n);
+        }
+
+    }
+
+    private void SecuenciaDeSentencias() {
+        //SecuenciaDeSentencias:
+        //Sentencia { ; Sentencia _action_SecuenciaDeSentencias2 } _action_SecuenciaDeSentencias
+
+        boolean SSError = false;
+        int SSLinea = 0;
+        int SSColumna = 0;
+
+        //saca de la pila un nodo y comprueba si es una marca o si ya es directamente una Sentencia
+        Nodo nodo1 = _pilaNodos.pop(); //Sentencia o Marca
+        Nodo nuevo = new Nodo();
+
+        if (nodo1.esMarca()){
+
+            while (nodo1.esMarca()){
+                Nodo nodo2 = _pilaNodos.pop(); //sacamos Sentencia
+                //comprobamos que está bien tipada
+                if (nodo2.getTipoBasico().equals(TipoSemantico.ERROR)) {
+                    SSError = true;
+                    SSLinea = nodo2.getLinea();
+                    SSColumna = nodo2.getColumna();
+                }
+                nodo1 = _pilaNodos.pop();
+            }
+
+            //al salir de while, en nodo1 esta la primera sentencia
+            //comprobamos si es VOID y si no ha producido ningún error la secuencia anterior
+            if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)&& (!SSError)) {
+                nuevo.addTipo(TipoSemantico.VOID);
+                _pilaNodos.push(nuevo);
+            } else if (nodo1.getTipoBasico().equals(TipoSemantico.ERROR)){
+                nuevo.addTipo(TipoSemantico.ERROR);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Secuencia de Sentencias NO Válida",
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));
+                _pilaNodos.push(nuevo);
+            } else {
+                nuevo.addTipo(TipoSemantico.ERROR);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Secuencia de Sentencias NO Válida",
+                    SSLinea,
+                    SSColumna));
+                _pilaNodos.push(nuevo);
+            }
+
+        } else{ //solo hay una Sentencia
+            if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)) {
+            nuevo.addTipo(TipoSemantico.VOID);
+            _pilaNodos.push(nuevo);
+            } else {
+                nuevo.addTipo(TipoSemantico.ERROR);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Secuencia de Sentencias NO Válida",
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));
+                _pilaNodos.push(nuevo);
+            }
+        }
+
+
+    }
+
+    private void SecuenciaDeSentencias2() {
+        //SecuenciaDeSentencias:
+        //Sentencia { ; Sentencia _action_SecuenciaDeSentencias2 } _action_SecuenciaDeSentencias
+
+        //comprueba que Sentencia está bien tipada y añade un nodo Marca
+        Nodo nodo1 = _pilaNodos.pop(); //Sentencia
+        Nodo nuevo = new Nodo();
+
+        if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)) {
+            nuevo.addTipo(TipoSemantico.VOID);
+            _pilaNodos.push(nuevo);
+        } else {
+            nuevo.addTipo(TipoSemantico.ERROR);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia NO Válida",
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));
+            _pilaNodos.push(nuevo);
+        }
+
+         //insertamos el nodo marca en la pila
+        Nodo nodoMarca = new Nodo();
+        nodoMarca.crearMarca();
+        _pilaNodos.push(nodoMarca);
+
+    }
+
+    private void SentenciaAsignacion() {
+        //SentenciaAsignacion:
+        //Identificador RestoSentenciaAsignacion _action_SentenciaAsignacion
+
+        Nodo nodo1 = _pilaNodos.pop(); //RestoSentenciaAsignacion
+        Nodo nodo2 = _pilaNodos.pop(); //Identificador
+
+        Nodo nuevo = new Nodo();
+        if (nodo1.getTipoBasico().equals(TipoSemantico.VOID) &&
+                (nodo2.getTipoBasico().equals(TipoSemantico.VOID))) {
+            nuevo.addTipo(TipoSemantico.VOID);
+            _pilaNodos.push(nuevo);
+        } else {
+            nuevo.addTipo(TipoSemantico.ERROR);
+            _pilaNodos.push(nuevo);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación mal tipada",
+                    nuevo.getLinea(),
+                    nuevo.getColumna()));
         }
 
     }
