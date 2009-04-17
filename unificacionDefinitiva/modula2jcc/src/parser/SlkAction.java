@@ -4,6 +4,7 @@ import semantico.PilaNodos;
 import gestor_de_errores.GestorErrores;
 import gestor_de_errores.TErrorSemantico;
 import java.util.ArrayList;
+import org.apache.log4j.Logger;
 import scanner.TipoToken;
 import semantico.Nodo;
 import semantico.TipoSemantico;
@@ -36,6 +37,10 @@ public class SlkAction {
      */
     private boolean _tablaGlobalNombrada = false;
 
+    /** Objeto logger para mostrar trazas */
+    private static final Logger logger = Logger.getLogger(SlkAction.class);
+
+
     /**
      * Constructor de la clase SlkAction.
      * 
@@ -55,7 +60,7 @@ public class SlkAction {
      * @param number La accion semantica correspondiente.
      */
     public void execute(int number) {
-        switch (number) {
+    switch ( number ) {
     case 1:  FinDeModulo();  break;
     case 2:  ComienzoDeModulo();  break;
     case 3:  finDeAmbito();  break;
@@ -94,21 +99,23 @@ public class SlkAction {
     case 36:  expresionSinParentesisDeSuma();  break;
     case 37:  operadorUnario();  break;
     case 38:  expresionSinParentesisDeMultiplicacion();  break;
-    case 39:  NumeroEntero();  break;
-    case 40:  NumeroReal();  break;
-    case 41:  TipoPredefinidoPorUsuario();  break;
-    case 42:  BITSET();  break;
-    case 43:  BOOLEAN();  break;
-    case 44:  CARDINAL();  break;
-    case 45:  CHAR();  break;
-    case 46:  INTEGER();  break;
-    case 47:  LONGINT();  break;
-    case 48:  LONGREAL();  break;
-    case 49:  PROC();  break;
-    case 50:  REAL();  break;
-    case 51:  TRUE();  break;
-    case 52:  FALSE();  break;
-    case 53:  NIL();  break;
+    case 39:  OperadorBooleano();  break;
+    case 40:  NumeroEntero();  break;
+    case 41:  NumeroReal();  break;
+    case 42:  TipoPredefinidoPorUsuario();  break;
+    case 43:  BITSET();  break;
+    case 44:  BOOLEAN();  break;
+    case 45:  CARDINAL();  break;
+    case 46:  CHAR();  break;
+    case 47:  INTEGER();  break;
+    case 48:  LONGINT();  break;
+    case 49:  LONGREAL();  break;
+    case 50:  PROC();  break;
+    case 51:  REAL();  break;
+    case 52:  TRUE();  break;
+    case 53:  FALSE();  break;
+    case 54:  NIL();  break;
+  
         }
     }
 
@@ -402,6 +409,15 @@ public class SlkAction {
 
     }
 
+    private void OperadorBooleano() {
+        if(logger.isDebugEnabled()){
+            logger.debug("Entrando en el metodo operadorBooleano");
+        }
+        if(logger.isDebugEnabled()){
+            logger.debug("Salida con exito de OperadorBooleano");
+        }
+    }
+
     private void RestoSentenciaAsignacion() {
         //RestoSentenciaAsignacion:
         //ParteIzquierda RestoSentenciaRestoAsignacion _action_RestoSentenciaAsignacion
@@ -645,6 +661,9 @@ public class SlkAction {
     }
 
     private void expresionSinParentesisDeMultiplicacion() {
+        if(logger.isDebugEnabled()){
+            logger.debug("Entrando en el metodo expresionSinParentesisDeMultiplicacion");
+        }
         Nodo nodo = _pilaNodos.pop();
         nodo = _pilaNodos.pop();
         nodo = _pilaNodos.pop();
@@ -652,9 +671,15 @@ public class SlkAction {
         // TODO: Método por hacer
         //newNodo.setLexema("resultadoExpresionParentizada");
         _pilaNodos.push(newNodo);
+        if(logger.isDebugEnabled()){
+            logger.debug("Salida con exito de expresionSinParentesisDeMultiplicacion");
+        }
     }
 
     private void expresionSinParentesisDeSuma() {
+        if(logger.isDebugEnabled()){
+            logger.debug("Entrando en el metodo expresionSinParentesisDeSuma");
+        }
         Nodo nodoOp = _pilaNodos.pop();
         Nodo nodo = null;
          if(nodoOp.getLexema().equals("SUMA")){
@@ -668,6 +693,9 @@ public class SlkAction {
         _pilaNodos.push(newNodo);
         if(nodoOp.getLexema().equals("SUMA")){
             _pilaNodos.push(nodoOp);
+        }
+        if(logger.isDebugEnabled()){
+            logger.debug("Salida con exito de expresionSinParentesisDeSuma");
         }
     }
 
@@ -1271,13 +1299,28 @@ public class SlkAction {
     }
 
     private void operadorUnario() {
-        Nodo nodo2 = _pilaNodos.pop();
-        Nodo nodo = _pilaNodos.pop();
+        if(logger.isDebugEnabled()){
+            logger.debug("Entrando en el metodo OperadorUnario");
+        }
 
-        Nodo newNodo = new Nodo();
-        // TODO: Método nuevo
-       // newNodo.setValor("resultadoOperadorUnario");
-        _pilaNodos.push(newNodo);
+        if(!_pilaNodos.peek().esError()){
+            Nodo numero = _pilaNodos.pop();
+            Nodo signo = _pilaNodos.pop();
+            if(signo.getTipoToken() == TipoToken.OPERADOR_SUMADOR){
+              /*  if(esEntero(numero) || esReal(numero)){
+                    _pilaNodos.push(numero);
+                }*/
+            }
+            else{
+                Nodo nodoError = new Nodo();
+                ArrayList<TipoSemantico> tipos = new ArrayList();
+                tipos.add(TipoSemantico.ERROR);
+                _pilaNodos.push(nodoError);
+            }
+        }
+       if(logger.isDebugEnabled()){
+            logger.debug("Salida con exito de operadorUnario");
+        }
     }
 
  
