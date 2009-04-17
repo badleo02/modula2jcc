@@ -296,13 +296,13 @@ ParametrosDeLlamada
 ParteIzquierda
 
 OperadorComparador:
-= 
-<> 
-# 
-< 
-<= 
-> 
->= 
+= _action_OperadorBooleano
+<>  _action_OperadorBooleano
+#  _action_OperadorBooleano
+<  _action_OperadorBooleano
+<=  _action_OperadorBooleano
+>  _action_OperadorBooleano
+>=  _action_OperadorBooleano
 IN 
 
 OperadorSumador:
