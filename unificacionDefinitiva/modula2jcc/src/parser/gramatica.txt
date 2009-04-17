@@ -319,8 +319,8 @@ MOD
 AND 
 
 OperadorUnario:
-NOT 
-~ 
+NOT _action_operadorUnario
+~ _action_operadorUnario
 
 //----------------------------//
 //	ELEMENTOS BASICOS		//
