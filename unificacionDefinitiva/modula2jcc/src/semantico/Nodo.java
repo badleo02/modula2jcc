@@ -99,6 +99,14 @@ public class Nodo {
     }
 
     /**
+     * Cambia el lexema del nodo por el String de entrada
+     * @param lexema Nuevo contenido de lexema
+     */
+    public void setLexema(String lexema){
+        this._lexema = lexema;
+    }
+
+    /**
      * Devuelve el string correspondiente a la clase Nodo.
      * 
      * @return El string correspondiente a la clase Nodo.
