@@ -44,20 +44,21 @@ public void execute ( int  number )
     case 36:  expresionSinParentesisDeSuma();  break;
     case 37:  operadorUnario();  break;
     case 38:  expresionSinParentesisDeMultiplicacion();  break;
-    case 39:  NumeroEntero();  break;
-    case 40:  NumeroReal();  break;
-    case 41:  TipoPredefinidoPorUsuario();  break;
-    case 42:  BITSET();  break;
-    case 43:  BOOLEAN();  break;
-    case 44:  CARDINAL();  break;
-    case 45:  CHAR();  break;
-    case 46:  INTEGER();  break;
-    case 47:  LONGINT();  break;
-    case 48:  LONGREAL();  break;
-    case 49:  PROC();  break;
-    case 50:  REAL();  break;
-    case 51:  TRUE();  break;
-    case 52:  FALSE();  break;
-    case 53:  NIL();  break;
+    case 39:  OperadorBooleano();  break;
+    case 40:  NumeroEntero();  break;
+    case 41:  NumeroReal();  break;
+    case 42:  TipoPredefinidoPorUsuario();  break;
+    case 43:  BITSET();  break;
+    case 44:  BOOLEAN();  break;
+    case 45:  CARDINAL();  break;
+    case 46:  CHAR();  break;
+    case 47:  INTEGER();  break;
+    case 48:  LONGINT();  break;
+    case 49:  LONGREAL();  break;
+    case 50:  PROC();  break;
+    case 51:  REAL();  break;
+    case 52:  TRUE();  break;
+    case 53:  FALSE();  break;
+    case 54:  NIL();  break;
   }
 }
