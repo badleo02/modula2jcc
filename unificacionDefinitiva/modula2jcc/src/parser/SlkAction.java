@@ -36,10 +36,8 @@ public class SlkAction {
      * que el modulo global ha sido renombrado. 
      */
     private boolean _tablaGlobalNombrada = false;
-
     /** Objeto logger para mostrar trazas */
     private static final Logger logger = Logger.getLogger(SlkAction.class);
-
 
     /**
      * Constructor de la clase SlkAction.
@@ -60,62 +58,170 @@ public class SlkAction {
      * @param number La accion semantica correspondiente.
      */
     public void execute(int number) {
-    switch ( number ) {
-    case 1:  FinDeModulo();  break;
-    case 2:  ComienzoDeModulo();  break;
-    case 3:  finDeAmbito();  break;
-    case 4:  DefinicionDeTipo();  break;
-    case 5:  AsociacionConstante();  break;
-    case 6:  TipoConjunto();  break;
-    case 7:  TipoPuntero();  break;
-    case 8:  ponerMarcaListaVariables();  break;
-    case 9:  quitarMarcaListaVariables();  break;
-    case 10:  DeclaracionVariables();  break;
-    case 11:  InicioDeclaracionProcedure();  break;
-    case 12:  CabeceraDeProcedure();  break;
-    case 13:  SecuenciaDeSentencias2();  break;
-    case 14:  SecuenciaDeSentencias();  break;
-    case 15:  SentenciaAsignacion();  break;
-    case 16:  RestoSentenciaAsignacion();  break;
-    case 17:  IdentificadorOProcPredef_Ident();  break;
-    case 18:  IdentificadorOProcPredef_ProcPredef();  break;
-    case 19:  ExpresionIF();  break;
-    case 20:  SentenciaIF();  break;
-    case 21:  ExpresionELSIF();  break;
-    case 22:  RestoSentenciaELSIF();  break;
-    case 23:  RestoSentenciaELSE();  break;
-    case 24:  RestoSentenciaIF();  break;
-    case 25:  ExpresionWHILE();  break;
-    case 26:  SentenciaWHILE();  break;
-    case 27:  ExpresionREPEAT();  break;
-    case 28:  SentenciaREPEAT();  break;
-    case 29:  SentenciaLOOP();  break;
-    case 30:  IdentificadorFOR();  break;
-    case 31:  ExpresionTO();  break;
-    case 32:  ExpresionConstanteFOR();  break;
-    case 33:  SentenciaFOR();  break;
-    case 34:  Cadena();  break;
-    case 35:  Caracter();  break;
-    case 36:  expresionSinParentesisDeSuma();  break;
-    case 37:  operadorUnario();  break;
-    case 38:  expresionSinParentesisDeMultiplicacion();  break;
-    case 39:  OperadorBooleano();  break;
-    case 40:  NumeroEntero();  break;
-    case 41:  NumeroReal();  break;
-    case 42:  TipoPredefinidoPorUsuario();  break;
-    case 43:  BITSET();  break;
-    case 44:  BOOLEAN();  break;
-    case 45:  CARDINAL();  break;
-    case 46:  CHAR();  break;
-    case 47:  INTEGER();  break;
-    case 48:  LONGINT();  break;
-    case 49:  LONGREAL();  break;
-    case 50:  PROC();  break;
-    case 51:  REAL();  break;
-    case 52:  TRUE();  break;
-    case 53:  FALSE();  break;
-    case 54:  NIL();  break;
-  
+        switch (number) {
+            case 1:
+                FinDeModulo();
+                break;
+            case 2:
+                ComienzoDeModulo();
+                break;
+            case 3:
+                finDeAmbito();
+                break;
+            case 4:
+                DefinicionDeTipo();
+                break;
+            case 5:
+                AsociacionConstante();
+                break;
+            case 6:
+                TipoConjunto();
+                break;
+            case 7:
+                TipoPuntero();
+                break;
+            case 8:
+                ponerMarcaListaVariables();
+                break;
+            case 9:
+                quitarMarcaListaVariables();
+                break;
+            case 10:
+                DeclaracionVariables();
+                break;
+            case 11:
+                InicioDeclaracionProcedure();
+                break;
+            case 12:
+                CabeceraDeProcedure();
+                break;
+            case 13:
+                SecuenciaDeSentencias2();
+                break;
+            case 14:
+                SecuenciaDeSentencias();
+                break;
+            case 15:
+                SentenciaAsignacion();
+                break;
+            case 16:
+                RestoSentenciaAsignacion();
+                break;
+            case 17:
+                IdentificadorOProcPredef_Ident();
+                break;
+            case 18:
+                IdentificadorOProcPredef_ProcPredef();
+                break;
+            case 19:
+                ExpresionIF();
+                break;
+            case 20:
+                SentenciaIF();
+                break;
+            case 21:
+                ExpresionELSIF();
+                break;
+            case 22:
+                RestoSentenciaELSIF();
+                break;
+            case 23:
+                RestoSentenciaELSE();
+                break;
+            case 24:
+                RestoSentenciaIF();
+                break;
+            case 25:
+                ExpresionWHILE();
+                break;
+            case 26:
+                SentenciaWHILE();
+                break;
+            case 27:
+                ExpresionREPEAT();
+                break;
+            case 28:
+                SentenciaREPEAT();
+                break;
+            case 29:
+                SentenciaLOOP();
+                break;
+            case 30:
+                IdentificadorFOR();
+                break;
+            case 31:
+                ExpresionTO();
+                break;
+            case 32:
+                ExpresionConstanteFOR();
+                break;
+            case 33:
+                SentenciaFOR();
+                break;
+            case 34:
+                Cadena();
+                break;
+            case 35:
+                Caracter();
+                break;
+            case 36:
+                expresionSinParentesisDeSuma();
+                break;
+            case 37:
+                operadorUnario();
+                break;
+            case 38:
+                expresionSinParentesisDeMultiplicacion();
+                break;
+            case 39:
+                OperadorBooleano();
+                break;
+            case 40:
+                NumeroEntero();
+                break;
+            case 41:
+                NumeroReal();
+                break;
+            case 42:
+                TipoPredefinidoPorUsuario();
+                break;
+            case 43:
+                BITSET();
+                break;
+            case 44:
+                BOOLEAN();
+                break;
+            case 45:
+                CARDINAL();
+                break;
+            case 46:
+                CHAR();
+                break;
+            case 47:
+                INTEGER();
+                break;
+            case 48:
+                LONGINT();
+                break;
+            case 49:
+                LONGREAL();
+                break;
+            case 50:
+                PROC();
+                break;
+            case 51:
+                REAL();
+                break;
+            case 52:
+                TRUE();
+                break;
+            case 53:
+                FALSE();
+                break;
+            case 54:
+                NIL();
+                break;
+
         }
     }
 
@@ -192,7 +298,7 @@ public class SlkAction {
     private void ExpresionELSIF() {
         //RestoSentenciaIF:
         //{ ELSIF Expresion _action_ExpresionELSIF THEN SecuenciaDeSentencias _action_RestoSentenciaELSIF } [ ELSE SecuenciaDeSentencias _action_RestoSentenciaELSE ]
-             
+
         /*para hacer pruebas*
         System.out.println("ExpresionELSIF");
         Nodo expresion = new Nodo();
@@ -213,13 +319,13 @@ public class SlkAction {
                     nodo1.getColumna()));
             _pilaNodos.push(nuevo);
         }
-        
+
     }
 
     private void ExpresionIF() {
         //SentenciaIF:
         //IF Expresion _action_ExpresionIF THEN SecuenciaDeSentencias RestoSentenciaIF END _action_SentenciaIF
-        
+
         /*para hacer pruebas*
         System.out.println("ExpresionIF");
         Nodo expresion = new Nodo();
@@ -273,7 +379,6 @@ public class SlkAction {
 
     }
 
-
     private void ExpresionTO() {
         //SentenciaFOR:
         //FOR Identificador := Expresion _action_IdentificadorFOR TO Expresion _action_ExpresionTO [ BY ExpresionConstante _action_ExpresionConstanteFOR ] DO SecuenciaDeSentencias END _action_SentenciaFOR
@@ -321,16 +426,12 @@ public class SlkAction {
 
     }
 
-
     /**
      * Comprueba que el nombre de la tabla y el del identificador despues del
      * END sean el mismo. Ademas cierra el ambito actual.
      */
     private void FinDeModulo() {
-        
-        
         //esto ya lo ha hecho finDeAmbito; no preguntes por que
-        
 //
 //        Nodo id = _pilaNodos.pop();
 //
@@ -410,10 +511,11 @@ public class SlkAction {
     }
 
     private void OperadorBooleano() {
-        if(logger.isDebugEnabled()){
+        if (logger.isDebugEnabled()) {
             logger.debug("Entrando en el metodo operadorBooleano");
         }
-        if(logger.isDebugEnabled()){
+        
+        if (logger.isDebugEnabled()) {
             logger.debug("Salida con exito de OperadorBooleano");
         }
     }
@@ -442,26 +544,24 @@ public class SlkAction {
     private void RestoSentenciaIF() {
         //RestoSentenciaIF:
         //{ ELSIF Expresion _action_ExpresionELSIF THEN SecuenciaDeSentencias _action_RestoSentenciaELSIF } [ ELSE SecuenciaDeSentencias _action_RestoSentenciaELSE ] _action_RestoSentenciaIF
-        
+
         //sacamos el primerNodo de la pila, si es una marca entonces es que no es vacio y comprobamos lo que hay
         //si no es una marca es el nodo de SecuenciaDeSentencias, le volvemos a poner y colocamos otro nuevo tipo VOID
         //para indicar que RestoSentenciaIF aunque es vacio es correcto
-        
+
         /***pruebas***
         System.out.println("Entrando en RestoSentenciaIF");
         /***fin pruebas***/
-        
         Nodo nodo1 = _pilaNodos.pop(); //puede ser MARCA o SencuenciaDeSentencias
-        
-        if (nodo1.esMarca()){
+
+        if (nodo1.esMarca()) {
             Nodo nodo2 = _pilaNodos.pop(); //SecuenciaDeSentencias
             Nodo nodo3 = _pilaNodos.pop(); //puede ser o MARCA o Expresion
-            if (nodo3.esMarca()){
+            if (nodo3.esMarca()) {
                 //sacamos SecuenciaDeSentencias y Expresion y comprobamos nodo2, nodo4 y nodo5
                 Nodo nodo4 = _pilaNodos.pop(); //SecuenciaDeSentencias
                 Nodo nodo5 = _pilaNodos.pop(); //Expresion
-                if (nodo2.getTipoBasico().equals(TipoSemantico.VOID) && nodo4.getTipoBasico().equals(TipoSemantico.VOID)
-                        && nodo5.getTipoBasico().equals(TipoSemantico.VOID)) {
+                if (nodo2.getTipoBasico().equals(TipoSemantico.VOID) && nodo4.getTipoBasico().equals(TipoSemantico.VOID) && nodo5.getTipoBasico().equals(TipoSemantico.VOID)) {
                     Nodo n = new Nodo();
                     n.addTipo(TipoSemantico.VOID);
                     _pilaNodos.push(n);
@@ -470,8 +570,8 @@ public class SlkAction {
                     n.addTipo(TipoSemantico.ERROR);
                     _pilaNodos.push(n);
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia RestoSentenciaIF mal tipada",
-                        nodo1.getLinea(),
-                        nodo1.getColumna()));
+                            nodo1.getLinea(),
+                            nodo1.getColumna()));
                 }
 
             } else { //es Expresion
@@ -485,8 +585,8 @@ public class SlkAction {
                     n.addTipo(TipoSemantico.ERROR);
                     _pilaNodos.push(n);
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia RestoSentenciaIF mal tipada",
-                        nodo1.getLinea(),
-                        nodo1.getColumna()));
+                            nodo1.getLinea(),
+                            nodo1.getColumna()));
                 }
             }
         } else {//es SecuenciaDeSentencias            
@@ -511,9 +611,9 @@ public class SlkAction {
         Nodo nodo1 = _pilaNodos.pop(); //Sentencia o Marca
         Nodo nuevo = new Nodo();
 
-        if (nodo1.esMarca()){
+        if (nodo1.esMarca()) {
 
-            while (nodo1.esMarca()){
+            while (nodo1.esMarca()) {
                 Nodo nodo2 = _pilaNodos.pop(); //sacamos Sentencia
                 //comprobamos que está bien tipada
                 if (nodo2.getTipoBasico().equals(TipoSemantico.ERROR)) {
@@ -526,32 +626,32 @@ public class SlkAction {
 
             //al salir de while, en nodo1 esta la primera sentencia
             //comprobamos si es VOID y si no ha producido ningún error la secuencia anterior
-            if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)&& (!SSError)) {
+            if (nodo1.getTipoBasico().equals(TipoSemantico.VOID) && (!SSError)) {
                 nuevo.addTipo(TipoSemantico.VOID);
                 _pilaNodos.push(nuevo);
-            } else if (nodo1.getTipoBasico().equals(TipoSemantico.ERROR)){
+            } else if (nodo1.getTipoBasico().equals(TipoSemantico.ERROR)) {
                 nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Secuencia de Sentencias NO Válida",
-                    nodo1.getLinea(),
-                    nodo1.getColumna()));
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
                 _pilaNodos.push(nuevo);
             } else {
                 nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Secuencia de Sentencias NO Válida",
-                    SSLinea,
-                    SSColumna));
+                        SSLinea,
+                        SSColumna));
                 _pilaNodos.push(nuevo);
             }
 
-        } else{ //solo hay una Sentencia
+        } else { //solo hay una Sentencia
             if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)) {
-            nuevo.addTipo(TipoSemantico.VOID);
-            _pilaNodos.push(nuevo);
+                nuevo.addTipo(TipoSemantico.VOID);
+                _pilaNodos.push(nuevo);
             } else {
                 nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Secuencia de Sentencias NO Válida",
-                    nodo1.getLinea(),
-                    nodo1.getColumna()));
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
                 _pilaNodos.push(nuevo);
             }
         }
@@ -578,7 +678,7 @@ public class SlkAction {
             _pilaNodos.push(nuevo);
         }
 
-         //insertamos el nodo marca en la pila
+        //insertamos el nodo marca en la pila
         Nodo nodoMarca = new Nodo();
         nodoMarca.crearMarca();
         _pilaNodos.push(nodoMarca);
@@ -610,13 +710,12 @@ public class SlkAction {
     private void SentenciaFOR() {
         //SentenciaFOR:
         //FOR Identificador := Expresion _action_IdentificadorFOR TO Expresion _action_ExpresionTO [ BY ExpresionConstante _action_ExpresionConstanteFOR ] DO SecuenciaDeSentencias END _action_SentenciaFOR
-        
+
         /***pruebas***
         Nodo SecuenciaDeSentencias = new Nodo();
         SecuenciaDeSentencias.addTipo(TipoSemantico.VOID);     
         _pilaNodos.push(nodo);
         /***fin pruebas***/
-
         Nodo nodo1 = _pilaNodos.pop();// sacamos secuencia de sentencias        
         Nodo nodo4 = _pilaNodos.pop(); //hay que ver si es una marca (hay BY) o no
         Nodo nodo2 = new Nodo();
@@ -661,40 +760,69 @@ public class SlkAction {
     }
 
     private void expresionSinParentesisDeMultiplicacion() {
-        if(logger.isDebugEnabled()){
+        if (logger.isDebugEnabled()) {
             logger.debug("Entrando en el metodo expresionSinParentesisDeMultiplicacion");
         }
-        Nodo nodo = _pilaNodos.pop();
-        nodo = _pilaNodos.pop();
-        nodo = _pilaNodos.pop();
-        Nodo newNodo = new Nodo();
-        // TODO: Método por hacer
-        //newNodo.setLexema("resultadoExpresionParentizada");
-        _pilaNodos.push(newNodo);
-        if(logger.isDebugEnabled()){
-            logger.debug("Salida con exito de expresionSinParentesisDeMultiplicacion");
+        if (!_pilaNodos.peek().esError()) {
+            Nodo num1 = _pilaNodos.pop();
+            Nodo op = _pilaNodos.pop();
+            Nodo num2 = _pilaNodos.pop();
+            if (!num1.esError() && !op.esError() && !num2.esError()) {
+                /*if (sonOperablesAritmeticamente(num1, num2)) {
+                    //hago esto para generacion de codigo intermedio para ver si lo que nos viene
+                    //en la pila era un numero en el codigo o el resultado de una expresion
+                    num2.setLexema("");
+                    _pilaNodos.push(num2);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Salida con exito de expresionSinParentesisDeMultiplicacion");
+                    }
+                } else {
+                    Nodo error = new Nodo();
+                    error.addTipo(TipoSemantico.ERROR);
+                    _pilaNodos.push(error);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Salida con FALLO de expresionSinParentesisDeMultiplicacion");
+                    }
+                }*/
+            } else {
+                Nodo error = new Nodo();
+                error.addTipo(TipoSemantico.ERROR);
+                _pilaNodos.push(error);
+                if (logger.isDebugEnabled()) {
+                        logger.debug("Salida con FALLO de expresionSinParentesisDeMultiplicacion");
+                    }
+            }
+        } else {
+            Nodo error = new Nodo();
+            error.addTipo(TipoSemantico.ERROR);
+            _pilaNodos.push(error);
+            if (logger.isDebugEnabled()) {
+                        logger.debug("Salida con FALLO de expresionSinParentesisDeMultiplicacion");
+                    }
         }
+
+
     }
 
     private void expresionSinParentesisDeSuma() {
-        if(logger.isDebugEnabled()){
+        if (logger.isDebugEnabled()) {
             logger.debug("Entrando en el metodo expresionSinParentesisDeSuma");
         }
         Nodo nodoOp = _pilaNodos.pop();
         Nodo nodo = null;
-         if(nodoOp.getLexema().equals("SUMA")){
+        if (nodoOp.getLexema().equals("SUMA")) {
             nodo = _pilaNodos.pop();
-         }
+        }
         nodo = _pilaNodos.pop();
         nodo = _pilaNodos.pop();
         Nodo newNodo = new Nodo();
         // TODO: Método por hacer
         //newNodo.setValor("resultadoExpresionParentizada");
         _pilaNodos.push(newNodo);
-        if(nodoOp.getLexema().equals("SUMA")){
+        if (nodoOp.getLexema().equals("SUMA")) {
             _pilaNodos.push(nodoOp);
         }
-        if(logger.isDebugEnabled()){
+        if (logger.isDebugEnabled()) {
             logger.debug("Salida con exito de expresionSinParentesisDeSuma");
         }
     }
@@ -720,7 +848,6 @@ public class SlkAction {
 
     }
 
-    
     /**
      * Se completa el tipo del simbolo identificado por el lexema del identificador 
      * a valor Tipo CONSTANTE y el valor de la constante.                
@@ -737,8 +864,9 @@ public class SlkAction {
                 // Insertamos el identificador de la constante en la tabla de simbolos actuales
                 if (_tablaActual.declaraSimbolo(id.getLexema())) {
                     // Completamos el tipo semantico y el valor
-                    if (!_tablaActual.completaConstate(id.getLexema(), valor.getTipoSemantico(), valor.getLexema())) 
+                    if (!_tablaActual.completaConstate(id.getLexema(), valor.getTipoSemantico(), valor.getLexema())) {
                         error = true;
+                    }
                 } else {
                     error = true;
                 }
@@ -774,13 +902,14 @@ public class SlkAction {
                     id = _pilaNodos.pop();
 
                     if (!id.esMarcaListaIdentificadores()) {
-                        
-                        if (_tablaActual.declaraSimbolo(id.getLexema())){
 
-                            if (!_tablaActual.completaVariable(id.getLexema(), tipo.getTipoSemantico())) 
+                        if (_tablaActual.declaraSimbolo(id.getLexema())) {
+
+                            if (!_tablaActual.completaVariable(id.getLexema(), tipo.getTipoSemantico())) {
                                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
                                         id.getLinea(),
                                         id.getColumna()));
+                            }
                         } else {
 
                             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
@@ -816,17 +945,19 @@ public class SlkAction {
             _pilaNodos.pop(); // operador
             Nodo id = _pilaNodos.pop();
 
-            if (_tablaActual.declaraSimbolo(id.getLexema())){
-                if (!_tablaActual.completaTipo(id.getLexema(),tipo.getTipoSemantico()))
+            if (_tablaActual.declaraSimbolo(id.getLexema())) {
+                if (!_tablaActual.completaTipo(id.getLexema(), tipo.getTipoSemantico())) {
                     error = true;
-            }
-            else
+                }
+            } else {
                 error = true;
+            }
 
-            if (error)
+            if (error) {
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
-                                id.getLinea(),
-                                id.getColumna()));
+                        id.getLinea(),
+                        id.getColumna()));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -837,24 +968,24 @@ public class SlkAction {
      * se comineza con un procedimineto
      */
     private void InicioDeclaracionProcedure() {
-    // CabeceraSubprograma:
-    // PROCEDURE Identificador _action_InicioDeclaraciónProcedure [ ParametrosFormales ]
-      
+        // CabeceraSubprograma:
+        // PROCEDURE Identificador _action_InicioDeclaraciónProcedure [ ParametrosFormales ]
+
         // sacamos el identificador para el procedimiento
-        Nodo nodo = _pilaNodos.peek(); 
-        
+        Nodo nodo = _pilaNodos.peek();
+
         // comprobamos unicidad
-        if (!_tablaActual.declaraSimbolo(nodo.getLexema()))
-             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador \"" + nodo.getLexema() + "\" esta siendo redefinido.",
-                        nodo.getLinea(),
-                        nodo.getColumna()));
-        
+        if (!_tablaActual.declaraSimbolo(nodo.getLexema())) {
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador \"" + nodo.getLexema() + "\" esta siendo redefinido.",
+                    nodo.getLinea(),
+                    nodo.getColumna()));
+        }
+
         // abrimos ambito.       
         _tablaActual = _tablaActual.abrirAmbito();
         _tablaActual.setNombre(nodo.getLexema());
     }
 
-    
     /** 
      * 
      * completa la definicion de un modulo
@@ -862,71 +993,71 @@ public class SlkAction {
     private void CabeceraDeProcedure() {
         // extrae elementos hasta que extraigo el nombre de la tabla de simbolos.
         // en ese momento puedo parar y definir el procedure.
-         Nodo nodo = _pilaNodos.pop(); 
-         String lexema = _tablaActual.getNombre();
-         
-         // inicializo los parametros
-         int numArgs = 0;
-         ArrayList<TipoPasoParametro> pasoArgumentos = new ArrayList<TipoPasoParametro>();
-         ArrayList<ArrayList<TipoSemantico>> tipoArgumentos = new ArrayList<ArrayList<TipoSemantico>>();
-         
-         ArrayList<TipoSemantico> retorno = new ArrayList<TipoSemantico>();
-         
-         // un array para los nombres de los paramtros
-         ArrayList<String> nombres = new ArrayList<String>();
-         
-         // mientras que no sea el nombre de la tabla
-         while (!nodo.getLexema().equals(lexema)){
-             
-             // si no es error:
-             if (nodo.getTipoBasico() == TipoSemantico.ERROR){
-                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("error " +nodo.getLexema() +
-                                                    nodo.getLexema(),
-                                                    nodo.getLinea(),
-                                                    nodo.getColumna()));
-                 return;
-             }
-             
-             //un tipo, y un identificador.
-             // primero el tipo:
+        Nodo nodo = _pilaNodos.pop();
+        String lexema = _tablaActual.getNombre();
+
+        // inicializo los parametros
+        int numArgs = 0;
+        ArrayList<TipoPasoParametro> pasoArgumentos = new ArrayList<TipoPasoParametro>();
+        ArrayList<ArrayList<TipoSemantico>> tipoArgumentos = new ArrayList<ArrayList<TipoSemantico>>();
+
+        ArrayList<TipoSemantico> retorno = new ArrayList<TipoSemantico>();
+
+        // un array para los nombres de los paramtros
+        ArrayList<String> nombres = new ArrayList<String>();
+
+        // mientras que no sea el nombre de la tabla
+        while (!nodo.getLexema().equals(lexema)) {
+
+            // si no es error:
+            if (nodo.getTipoBasico() == TipoSemantico.ERROR) {
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("error " + nodo.getLexema() +
+                        nodo.getLexema(),
+                        nodo.getLinea(),
+                        nodo.getColumna()));
+                return;
+            }
+
+            //un tipo, y un identificador.
+            // primero el tipo:
             tipoArgumentos.add(nodo.getTipoSemantico());
-              // TODO: necesito las palabras reservadas en la pila para saber cuando es paso por referencia
+            // TODO: necesito las palabras reservadas en la pila para saber cuando es paso por referencia
             pasoArgumentos.add(TipoPasoParametro.VALOR);
-                       
+
             // despues el identificador:
             nodo = _pilaNodos.pop();
-  
+
             // comprueba la unicidad a nivel de cabecera
-            if (nombres.contains(nodo.getLexema())){
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("el parametro \""+nodo.getLexema() +"\"ya esta definido" +
-                                                    nodo.getLexema(),
-                                                    nodo.getLinea(),
-                                                    nodo.getColumna()));
-                 return;
-             }
+            if (nombres.contains(nodo.getLexema())) {
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("el parametro \"" + nodo.getLexema() + "\"ya esta definido" +
+                        nodo.getLexema(),
+                        nodo.getLinea(),
+                        nodo.getColumna()));
+                return;
+            }
             nombres.add(nodo.getLexema());
-            
+
             // declara la variable.
             _tablaActual.declaraSimbolo(nodo.getLexema());
-            _tablaActual.completaVariable(nodo.getLexema(), tipoArgumentos.get(tipoArgumentos.size()-1));
- 
-             nodo = _pilaNodos.pop(); 
-             numArgs++;
-         }
-         
-         // cierra el ambito
-         TablaDeSimbolos ambitoProc = _tablaActual;         
-         _tablaActual = _tablaActual.cerrarAmbito();
-         
-         // completa el simbolo
-         if (!_tablaActual.completaSubprograma(lexema,numArgs,pasoArgumentos,tipoArgumentos,ambitoProc,retorno)){
+            _tablaActual.completaVariable(nodo.getLexema(), tipoArgumentos.get(tipoArgumentos.size() - 1));
+
+            nodo = _pilaNodos.pop();
+            numArgs++;
+        }
+
+        // cierra el ambito
+        TablaDeSimbolos ambitoProc = _tablaActual;
+        _tablaActual = _tablaActual.cerrarAmbito();
+
+        // completa el simbolo
+        if (!_tablaActual.completaSubprograma(lexema, numArgs, pasoArgumentos, tipoArgumentos, ambitoProc, retorno)) {
             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador \"" + lexema + "\" esta siendo redefinido.",
                     nodo.getLinea(),
                     nodo.getColumna()));
-         }
-         
-         // devolvemos el ambito al del procedimineto hasta que este acabe
-         _tablaActual = ambitoProc;
+        }
+
+        // devolvemos el ambito al del procedimineto hasta que este acabe
+        _tablaActual = ambitoProc;
     }
 
     private void RestoSentenciaELSE() {
@@ -992,7 +1123,7 @@ public class SlkAction {
         Nodo nodoMarca = new Nodo();
         nodoMarca.crearMarca();
         _pilaNodos.push(nodoMarca);
-        
+
     }
 
     private void SentenciaIF() {
@@ -1009,7 +1140,7 @@ public class SlkAction {
         _pilaNodos.push(RestoSentenciaIF);
         _pilaNodos.push(SecuenciaDeSentencias);    
         /*FIN pruebas*/
-        
+
         Nodo nodo1 = _pilaNodos.pop(); //RestoSentenciaIF
         Nodo nodo2 = _pilaNodos.pop(); //SecuenciaDeSentencias   
         Nodo nodo3 = _pilaNodos.pop(); //Expresion
@@ -1117,7 +1248,7 @@ public class SlkAction {
         }
 
     }
-    
+
     /**
      * Se completa el tipo semantico del id con tipo CONJUNTO.
      * Si viene un marca lo propagamos volviendolo a apilar.
@@ -1163,7 +1294,7 @@ public class SlkAction {
 
                 // Lo apilamos
                 _pilaNodos.push(tipoPredefinido);
-                
+
             } else {
 
                 crearNodoError(tipoPredefinido);
@@ -1178,8 +1309,6 @@ public class SlkAction {
             e.printStackTrace();
         }
     }
-
-    
 
     /**
      * Se completa el tipo semantico del id con tipo PUNTERO.
@@ -1289,41 +1418,46 @@ public class SlkAction {
      */
     private void crearNodoError(Nodo tipoPredefinido) {
 
-        Nodo error = new Nodo(tipoPredefinido.getLexema(), 
-                                tipoPredefinido.getLinea(),
-                                tipoPredefinido.getColumna(),
-                                tipoPredefinido.getTipoToken());
-        
+        Nodo error = new Nodo(tipoPredefinido.getLexema(),
+                tipoPredefinido.getLinea(),
+                tipoPredefinido.getColumna(),
+                tipoPredefinido.getTipoToken());
+
         error.addTipo(TipoSemantico.ERROR);
         _pilaNodos.add(error);
     }
 
+    /**
+     * Metodo que comprueba los tipos para los operadores unarios como la suma y la resta
+     */
     private void operadorUnario() {
-        if(logger.isDebugEnabled()){
+        if (logger.isDebugEnabled()) {
             logger.debug("Entrando en el metodo OperadorUnario");
         }
 
-        if(!_pilaNodos.peek().esError()){
+        if (!_pilaNodos.peek().esError()) {
             Nodo numero = _pilaNodos.pop();
             Nodo signo = _pilaNodos.pop();
-            if(signo.getTipoToken() == TipoToken.OPERADOR_SUMADOR){
-              /*  if(esEntero(numero) || esReal(numero)){
+            if (signo.getTipoToken() == TipoToken.OPERADOR_SUMADOR) {
+                /*  if(esEntero(numero) || esReal(numero)){
                     _pilaNodos.push(numero);
                 }*/
-            }
-            else{
+            } else if (signo.getTipoToken() == TipoToken.PALABRA_RESERVADA) {
+                /*if(esBooleano(numero)){
+                    _pilaNodos.push(numero);
+                }*/
+            } else {
                 Nodo nodoError = new Nodo();
                 ArrayList<TipoSemantico> tipos = new ArrayList();
                 tipos.add(TipoSemantico.ERROR);
                 _pilaNodos.push(nodoError);
             }
         }
-       if(logger.isDebugEnabled()){
+        if (logger.isDebugEnabled()) {
             logger.debug("Salida con exito de operadorUnario");
         }
     }
 
- 
     /**
      * Añade una marca en la pila para poder desapilar la lista hasta este 
      * elemento.
@@ -1347,5 +1481,4 @@ public class SlkAction {
 
         _pilaNodos.pop();
     }
-    
 }
