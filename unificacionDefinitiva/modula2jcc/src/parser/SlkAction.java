@@ -1481,4 +1481,95 @@ public class SlkAction {
 
         _pilaNodos.pop();
     }
+
+    /**
+     * Comprueba si dos nodos son operables aritmeticamente o no.
+     * Solo son operables aritmeticamente los enteros y los reales.
+     *
+     * @param nodo1
+     * @param nodo2
+     * @return
+     */
+
+    private boolean sonOperablesAritmeticamente(Nodo nodo1, Nodo nodo2) {
+        TipoSemantico sem1 = null;
+        TipoSemantico sem2 = null;
+        if (nodo1.getTipoToken() == TipoToken.IDENTIFICADOR) {
+            // Si es identificador, accedemos a la tabla de símbolos
+            InfoSimbolo simbNodo1 = _tablaActual.busca(nodo1.getLexema());
+            if (simbNodo1 != null) {
+                // Hemos encontrado el símbolo, miramos que su tipo semántico
+                // sea integer o real
+                sem1 = simbNodo1.getTipoBasico();
+                if ((sem1 != TipoSemantico.ENTERO) ||
+                    (sem1 != TipoSemantico.REAL)) {
+                         // TODO: ¿Entero largo, real largo, etc?
+                         return false;
+                     }
+            }
+        }
+        if (nodo2.getTipoToken() == TipoToken.IDENTIFICADOR) {
+            // Si es identificador, accedemos a la tabla de símbolos
+            InfoSimbolo simbNodo2 = _tablaActual.busca(nodo2.getLexema());
+            if (simbNodo2 != null) {
+                // Hemos encontrado el símbolo, miramos que su tipo semántico
+                // sea integer o real
+                sem2 = simbNodo2.getTipoBasico();
+                if ((sem2 != TipoSemantico.ENTERO) ||
+                    (sem2 != TipoSemantico.REAL)) {
+                         // TODO: ¿Entero largo, real largo, etc?
+                         return false;
+                     }
+            }
+        }
+        if (nodo1.getTipoToken() == TipoToken.NUMERO_ENTERO) {
+           if (nodo2.getTipoToken() != TipoToken.NUMERO_ENTERO) {
+               return false;
+           }
+        }
+        if (nodo1.getTipoToken() == TipoToken.NUMERO_REAL) {
+            if (nodo2.getTipoToken() != TipoToken.NUMERO_REAL) {
+                return false;
+            }
+        }
+        // Hay 4 casos:
+        //   1. Identificadores los dos
+        //   2. Identificador y no identificador
+        //   3. No identificador e identificador
+        //   4. No identificadores los dos (ya comprobado arriba)
+        if (sem1 != null && sem2 != null) {
+            // Caso 1: Dos identificadores
+            if (sem1 != sem2) {
+                return false;
+            }
+        }
+        else if (sem1 != null && sem2 == null) {
+            // Caso 2: Identificador y no identificador
+            if (sem1 == TipoSemantico.ENTERO) {
+                if (nodo2.getTipoToken() != TipoToken.NUMERO_ENTERO) {
+                    return false;
+                }
+            }
+            else if (sem1 == TipoSemantico.REAL) {
+                if (nodo2.getTipoToken() != TipoToken.NUMERO_REAL) {
+                    return false;
+                }
+            }
+        }
+        else if (sem1 == null && sem2 != null) {
+            // Caso 3: No identificador e identificador
+            if (sem2 == TipoSemantico.ENTERO) {
+                if (nodo1.getTipoToken() != TipoToken.NUMERO_ENTERO) {
+                    return false;
+                }
+            }
+            else if (sem2 == TipoSemantico.REAL) {
+                if (nodo1.getTipoToken() != TipoToken.NUMERO_REAL) {
+                    return false;
+                }
+            }
+        }
+        // Si hemos llegado hasta aquí, es que son operables aritméticamente
+        return true;
+    }   
 }
