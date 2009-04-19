@@ -24,6 +24,15 @@ public class Nodo {
     private int _linea;
     private int _columna;
     private TipoToken _tipoToken;
+
+
+    //PARA EL GENERADOR
+
+    private Object _lugar;
+    private Object _valor;
+
+    //*************************
+
     
     /**
      * Constructora por defecto de la clase Nodo. Crea el array de tipos asociado.
@@ -53,6 +62,8 @@ public class Nodo {
    
         _tipoSemantico = new ArrayList<TipoSemantico>();
         _marcaListaIdentificadores = false;
+
+        _lugar = new String ();
     }
   
     /**
@@ -209,4 +220,28 @@ public class Nodo {
 
         return _tipoToken;
     }
+
+
+
+    //GENERACION CODIGO *************************
+    public Object getLugar() {
+
+        return _lugar;
+    }
+
+    public void setLugar (int lugar) {
+
+        _lugar = lugar;
+    }
+
+    public Object getValor() {
+		return _valor;
+	}
+	public void setValor(Object valor) {
+		_valor = valor;
+
+
+    //**************************************
+	}
+
 }
