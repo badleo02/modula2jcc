@@ -1394,7 +1394,7 @@ public class SlkAction {
      */
     private boolean sonBooleanos(Nodo nodo1, Nodo nodo2) {
         if (nodo1 != null && nodo2 != null) {
-            if (nodo1.getTipoBasico() == TipoSemantico.BOOLEANO && nodo1.getTipoBasico() == TipoSemantico.BOOLEANO) {
+            if (nodo1.getTipoBasico() == TipoSemantico.BOOLEANO && nodo2.getTipoBasico() == TipoSemantico.BOOLEANO) {
                 return true;
             }
             return false;
@@ -1422,7 +1422,7 @@ public class SlkAction {
      */
     private boolean sonEnteros(Nodo nodo1, Nodo nodo2) {
         if (nodo1 != null && nodo2 != null) {
-            if (nodo1.getTipoBasico() == TipoSemantico.ENTERO && nodo1.getTipoBasico() == TipoSemantico.ENTERO) {
+            if (nodo1.getTipoBasico() == TipoSemantico.ENTERO && nodo2.getTipoBasico() == TipoSemantico.ENTERO) {
                 return true;
             }
             return false;
@@ -1450,7 +1450,7 @@ public class SlkAction {
      */
     private boolean sonReales(Nodo nodo1, Nodo nodo2) {
         if (nodo1 != null && nodo2 != null) {
-            if (nodo1.getTipoBasico() == TipoSemantico.REAL && nodo1.getTipoBasico() == TipoSemantico.REAL) {
+            if (nodo1.getTipoBasico() == TipoSemantico.REAL && nodo2.getTipoBasico() == TipoSemantico.REAL) {
                 return true;
             }
             return false;
@@ -1478,7 +1478,7 @@ public class SlkAction {
      */
     private boolean sonChars(Nodo nodo1, Nodo nodo2) {
         if (nodo1 != null && nodo2 != null) {
-            if ((nodo1.getTipoBasico() == TipoSemantico.CARACTER) && nodo1.getTipoBasico() == TipoSemantico.CARACTER) {
+            if ((nodo1.getTipoBasico() == TipoSemantico.CARACTER) && nodo2.getTipoBasico() == TipoSemantico.CARACTER) {
                 return true;
             }
             return false;
