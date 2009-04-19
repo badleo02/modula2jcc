@@ -2,6 +2,7 @@ package semantico;
 
 import java.util.ArrayList;
 import scanner.TipoToken;
+import scanner.Token;
 
 /**
  *
@@ -30,6 +31,10 @@ public class Nodo {
 
     private Object _lugar;
     private Object _valor;
+    private Token _token;
+    private int _offset;
+	private String comienzo;
+	private String siguiente;
 
     //*************************
 
@@ -239,9 +244,37 @@ public class Nodo {
 	}
 	public void setValor(Object valor) {
 		_valor = valor;
+    }
+    public Token getToken() {
+		return _token;
+	}
+	public void setToken(Token token) {
+		_token = token;
+	}
+
+    	public int getOffset() {
+		return _offset;
+	}
+
+	public void setOffset(int offset) {
+		_offset = offset;
+	}
+
+    	public Object getComienzo() {
+		return comienzo;
+	}
+	public void setComienzo(String comienzo) {
+		this.comienzo = comienzo;
+	}
+	public String getSiguiente() {
+		return siguiente;
+	}
+	public void setSiguiente(String siguiente) {
+		this.siguiente = siguiente;
+	}
 
 
     //**************************************
-	}
+	
 
 }
