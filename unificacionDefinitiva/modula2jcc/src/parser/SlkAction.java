@@ -514,7 +514,7 @@ public class SlkAction {
         if (logger.isDebugEnabled()) {
             logger.debug("Entrando en el metodo operadorBooleano");
         }
-        
+
         if (logger.isDebugEnabled()) {
             logger.debug("Salida con exito de OperadorBooleano");
         }
@@ -768,7 +768,7 @@ public class SlkAction {
             Nodo op = _pilaNodos.pop();
             Nodo num2 = _pilaNodos.pop();
             if (!num1.esError() && !op.esError() && !num2.esError()) {
-                /*if (sonOperablesAritmeticamente(num1, num2)) {
+                if (sonOperablesAritmeticamente(num1, num2)) {
                     //hago esto para generacion de codigo intermedio para ver si lo que nos viene
                     //en la pila era un numero en el codigo o el resultado de una expresion
                     num2.setLexema("");
@@ -783,22 +783,22 @@ public class SlkAction {
                     if (logger.isDebugEnabled()) {
                         logger.debug("Salida con FALLO de expresionSinParentesisDeMultiplicacion");
                     }
-                }*/
+                }
             } else {
                 Nodo error = new Nodo();
                 error.addTipo(TipoSemantico.ERROR);
                 _pilaNodos.push(error);
                 if (logger.isDebugEnabled()) {
-                        logger.debug("Salida con FALLO de expresionSinParentesisDeMultiplicacion");
-                    }
+                    logger.debug("Salida con FALLO de expresionSinParentesisDeMultiplicacion");
+                }
             }
         } else {
             Nodo error = new Nodo();
             error.addTipo(TipoSemantico.ERROR);
             _pilaNodos.push(error);
             if (logger.isDebugEnabled()) {
-                        logger.debug("Salida con FALLO de expresionSinParentesisDeMultiplicacion");
-                    }
+                logger.debug("Salida con FALLO de expresionSinParentesisDeMultiplicacion");
+            }
         }
 
 
@@ -808,23 +808,30 @@ public class SlkAction {
         if (logger.isDebugEnabled()) {
             logger.debug("Entrando en el metodo expresionSinParentesisDeSuma");
         }
-        Nodo nodoOp = _pilaNodos.pop();
-        Nodo nodo = null;
-        if (nodoOp.getLexema().equals("SUMA")) {
-            nodo = _pilaNodos.pop();
+        Nodo num1 = _pilaNodos.pop();
+        Nodo oper = _pilaNodos.pop();
+        Nodo num2 = _pilaNodos.pop();
+        if (!num1.esError() && !oper.esError() && !num2.esError()) {
+            if (sonOperablesAritmeticamente(num1, num2)) {
+                num1.setLexema("");
+                _pilaNodos.push(num1);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Salida con exito de operadorSinParentesisDeSuma");
+                }
+            }
+            else{
+                Nodo error = new Nodo();
+            error.addTipo(TipoSemantico.ERROR);
+            _pilaNodos.push(error);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Salida con FALLO de expresionSinParentesisDeSuma");
+            }
+            }
         }
-        nodo = _pilaNodos.pop();
-        nodo = _pilaNodos.pop();
-        Nodo newNodo = new Nodo();
-        // TODO: Método por hacer
-        //newNodo.setValor("resultadoExpresionParentizada");
-        _pilaNodos.push(newNodo);
-        if (nodoOp.getLexema().equals("SUMA")) {
-            _pilaNodos.push(nodoOp);
-        }
-        if (logger.isDebugEnabled()) {
-            logger.debug("Salida con exito de expresionSinParentesisDeSuma");
-        }
+
+
+
+       
     }
 
     /**
@@ -1431,20 +1438,20 @@ public class SlkAction {
      * Metodo que comprueba los tipos para los operadores unarios como la suma y la resta
      */
     private void operadorUnario() {
+
         if (logger.isDebugEnabled()) {
             logger.debug("Entrando en el metodo OperadorUnario");
         }
-
         if (!_pilaNodos.peek().esError()) {
             Nodo numero = _pilaNodos.pop();
             Nodo signo = _pilaNodos.pop();
             if (signo.getTipoToken() == TipoToken.OPERADOR_SUMADOR) {
                 /*  if(esEntero(numero) || esReal(numero)){
-                    _pilaNodos.push(numero);
+                _pilaNodos.push(numero);
                 }*/
             } else if (signo.getTipoToken() == TipoToken.PALABRA_RESERVADA) {
                 /*if(esBooleano(numero)){
-                    _pilaNodos.push(numero);
+                _pilaNodos.push(numero);
                 }*/
             } else {
                 Nodo nodoError = new Nodo();
@@ -1456,6 +1463,7 @@ public class SlkAction {
         if (logger.isDebugEnabled()) {
             logger.debug("Salida con exito de operadorUnario");
         }
+
     }
 
     /**
@@ -1483,6 +1491,162 @@ public class SlkAction {
     }
 
     /**
+     * Comprueba que los dos nodos sean de tipo booleano
+     * @param nodo1 Primer nodo a comprobar
+     * @param nodo2 Segundo nodo a comprobar
+     * @return true si los dos nodos son de tipo booleano y false en otro caso
+     */
+    private boolean sonBooleanos(Nodo nodo1, Nodo nodo2) {
+        if (nodo1 != null && nodo2 != null) {
+            if (nodo1.getTipoBasico() == TipoSemantico.BOOLEANO && nodo1.getTipoBasico() == TipoSemantico.BOOLEANO) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Comprueba que el nodo introducido sea de tipo booleano
+     * @param nodo Nodo a comprobar
+     * @return true si el nodo es de tipo booleano, false en otro caso
+     */
+    private boolean esBooleano(Nodo nodo) {
+        if (nodo != null && nodo.getTipoBasico() == TipoSemantico.ENTERO) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Comprueba que los dos nodos sean de tipo entero
+     * @param nodo1 Primer nodo a comprobar
+     * @param nodo2 Segundo nodo a comprobar
+     * @return true si los dos nodos son de tipo entero y false en otro caso
+     */
+    private boolean sonEnteros(Nodo nodo1, Nodo nodo2) {
+        if (nodo1 != null && nodo2 != null) {
+            if (nodo1.getTipoBasico() == TipoSemantico.ENTERO && nodo1.getTipoBasico() == TipoSemantico.ENTERO) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Comprueba que el nodo introducido sea de tipo entero
+     * @param nodo Nodo a comprobar
+     * @return true si el nodo es de tipo entero, false en otro caso
+     */
+    private boolean esEntero(Nodo nodo) {
+        if (nodo != null && nodo.getTipoBasico() == TipoSemantico.ENTERO) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Comprueba que los dos nodos sean de tipo real
+     * @param nodo1 Primer nodo a comprobar
+     * @param nodo2 Segundo nodo a comprobar
+     * @return true si los dos nodos son de tipo real y false en otro caso
+     */
+    private boolean sonReales(Nodo nodo1, Nodo nodo2) {
+        if (nodo1 != null && nodo2 != null) {
+            if (nodo1.getTipoBasico() == TipoSemantico.REAL && nodo1.getTipoBasico() == TipoSemantico.REAL) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Comprueba que el nodo introducido sea de tipo real
+     * @param nodo Nodo a comprobar
+     * @return true si el nodo es de tipo real, false en otro caso
+     */
+    private boolean esReal(Nodo nodo) {
+        if (nodo != null && nodo.getTipoBasico() == TipoSemantico.REAL) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Comprueba que los dos nodos sean de tipo char
+     * @param nodo1 Primer nodo a comprobar
+     * @param nodo2 Segundo nodo a comprobar
+     * @return true si los dos nodos son de tipo char y false en otro caso
+     */
+    private boolean sonChars(Nodo nodo1, Nodo nodo2) {
+        if (nodo1 != null && nodo2 != null) {
+            if ((nodo1.getTipoBasico() == TipoSemantico.CARACTER) && nodo1.getTipoBasico() == TipoSemantico.CARACTER) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Comprueba que el nodo introducido sea de tipo char
+     * @param nodo Nodo a comprobar
+     * @return true si el nodo es de tipo chars, false en otro caso
+     */
+    private boolean esChar(Nodo nodo) {
+        if (nodo != null && nodo.getTipoBasico() == TipoSemantico.CARACTER) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * comprueba si dos tipos son compatibles, de forma que se puede operar con
+     * ellos o realizar una asignacion:
+     * los tipos son compatibles de la siguente manera:
+     *    Bitset,
+     *    Integer, Real, LongInt, Boolean son compatibles SOLO con su mismo tipo
+     *    Puntero es compatible con puentero SOLO si el segundo tipo es igual
+     *                  ( puntero de enteros no lo es con puntero de reales)
+     *    Conjuntos y Registos solo son compatibles si el conjunto es exactamente del mismo
+     * tipo, (la cadena completa)
+     *
+     * @param a nodo 1 a comprobar
+     * @param b nodo 2 a comprobar
+     * @return si son compatibles
+     */
+    private boolean compatiblesTiposSemanticos(Nodo a, Nodo b) {
+        // TODO: hay que completar esto, faltan tipos y comprobaciones
+        // TODO: esta sin probar
+        if ((a == null) || (b == null)) {
+            return false;
+        }
+
+        switch (a.getTipoBasico()) {
+            case BITSET:
+            case BOOLEANO:
+            case CARACTER:
+            case CARDINAL:
+            case ENTERO:
+            case ENTERO_LARGO:
+                return a.getTipoBasico() == b.getTipoBasico();
+            case PUNTERO:
+                try {
+                    ArrayList<TipoSemantico> la = a.getTipoSemantico();
+                    ArrayList<TipoSemantico> lb = b.getTipoSemantico();
+                    return la.get(1) == lb.get(2);
+                } catch (Exception e) {  // la excepcion es por si estan mal definidos.
+                    return false;
+                }
+
+            default:
+                return false;
+        }
+    }
+
+    /**
      * Comprueba si dos nodos son operables aritmeticamente o no.
      * Solo son operables aritmeticamente los enteros y los reales.
      *
@@ -1490,8 +1654,10 @@ public class SlkAction {
      * @param nodo2
      * @return
      */
-
     private boolean sonOperablesAritmeticamente(Nodo nodo1, Nodo nodo2) {
+        if(logger.isDebugEnabled()){
+            logger.debug("Entrando en sonOperablesAritmeticamente");
+        }
         TipoSemantico sem1 = null;
         TipoSemantico sem2 = null;
         if (nodo1.getTipoToken() == TipoToken.IDENTIFICADOR) {
@@ -1502,10 +1668,10 @@ public class SlkAction {
                 // sea integer o real
                 sem1 = simbNodo1.getTipoBasico();
                 if ((sem1 != TipoSemantico.ENTERO) ||
-                    (sem1 != TipoSemantico.REAL)) {
-                         // TODO: ¿Entero largo, real largo, etc?
-                         return false;
-                     }
+                        (sem1 != TipoSemantico.REAL)) {
+                    // TODO: ¿Entero largo, real largo, etc?
+                    return false;
+                }
             }
         }
         if (nodo2.getTipoToken() == TipoToken.IDENTIFICADOR) {
@@ -1516,16 +1682,16 @@ public class SlkAction {
                 // sea integer o real
                 sem2 = simbNodo2.getTipoBasico();
                 if ((sem2 != TipoSemantico.ENTERO) ||
-                    (sem2 != TipoSemantico.REAL)) {
-                         // TODO: ¿Entero largo, real largo, etc?
-                         return false;
-                     }
+                        (sem2 != TipoSemantico.REAL)) {
+                    // TODO: ¿Entero largo, real largo, etc?
+                    return false;
+                }
             }
         }
         if (nodo1.getTipoToken() == TipoToken.NUMERO_ENTERO) {
-           if (nodo2.getTipoToken() != TipoToken.NUMERO_ENTERO) {
-               return false;
-           }
+            if (nodo2.getTipoToken() != TipoToken.NUMERO_ENTERO) {
+                return false;
+            }
         }
         if (nodo1.getTipoToken() == TipoToken.NUMERO_REAL) {
             if (nodo2.getTipoToken() != TipoToken.NUMERO_REAL) {
@@ -1542,28 +1708,24 @@ public class SlkAction {
             if (sem1 != sem2) {
                 return false;
             }
-        }
-        else if (sem1 != null && sem2 == null) {
+        } else if (sem1 != null && sem2 == null) {
             // Caso 2: Identificador y no identificador
             if (sem1 == TipoSemantico.ENTERO) {
                 if (nodo2.getTipoToken() != TipoToken.NUMERO_ENTERO) {
                     return false;
                 }
-            }
-            else if (sem1 == TipoSemantico.REAL) {
+            } else if (sem1 == TipoSemantico.REAL) {
                 if (nodo2.getTipoToken() != TipoToken.NUMERO_REAL) {
                     return false;
                 }
             }
-        }
-        else if (sem1 == null && sem2 != null) {
+        } else if (sem1 == null && sem2 != null) {
             // Caso 3: No identificador e identificador
             if (sem2 == TipoSemantico.ENTERO) {
                 if (nodo1.getTipoToken() != TipoToken.NUMERO_ENTERO) {
                     return false;
                 }
-            }
-            else if (sem2 == TipoSemantico.REAL) {
+            } else if (sem2 == TipoSemantico.REAL) {
                 if (nodo1.getTipoToken() != TipoToken.NUMERO_REAL) {
                     return false;
                 }
@@ -1571,5 +1733,5 @@ public class SlkAction {
         }
         // Si hemos llegado hasta aquí, es que son operables aritméticamente
         return true;
-    }   
+    }
 }
