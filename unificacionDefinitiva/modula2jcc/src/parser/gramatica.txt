@@ -129,7 +129,7 @@ ParametrosFormales:
 ( [ GrupoDeParametros { ; GrupoDeParametros } ] ) [ : IdentificadorDeTipo ] _action_CabeceraDeProcedure
 
 GrupoDeParametros:
-[ VAR ] ListaDeIdentificadores : TipoFormal
+[ VAR _action_por_referencia ] ListaDeIdentificadores : TipoFormal
 
 DeclaracionModulo:
 MODULE Identificador _action_ComienzoDeModulo [ Prioridad ] ; { ListaImportados ; } [ ListaExportados ; ] Bloque Identificador ; _action_FinDeModulo
