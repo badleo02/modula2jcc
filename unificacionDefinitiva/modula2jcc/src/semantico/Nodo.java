@@ -2,12 +2,11 @@ package semantico;
 
 import java.util.ArrayList;
 import scanner.TipoToken;
-import scanner.Token;
 
 /**
  *
  * La clase Nodo contiene los atributos heredados y/o sintetizados
- * de cada una de los sÃ­mbolos de producciÃ³n.
+ * de cada una de los símbolos de producción.
  *
  * @author Grupo 3, Grupo 11.
  */
@@ -20,24 +19,11 @@ public class Nodo {
     /**
      * Nodo marcador para las listas de identificadores
      */
-    private boolean _marcaListaIdentificadores, _marca;
+    private boolean _marcaListaIdentificadores;
     private String _lexema;
     private int _linea;
     private int _columna;
     private TipoToken _tipoToken;
-
-
-    //PARA EL GENERADOR
-
-    private Object _lugar;
-    private Object _valor;
-    private Token _token;
-    private int _offset;
-	private String comienzo;
-	private String siguiente;
-
-    //*************************
-
     
     /**
      * Constructora por defecto de la clase Nodo. Crea el array de tipos asociado.
@@ -45,7 +31,6 @@ public class Nodo {
     public Nodo() {
 
         _marcaListaIdentificadores = false;
-        _marca = false;
         _tipoSemantico = new ArrayList<TipoSemantico>();
     }
 
@@ -67,8 +52,6 @@ public class Nodo {
    
         _tipoSemantico = new ArrayList<TipoSemantico>();
         _marcaListaIdentificadores = false;
-
-        _lugar = new String ();
     }
   
     /**
@@ -86,7 +69,7 @@ public class Nodo {
      * 
      * @param tipos Tipo Nuevo lexema a establecer.
      */
-    public void setTipo(ArrayList tipos) {
+    public void setTipo(ArrayList<TipoSemantico> tipos) {
 
         _tipoSemantico = tipos;
     }
@@ -98,28 +81,20 @@ public class Nodo {
      */
     public TipoSemantico getTipoBasico() {
 
-        return (TipoSemantico) _tipoSemantico.get(0);
+        return _tipoSemantico.get(0);
     }
 
     /**
-     * AÃ±ade por la derecha el tipo en el array de tipos.
+     * Añade por la derecha el tipo en el array de tipos.
      * 
      * @param tipo Tipo a concatenar.
      */
     public void addTipo(TipoSemantico tipo) {
 
         if (_tipoSemantico == null) {
-            _tipoSemantico = new ArrayList();
+            _tipoSemantico = new ArrayList<TipoSemantico>();
         }
         _tipoSemantico.add(tipo);
-    }
-
-    /**
-     * Cambia el lexema del nodo por el String de entrada
-     * @param lexema Nuevo contenido de lexema
-     */
-    public void setLexema(String lexema){
-        this._lexema = lexema;
     }
 
     /**
@@ -164,11 +139,6 @@ public class Nodo {
         _marcaListaIdentificadores = true;
     }
 
-    public void crearMarca() {
-
-        _marca = true;
-    }
-
     /**
      * Devuelve verdadero si es un nodo de marca de inicio de lista
      * de identificadores y falso en caso contrario.
@@ -179,11 +149,6 @@ public class Nodo {
     public boolean esMarcaListaIdentificadores() {
         
         return _marcaListaIdentificadores;
-    }
-
-      public boolean esMarca() {
-
-        return _marca;
     }
     
     /**
@@ -225,56 +190,5 @@ public class Nodo {
 
         return _tipoToken;
     }
-
-
-
-    //GENERACION CODIGO *************************
-    public Object getLugar() {
-
-        return _lugar;
-    }
-
-    public void setLugar (int lugar) {
-
-        _lugar = lugar;
-    }
-
-    public Object getValor() {
-		return _valor;
-	}
-	public void setValor(Object valor) {
-		_valor = valor;
-    }
-    public Token getToken() {
-		return _token;
-	}
-	public void setToken(Token token) {
-		_token = token;
-	}
-
-    	public int getOffset() {
-		return _offset;
-	}
-
-	public void setOffset(int offset) {
-		_offset = offset;
-	}
-
-    	public Object getComienzo() {
-		return comienzo;
-	}
-	public void setComienzo(String comienzo) {
-		this.comienzo = comienzo;
-	}
-	public String getSiguiente() {
-		return siguiente;
-	}
-	public void setSiguiente(String siguiente) {
-		this.siguiente = siguiente;
-	}
-
-
-    //**************************************
-	
-
 }
+
