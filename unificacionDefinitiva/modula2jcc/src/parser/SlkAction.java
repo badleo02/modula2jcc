@@ -57,71 +57,79 @@ public class SlkAction {
      * 
      * @param number La accion semantica correspondiente.
      */
-    public void execute(int number) {
-    switch ( number ) {
+public void execute ( int  number )
+{
+  switch ( number ) {
     case 1:  FinDeModulo();  break;
     case 2:  ComienzoDeModulo();  break;
-    case 3:  finDeAmbito();  break;
-    case 4:  DefinicionDeTipo();  break;
-    case 5:  AsociacionConstante();  break;
-    case 6:  TipoConjunto();  break;
-    case 7:  TipoPuntero();  break;
-    case 8:  ponerMarcaListaVariables();  break;
-    case 9:  quitarMarcaListaVariables();  break;
-    case 10:  DeclaracionVariables();  break;
-    case 11:  InicioDeclaracionProcedure();  break;
-    case 12:  CabeceraDeProcedure();  break;
-    case 13:  por_referencia();  break;
-    case 14:  ParteEjecutiva();  break;
-    case 15:  SecuenciaDeSentencias2();  break;
-    case 16:  SecuenciaDeSentencias();  break;
-    case 17:  SentenciaAsignacion();  break;
-    case 18:  RestoSentenciaAsignacion();  break;
-    case 19:  RestoSentenciaRestoAsignacion_1();  break;
-    case 20:  RestoSentenciaRestoAsignacion_2();  break;
-    case 21:  ParteIzquierda_1();  break;
-    case 22:  ParteIzquierda_2();  break;
-    case 23:  ParteIzquierda_3();  break;
-    case 24:  IdentificadorOProcPredef_Ident();  break;
-    case 25:  IdentificadorOProcPredef_ProcPredef();  break;
-    case 26:  ExpresionIF();  break;
-    case 27:  SentenciaIF();  break;
-    case 28:  ExpresionELSIF();  break;
-    case 29:  RestoSentenciaELSIF();  break;
-    case 30:  RestoSentenciaELSE();  break;
-    case 31:  RestoSentenciaIF();  break;
-    case 32:  ExpresionWHILE();  break;
-    case 33:  SentenciaWHILE();  break;
-    case 34:  ExpresionREPEAT();  break;
-    case 35:  SentenciaREPEAT();  break;
-    case 36:  SentenciaLOOP();  break;
-    case 37:  IdentificadorFOR();  break;
-    case 38:  ExpresionTO();  break;
-    case 39:  ExpresionConstanteFOR();  break;
-    case 40:  SentenciaFOR();  break;
-    case 41:  Cadena();  break;
-    case 42:  Caracter();  break;
-    case 43:  expresionSinParentesisDeSuma();  break;
-    case 44:  operadorUnario();  break;
-    case 45:  expresionSinParentesisDeMultiplicacion();  break;
-    case 46:  OperadorBooleano();  break;
-    case 47:  NumeroEntero();  break;
-    case 48:  NumeroReal();  break;
-    case 49:  TipoPredefinidoPorUsuario();  break;
-    case 50:  BITSET();  break;
-    case 51:  BOOLEAN();  break;
-    case 52:  CARDINAL();  break;
-    case 53:  CHAR();  break;
-    case 54:  INTEGER();  break;
-    case 55:  LONGINT();  break;
-    case 56:  LONGREAL();  break;
-    case 57:  PROC();  break;
-    case 58:  REAL();  break;
-    case 59:  TRUE();  break;
-    case 60:  FALSE();  break;
-    case 61:  NIL();  break;
+    case 3:  ListaImportados();  break;
+    case 4:  ListaExportados();  break;
+    case 5:  finDeAmbito();  break;
+    case 6:  DefinicionDeTipo();  break;
+    case 7:  AsociacionConstante();  break;
+    case 8:  EsquemaDeTipo_TipoFormacion();  break;
+    case 9:  TipoSimple_TipoEnumerado();  break;
+    case 10:  TipoEnumerado();  break;
+    case 11:  TipoConjunto();  break;
+    case 12:  TipoFormacion();  break;
+    case 13:  TipoPuntero();  break;
+    case 14:  ponerMarcaListaVariables();  break;
+    case 15:  quitarMarcaListaVariables();  break;
+    case 16:  DeclaracionVariables();  break;
+    case 17:  InicioDeclaracionProcedure();  break;
+    case 18:  CabeceraDeProcedure();  break;
+    case 19:  por_referencia();  break;
+    case 20:  ParteEjecutiva();  break;
+    case 21:  SecuenciaDeSentencias2();  break;
+    case 22:  SecuenciaDeSentencias();  break;
+    case 23:  SentenciaAsignacion();  break;
+    case 24:  RestoSentenciaAsignacion();  break;
+    case 25:  RestoSentenciaRestoAsignacion_1();  break;
+    case 26:  RestoSentenciaRestoAsignacion_2();  break;
+    case 27:  ParteIzquierda_1();  break;
+    case 28:  ParteIzquierda_2();  break;
+    case 29:  ParteIzquierda_3();  break;
+    case 30:  IdentificadorOProcPredef_Ident();  break;
+    case 31:  IdentificadorOProcPredef_ProcPredef();  break;
+    case 32:  ExpresionIF();  break;
+    case 33:  SentenciaIF();  break;
+    case 34:  ExpresionELSIF();  break;
+    case 35:  RestoSentenciaELSIF();  break;
+    case 36:  RestoSentenciaELSE();  break;
+    case 37:  RestoSentenciaIF();  break;
+    case 38:  ExpresionWHILE();  break;
+    case 39:  SentenciaWHILE();  break;
+    case 40:  ExpresionREPEAT();  break;
+    case 41:  SentenciaREPEAT();  break;
+    case 42:  SentenciaLOOP();  break;
+    case 43:  IdentificadorFOR();  break;
+    case 44:  ExpresionTO();  break;
+    case 45:  ExpresionConstanteFOR();  break;
+    case 46:  SentenciaFOR();  break;
+    case 47:  Cadena();  break;
+    case 48:  Caracter();  break;
+    case 49:  expresionSinParentesisDeSuma();  break;
+    case 50:  operadorUnario();  break;
+    case 51:  expresionSinParentesisDeMultiplicacion();  break;
+    case 52:  OperadorBooleano();  break;
+    case 53:  TipoFormal();  break;
+    case 54:  NumeroEntero();  break;
+    case 55:  NumeroReal();  break;
+    case 56:  TipoPredefinidoPorUsuario();  break;
+    case 57:  BITSET();  break;
+    case 58:  BOOLEAN();  break;
+    case 59:  CARDINAL();  break;
+    case 60:  CHAR();  break;
+    case 61:  INTEGER();  break;
+    case 62:  LONGINT();  break;
+    case 63:  LONGREAL();  break;
+    case 64:  PROC();  break;
+    case 65:  REAL();  break;
+    case 66:  TRUE();  break;
+    case 67:  FALSE();  break;
+    case 68:  NIL();  break;
   }
-    }
+}
 
     /**
      * Abre un nuevo ambito y actualiza el nombre de la nueva tabla 
@@ -178,6 +186,179 @@ public class SlkAction {
         _tablaActual.setNombre(id.getLexema());
         _tablaGlobalNombrada = true;
     }
+
+    private void ListaExportados() {
+        System.out.println("ListaExportados");
+        Nodo nodoNuevo = new Nodo();
+        //Cuando hay un module debo comprobar si hay un ambito superior
+        //Si hay un ambito superior significa que es un modulo dentro de otro y debo copiar
+        //al ambito superior las entradas de la TS (InfoSimbolo) de los identificadores que tengan
+        //el modificador EXPORT
+        if(_tablaActual.getContinente() == null ){
+          //Estoy en el ambito mas superior( Si las import se consideran de ambitos inferiores )
+          System.out.println("Nombre de la TS <"+_tablaActual.getNombre()+">");
+          //Luego esta es la que exporta la funcion y por tanto ya la tiene en la TS, es decir,
+          //ya puede usar la funcion exportada
+        }else{
+          //Estoy en un ambito inferior, es decir, tiene superior
+          System.out.println("Nombre de la TS inf <"+_tablaActual.getNombre()+">");
+          while( _pilaNodos.empty() == false ){
+              Nodo nodoExportado = _pilaNodos.pop();
+              InfoSimbolo infoNodoExportado = _tablaActual.busca( nodoExportado.getLexema() );
+              if( infoNodoExportado != null ){ //Si lo encuentra
+                TablaDeSimbolos tablaSuperior = _tablaActual.getContinente();
+                System.out.println("Tabla sup <"+tablaSuperior.getNombre()+"> de la TS inf <"+_tablaActual.getNombre()+">");
+                tablaSuperior.getTS().put( nodoExportado.getLexema(), infoNodoExportado ); //no me mola asi
+                nodoNuevo.addTipo(TipoSemantico.VOID);
+              }else{
+                //Sino lo encuentra habrá que informar del error de que no existe lo que se exporta, no?                
+                nodoNuevo.addTipo(TipoSemantico.ERROR);
+                
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("No existe el identificador exportado",
+                    nodoExportado.getLinea(),
+                    nodoExportado.getColumna()));
+              }
+          }
+          _pilaNodos.add(nodoNuevo);
+        }
+    }
+
+    private void ListaImportados() {
+        System.out.println("ListaImportados");
+        //Se supone que tengo que abrir un fichero .MOD
+
+        //Cuento los elementos en la pila (size()) y saco los size()-1 dejando
+        //El ultimo nodo en la pila es el nombre del .MOD que debo abrir
+        
+        //Debo procesar el fichero MOD... esto es mu gordo, un nuevo compila-Archivo dentro de otro
+
+        //Le abro y copio de la TS el InfoSimbolo de cada uno de los ids, menos del del nombre del modulo
+
+        //Primera aproximacion que crea en la TS los identificadores que hay en el IMPORT, pero sin información referente a ellos
+        //Por lo que puede que se importen cosas que no existen y que lo que se importe no se sepa que es
+        Nodo nodoDesapilado;
+        InfoSimbolo infoNodoImportado;
+        for( int i = 0;  i < _pilaNodos.size() - 1 - 1;  i++ ){
+            nodoDesapilado = _pilaNodos.pop();
+            infoNodoImportado = null; //Como no se de que tipo es el simbolo importado, simplemente le paso un nulo de info, no se si dara problem
+            _tablaActual.getTS().put( nodoDesapilado.getLexema(), null );
+        }
+        //Saco el id correspondiente al nombre del MOD
+        nodoDesapilado = _pilaNodos.pop();
+        
+        Nodo nodoNuevo = new Nodo();
+        nodoNuevo.addTipo( TipoSemantico.VOID );
+        _pilaNodos.add( nodoNuevo );
+    }
+
+    private void EsquemaDeTipo_TipoFormacion() {
+        System.out.println("EsquemaDeTipo_TipoFormacion");
+    }
+    
+    private void TipoEnumerado() {
+        System.out.println("TipoEnumerado");
+        Nodo nodoDesapilado;
+        boolean error = false;
+        while( _pilaNodos.size() > 2 ){ //Igual mejor preguntar por la marca (2=marca+id)
+            nodoDesapilado = _pilaNodos.pop();
+            InfoSimbolo infoNodoDesapilado = _tablaActual.busca( nodoDesapilado.getLexema() );
+            if( infoNodoDesapilado != null )//Si ya esta es un error, ya que ha sido utilizado el id antes
+                error = true;
+            else{
+                //lo meto en la ts como nuevo simbolo de tipo enumerado
+                ArrayList<TipoSemantico> tipoSemanticoNodoDesapilado = new ArrayList<TipoSemantico>();
+                tipoSemanticoNodoDesapilado.add( TipoSemantico.ENUMERADO );
+                infoNodoDesapilado = new InfoSimboloVar( tipoSemanticoNodoDesapilado );
+                //infoNodoDesapilado.getTipoSemantico().add( TipoSemantico.ENUMERADO );
+                //Lo que no se es como se distinguen estos elementos del identifacor del enumerado                
+                _tablaActual.getTS().put( nodoDesapilado.getLexema(), infoNodoDesapilado);
+            }
+        }
+        Nodo nuevoNodo = new Nodo();
+        if( error == false )//Solo meto si todo fue correcto, con un id mal ya error
+             nuevoNodo.addTipo( TipoSemantico.ENUMERADO );
+        else
+            nuevoNodo.addTipo( TipoSemantico.ERROR );
+        
+        _pilaNodos.push( nuevoNodo );
+    }
+
+    public void completaSiEsIdentificador( Nodo nodo ){
+        if( nodo.getTipoToken().equals( TipoToken.IDENTIFICADOR ) == true ){
+            InfoSimbolo infoDimInicial = _tablaActual.busca( nodo.getLexema() );
+            nodo.addTipo( infoDimInicial.getTipoBasico() );
+        }
+    }
+
+    private void TipoFormacion() {
+        System.out.println("TipoFormacion");
+
+        ArrayList<Nodo> listaNodos = new ArrayList<Nodo>();
+
+        Nodo nodoNuevo;
+        while( _pilaNodos.size() > 3 ){ //Para cuando hay listas de arrays... marca+id+tipo , no mola
+        //Desapilo el tipo del array
+        Nodo nodoTipoArray = _pilaNodos.pop();
+
+        if( _pilaNodos.peek().getTipoBasico().equals( TipoSemantico.ENUMERADO ) != true ){
+        //Desapilo la dimension final del rango
+        Nodo nodoDimensionFinal = _pilaNodos.pop();
+        completaSiEsIdentificador( nodoDimensionFinal );
+
+        //Desapilo la dimension inicial del rango
+        Nodo nodoDimensionInicial = _pilaNodos.pop();
+        //Si es un id, saco de la TS su tipoSem
+        completaSiEsIdentificador( nodoDimensionInicial );
+        
+        //Desapilo la marca
+        //Nodo nodoMarca = _pilaNodos.pop();
+
+        //Supuestamente las comprobaciones de si hay espacio en el rango se hacen en codigo intermedio
+
+        //getTipoSemanticoInicial getTipoSemanticoFinal -comprobarCompatibilidad, comparaTipos, ...
+        //Sino son compatibles, debo generar un nodo error y meterlo en pila
+        //Cuando meto el nodo error, despues de meter el que? o antes de que?
+        if( nodoDimensionInicial.getTipoBasico().equals( nodoDimensionFinal.getTipoBasico() ) == true ){
+            nodoNuevo = new Nodo();
+            nodoNuevo.addTipo( TipoSemantico.ARRAY );
+            //nodoNuevo.addTipo( nodoTipoArray.getTipoBasico() ); //indica el tipo de datos del array
+            for( int i = 0;  i < nodoTipoArray.getTipoSemantico().size();  i++ ){ //Mejor un add sobrecargado, no?
+                nodoNuevo.addTipo( nodoTipoArray.getTipoSemantico().get( i ) );
+            }
+            //_pilaNodos.push(nodoNuevo);
+        }else{
+            nodoNuevo = new Nodo();
+            nodoNuevo.addTipo( TipoSemantico.ERROR );
+            //_pilaNodos.push( nodoNuevo );
+            //Mismamente pillo los valores del nodoInicial, aunque el de verdad icompatible podría ser el otro(columna)
+            _gestorDeErrores.insertaErrorSemantico( new TErrorSemantico( "Valores de las dimensiones incompatibles",
+                        nodoDimensionInicial.getLinea(),
+                        nodoDimensionInicial.getColumna() ) );
+        }
+        _pilaNodos.push( nodoNuevo );
+        }else{
+            Nodo nodoEnumerado = _pilaNodos.pop();
+            nodoNuevo = new Nodo();
+            nodoNuevo.addTipo( TipoSemantico.ARRAY );
+            for( int i = 0;  i < nodoTipoArray.getTipoSemantico().size();  i++ ){ //Mejor un add sobrecargado, no?
+                nodoNuevo.addTipo( nodoTipoArray.getTipoSemantico().get( i ) );
+            }
+            _pilaNodos.push( nodoNuevo );
+        }
+        //Apilo los el nodos generados
+        }
+       
+    }
+
+    private void TipoFormal() {
+        System.out.println("TipoFormal");
+    }
+
+    private void TipoSimple_TipoEnumerado() {
+        System.out.println("TipoSimple_TipoEnumerado");
+    }
+
+
 
     private void ExpresionConstanteFOR() {
 

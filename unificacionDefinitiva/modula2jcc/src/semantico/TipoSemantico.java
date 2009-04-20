@@ -27,5 +27,6 @@ public enum TipoSemantico {
     SUBRANGO, 
     MODULO,
     PROCEDIMIENTO_PREDEF, 
-    FUNCION_PREDEF;
+    FUNCION_PREDEF,
+    ARRAY;
 }

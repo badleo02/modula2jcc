@@ -22,10 +22,10 @@ CabeceraDefinicion:
 DEFINITION MODULE Identificador _action_ComienzoDeModulo ; { ListaImportados ; } [ ListaExportados ; ]
 
 ListaImportados:
-[ FROM Identificador ] IMPORT IdentDeProc { , IdentDeProc }
+[ FROM Identificador ] IMPORT IdentDeProc { , IdentDeProc } _action_ListaImportados
 
 ListaExportados:
-EXPORT [ QUALIFIED ] ListaDeIdentificadores
+EXPORT [ QUALIFIED ] ListaDeIdentificadores _action_ListaExportados
 
 Prioridad:
 ExpresionConstante
@@ -67,18 +67,18 @@ Identificador = EsquemaDeTipo _action_DefinicionDeTipo
 EsquemaDeTipo:
 TipoSimple 
 TipoConjunto
-TipoFormacion
+TipoFormacion _action_EsquemaDeTipo_TipoFormacion
 TipoRegistro
 TipoPuntero
 TipoSubprograma
 
 TipoSimple:
-TipoEnumerado
+TipoEnumerado _action_TipoSimple_TipoEnumerado
 IdentificadorDeTipo RestoDeTipo 
 \[ ExpresionConstante .. ExpresionConstante \] // Subrango
 
 TipoEnumerado:
-\( ListaDeIdentificadores \)
+\( ListaDeIdentificadores \) _action_TipoEnumerado
 
 RestoDeTipo:
 _epsilon_ // Simple
@@ -88,7 +88,7 @@ TipoConjunto:
 SET OF TipoSimple _action_TipoConjunto
 
 TipoFormacion:
-ARRAY TipoSimple { , TipoSimple } OF EsquemaDeTipo
+ARRAY TipoSimple { , TipoSimple } OF EsquemaDeTipo _action_TipoFormacion
 
 TipoRegistro:
 RECORD SecuenciaDeListasDeCampos END
@@ -326,7 +326,7 @@ NOT _action_operadorUnario
 //	ELEMENTOS BASICOS		//
 //----------------------------//
 TipoFormal:
-[ ARRAY OF ] IdentificadorDeTipo
+[ ARRAY OF ] IdentificadorDeTipo _action_TipoFormal
 
 Numero:
 NumeroEntero _action_NumeroEntero
