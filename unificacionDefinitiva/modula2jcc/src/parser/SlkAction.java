@@ -1146,7 +1146,7 @@ public void execute ( int  number )
      * completa la definicion de un modulo
      */
     private void CabeceraDeProcedure() {
-        // extrae elementos hasta que extraigo el nombre de la tabla de simbolos.
+      // extrae elementos hasta que extraigo el nombre de la tabla de simbolos.
         // en ese momento puedo parar y definir el procedure.
         Nodo nodo = _pilaNodos.pop();
         String lexema = _tablaActual.getNombre();
@@ -1160,27 +1160,41 @@ public void execute ( int  number )
 
         // un array para los nombres de los paramtros
         ArrayList<String> nombres = new ArrayList<String>();
+        TipoPasoParametro modo;
+        InfoSimbolo info;
 
         // mientras que no sea el nombre de la tabla
         while (!nodo.getLexema().equals(lexema)) {
 
-            // si no es error:
-            if (nodo.getTipoBasico() == TipoSemantico.ERROR) {
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("error " + nodo.getLexema() +
-                        nodo.getLexema(),
-                        nodo.getLinea(),
-                        nodo.getColumna()));
-                return;
+            // primero, si el tipo semantico es uno definido por el usuario:
+            if (nodo.getLexema() != null){
+                info = _tablaActual.busca(nodo.getLexema());
+                if (info.getTipoSimbolo() != TipoSimbolo.TIPO){
+                    // no es una definición de tipo, crea un error
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("el identificador <"+
+                                                                               nodo.getLexema()+
+                                                                               "> no es una definicion de tipo",
+                                                                               nodo.getLinea(),
+                                                                               nodo.getColumna()));
+                }
+                else
+                    tipoArgumentos.add(((InfoSimboloTipo)info).getTipoSemantico());
             }
+            else
+               tipoArgumentos.add(nodo.getTipoSemantico());
 
-            //un tipo, y un identificador.
-            // primero el tipo:
-            tipoArgumentos.add(nodo.getTipoSemantico());
-            // TODO: necesito las palabras reservadas en la pila para saber cuando es paso por referencia
-            pasoArgumentos.add(TipoPasoParametro.VALOR);
-
-            // despues el identificador:
+            // despues el identificador, si encotramos la marca antes, es por referencia:
             nodo = _pilaNodos.pop();
+
+             //si encontramos una marca es por referencia:
+            if (nodo.esMarca()){
+                modo = TipoPasoParametro.REFERENCIA;
+                nodo = _pilaNodos.pop();
+            }
+            else
+                modo = TipoPasoParametro.VALOR;
+
+            pasoArgumentos.add(modo);
 
             // comprueba la unicidad a nivel de cabecera
             if (nombres.contains(nodo.getLexema())) {
@@ -1631,9 +1645,14 @@ public void execute ( int  number )
     }
 
     private void por_referencia() {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
+       // apila un nodo que indica referncia por delante de la variable a la
+       // que se refiere
 
+        Nodo marca = new Nodo();
+        marca.crearMarca();
+        _pilaNodos.push(marca);
+    }
+    
     /**
      * Quita la marca de la cima de la pila.
      */

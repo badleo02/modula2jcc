@@ -20,7 +20,7 @@ public class generador {
 	public gui.Ventana intefaz;
 
 	/**
-	 * Buffer de código ensamblador
+	 * Buffer de cï¿½digo ensamblador
 	 */
 	private String codigo;
 	private PrintStream file;
@@ -30,7 +30,7 @@ public class generador {
 	 */
 	private int contadorEtiquetas;
 	/**
-	 * Pila de contador de variables temporales por ámbito.
+	 * Pila de contador de variables temporales por ï¿½mbito.
 	 */
 	private Stack<Integer> contadorVariables;
 
@@ -40,7 +40,7 @@ public class generador {
 
 	private boolean etiquetaUltimaEmision;
 
-	/** Separación de los comentarios desde la columna 0 */
+	/** Separaciï¿½n de los comentarios desde la columna 0 */
 	private int SEPCODIGO = 25;
 
 
@@ -68,9 +68,9 @@ public class generador {
 	}
 
 	/**
-	 * Emite el código al fichero buffer de código ensamblador.
-	 * IMPORTANTE: No escribe en fichero. Sólo amplía el código.
-	 * @param arg0 cadena que escribirá en el código
+	 * Emite el cï¿½digo al fichero buffer de cï¿½digo ensamblador.
+	 * IMPORTANTE: No escribe en fichero. Sï¿½lo amplï¿½a el cï¿½digo.
+	 * @param arg0 cadena que escribirï¿½ en el cï¿½digo
 	 * @see escribeSeccion
 	 */
 	public void emite(String arg0){
@@ -88,9 +88,9 @@ public class generador {
 	}
 
 	/**
-	 * Emite el código al fichero buffer de código ensamblador.
-	 * IMPORTANTE: No escribe en fichero. Sólo amplía el código.
-	 * @param arg0 cadena que escribirá en el código
+	 * Emite el cï¿½digo al fichero buffer de cï¿½digo ensamblador.
+	 * IMPORTANTE: No escribe en fichero. Sï¿½lo amplï¿½a el cï¿½digo.
+	 * @param arg0 cadena que escribirï¿½ en el cï¿½digo
 	 * @param com comentario asociado a la cadena
 	 * @see escribeSeccion
 	 */
@@ -108,10 +108,10 @@ public class generador {
 	}
 
 	/**
-	 * Añade el código al comienzo del buffer actual.
-	 * Es necesario para añadir el código del control de pila
-	 * al principio de cada código de subprograma.
-	 * @param arg0 código a añadadir
+	 * Aï¿½ade el cï¿½digo al comienzo del buffer actual.
+	 * Es necesario para aï¿½adir el cï¿½digo del control de pila
+	 * al principio de cada cï¿½digo de subprograma.
+	 * @param arg0 cï¿½digo a aï¿½adadir
 	 */
 	public void anadeAlComienzo(String arg0){
 		String temp = new String();
@@ -127,7 +127,7 @@ public class generador {
 
 
 	/**
-	 * Escribe el código almacenado en el buffer.
+	 * Escribe el cï¿½digo almacenado en el buffer.
 	 */
 	public void escribeSeccion(){
 		file.println(codigo);
@@ -146,7 +146,7 @@ public class generador {
 
 	/**
 	 * Retorna una nueva variable temporal
-	 * @param size tamaño del dato temporal
+	 * @param size tamaï¿½o del dato temporal
 	 * @return Nueva variable temporal
 	 */
 	public int dameNuevaTemp(String nombre, int size){
@@ -161,7 +161,7 @@ public class generador {
 	}
 
 	/**
-	 * Abre un nuevo ámbito para declaración de variables.
+	 * Abre un nuevo ï¿½mbito para declaraciï¿½n de variables.
 	 */
 	public void abreAmbito(){
 		Integer temp = new Integer(3);
@@ -171,7 +171,7 @@ public class generador {
 	}
 
 	/**
-	 * Cierra el ámbito actual y vuelve al ámbito padre.
+	 * Cierra el ï¿½mbito actual y vuelve al ï¿½mbito padre.
 	 */
 	public void cierraAmbito(){
 		contadorVariables.pop();
@@ -179,8 +179,8 @@ public class generador {
 	}
 
 	/**
-	 * Retorna el tamaño de la pila necesario para el ámbito actual
-	 * @return tamaño de la pila
+	 * Retorna el tamaï¿½o de la pila necesario para el ï¿½mbito actual
+	 * @return tamaï¿½o de la pila
 	 */
 	public int getTamanoTotalVariables(boolean esFuncion){
 		if (esFuncion) return contadorVariables.peek() - 3;
@@ -188,10 +188,10 @@ public class generador {
 	}
 
 	/*
-	 * Métodos de generación
+	 * Mï¿½todos de generaciï¿½n
 	 */
 
-	// Genera el código de las sumas y restas
+	// Genera el cï¿½digo de las sumas y restas
 	public void generaCodigoSumas(ArrayList<Nodo> sumandos,
 			ArrayList<String> operaciones, Nodo resultado) {
 		if (sumandos.size() == 1) { // Si hay 1 sumando
@@ -250,13 +250,13 @@ public class generador {
 		}
 	}
 
-	// Genera el código de las multiplicacines y divisiones
+	// Genera el cï¿½digo de las multiplicacines y divisiones
 	public void generaCodigoMultiplicaciones(ArrayList<Nodo> factores,
 			ArrayList<String> operaciones, Nodo resultado) {
 		if (factores.size() == 1) { // Si hay 1 sumando
 			Nodo factor = factores.get(0);
 			resultado.setLugar(getPosicionReal(factor));
-			resultado.setTipo(factor.getTipo());
+		//	resultado.setTipo(factor.getTipo());
 		} else { // Si hay varios
 			Nodo semiresultado = new Nodo();
 			for (int i = 0; i < factores.size() - 1; i++) {
@@ -305,10 +305,10 @@ public class generador {
 		}
 	}
 
-	// Genera el código de la asignación
+	// Genera el cï¿½digo de la asignaciï¿½n
 	public void generaCodigoAsignacion(Nodo destino, Nodo origen) {
 		int iTamanoVariables = 1;
-		iTamanoVariables = destino.getTipo().getTamanoTipo();
+//		iTamanoVariables = destino.getTipo().getTamanoTipo();
 		String operandoDestino = new String();
 		String operandoOrigen = new String();
 		String operando1com = new String();
@@ -370,7 +370,7 @@ public class generador {
 
 	}
 
-	// Genera el código de comparaciones
+	// Genera el cï¿½digo de comparaciones
 	public void generaCodigoComparacion(ArrayList<Nodo> comparables,
 			ArrayList<Nodo> operaciones, Nodo resultado){
 		if (resultado.getSiguiente() == null) // Si no tiene etiqueta se la damos
@@ -420,7 +420,7 @@ public class generador {
 		emite("MOVE #1,#-" + resultado.getLugar() + "[.IX]", "temp := 1");
 	}
 
-	// Genera el código de evaluación de booleano
+	// Genera el cï¿½digo de evaluaciï¿½n de booleano
 	public void generaCodigoBooleano(Nodo resultado){
 		if (resultado.getSiguiente() == null)
 			resultado.setSiguiente(dameNuevaEtiqueta());
@@ -440,7 +440,7 @@ public class generador {
 		emite("BZ /" + resultado.getSiguiente());
 	}
 
-	// Genera el código de una llamada a subrutina
+	// Genera el cï¿½digo de una llamada a subrutina
 	public void GeneraCodigoLlamadaAFuncion(String nombre, Nodo resultado){
 		emite("CALL /"+ nombre);
 		resultado.setLugar(dameNuevaTemp(null, 1));
@@ -449,7 +449,7 @@ public class generador {
 		resultado.setValor(null);
 	}
 
-	// Genera el código de gestión de la pila de cada subprograma
+	// Genera el cï¿½digo de gestiï¿½n de la pila de cada subprograma
 	public void generaCodigoSubprograma(String nombre, boolean esFuncion) {
 		String previo = "PUSH #0";
 		int espacio = getTamanoTotalVariables(esFuncion);
@@ -462,7 +462,7 @@ public class generador {
 		}
 		// Situa en nuevo RA
 		anadeAlComienzo("MOVE .SP, .IX  ; Set new RA\n");
-		// Apila el Registro de Activación en IX
+		// Apila el Registro de Activaciï¿½n en IX
 		anadeAlComienzo("PUSH .IX  ; RA backup\n");
 		anadeAlComienzo(nombre + ":");
 		for (int i = 0; i < espacio; i++) {
@@ -476,7 +476,7 @@ public class generador {
 		escribeSeccion();
 	}
 
-	// Pide la inserción de una variable y la inserta en su posición
+	// Pide la inserciï¿½n de una variable y la inserta en su posiciï¿½n
 	public void generaCodigoEntrada(Nodo identificador){
 		String operando = new String();
 		String operandorcom = "";
@@ -495,7 +495,7 @@ public class generador {
 	}
 
 	/**
-	 * Retorna la posición real en memoria del nodo deseado.
+	 * Retorna la posiciï¿½n real en memoria del nodo deseado.
 	 * @param arg0 valor sobre la pila en la que se encuentra el valor del nodo.
 	 * @return
 	 */
