@@ -138,7 +138,7 @@ MODULE Identificador _action_ComienzoDeModulo [ Prioridad ] ; { ListaImportados 
 //		SENTENCIAS EJECUTABLES	   	//
 //----------------------------------------//
 ParteEjecutiva:
-[ BEGIN SecuenciaDeSentencias ]
+[ BEGIN SecuenciaDeSentencias _action_ParteEjecutiva ]
 
 SecuenciaDeSentencias:
 Sentencia { ; Sentencia _action_SecuenciaDeSentencias2 } _action_SecuenciaDeSentencias
@@ -165,14 +165,14 @@ ParteIzquierda RestoSentenciaRestoAsignacion _action_RestoSentenciaAsignacion
 
 RestoSentenciaRestoAsignacion:
 _epsilon_
-:= Expresion 
-ParametrosDeLlamada
+:= Expresion _action_RestoSentenciaRestoAsignacion_1
+ParametrosDeLlamada _action_RestoSentenciaRestoAsignacion_2
 
 ParteIzquierda:
 _epsilon_
-\[ ListaDeExpresiones \] ParteIzquierda
-. IdentificadorOProcPredef ParteIzquierda
-^ ParteIzquierda
+\[ ListaDeExpresiones \] ParteIzquierda _action_ParteIzquierda_1
+. IdentificadorOProcPredef ParteIzquierda _action_ParteIzquierda_2
+^ ParteIzquierda _action_ParteIzquierda_3
 
 IdentificadorOProcPredef:
 Identificador _action_IdentificadorOProcPredef_Ident
