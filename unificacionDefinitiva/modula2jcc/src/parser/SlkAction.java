@@ -211,7 +211,7 @@ public void execute ( int  number )
                 tablaSuperior.getTS().put( nodoExportado.getLexema(), infoNodoExportado ); //no me mola asi
                 nodoNuevo.addTipo(TipoSemantico.VOID);
               }else{
-                //Sino lo encuentra habrá que informar del error de que no existe lo que se exporta, no?                
+                //Sino lo encuentra habrï¿½ que informar del error de que no existe lo que se exporta, no?                
                 nodoNuevo.addTipo(TipoSemantico.ERROR);
                 
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("No existe el identificador exportado",
@@ -234,21 +234,27 @@ public void execute ( int  number )
 
         //Le abro y copio de la TS el InfoSimbolo de cada uno de los ids, menos del del nombre del modulo
 
-        //Primera aproximacion que crea en la TS los identificadores que hay en el IMPORT, pero sin información referente a ellos
+        //Primera aproximacion que crea en la TS los identificadores que hay en el IMPORT, pero sin informaciï¿½n referente a ellos
         //Por lo que puede que se importen cosas que no existen y que lo que se importe no se sepa que es
         Nodo nodoDesapilado;
         InfoSimbolo infoNodoImportado;
-        for( int i = 0;  i < _pilaNodos.size() - 1 - 1;  i++ ){
+        int cantidadDesapilar = _pilaNodos.size();
+        for( int i = 0;  i < cantidadDesapilar - 1;  i++ ){
             nodoDesapilado = _pilaNodos.pop();
-            infoNodoImportado = null; //Como no se de que tipo es el simbolo importado, simplemente le paso un nulo de info, no se si dara problem
-            _tablaActual.getTS().put( nodoDesapilado.getLexema(), null );
+            infoNodoImportado = new InfoSimboloVar( new ArrayList<TipoSemantico>() ); //Como no se de que tipo es el simbolo importado, simplemente le paso un nulo de info, no se si dara problem
+            _tablaActual.getTS().put( nodoDesapilado.getLexema(), infoNodoImportado );
         }
         //Saco el id correspondiente al nombre del MOD
         nodoDesapilado = _pilaNodos.pop();
         
-        Nodo nodoNuevo = new Nodo();
-        nodoNuevo.addTipo( TipoSemantico.VOID );
-        _pilaNodos.add( nodoNuevo );
+        //Sino existen en el MOD debo llamar/avisar al gestor de errores
+
+        //Nodo nodoNuevo = new Nodo(); No hay tipo aqui, no?
+        //nodoNuevo.addTipo( TipoSemantico.VOID );
+        //_pilaNodos.add( nodoNuevo );
+
+        //IDEA: importaciones predefinidas, se puede crear una TS para los MOD de funciones por defecto
+        //Supongo que se podrÃ¡ hacer algo parecido para el codigo ensamblador
     }
 
     private void EsquemaDeTipo_TipoFormacion() {
@@ -330,7 +336,7 @@ public void execute ( int  number )
             nodoNuevo = new Nodo();
             nodoNuevo.addTipo( TipoSemantico.ERROR );
             //_pilaNodos.push( nodoNuevo );
-            //Mismamente pillo los valores del nodoInicial, aunque el de verdad icompatible podría ser el otro(columna)
+            //Mismamente pillo los valores del nodoInicial, aunque el de verdad icompatible podrï¿½a ser el otro(columna)
             _gestorDeErrores.insertaErrorSemantico( new TErrorSemantico( "Valores de las dimensiones incompatibles",
                         nodoDimensionInicial.getLinea(),
                         nodoDimensionInicial.getColumna() ) );
