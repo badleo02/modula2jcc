@@ -447,6 +447,8 @@ private void _opcionCompilarActionPerformed(java.awt.event.ActionEvent evt) {//G
         // Borramos el resultado de la ejecucion anterior de las pestañas
         borrarResultadoEjecucionAnterior();
 
+        SlkAction accionesSemanticas = null;
+
         try {
 
             StringReader editor = new StringReader(_txtEditor.getText());
@@ -468,8 +470,11 @@ private void _opcionCompilarActionPerformed(java.awt.event.ActionEvent evt) {//G
             // Creamos la clase que gestiona los errores en Slk
             SlkError error = new SlkError(tokens, log, _gestorDeErrores);
 
+            // crea un gestor de acciones semánticas
+            accionesSemanticas =  new SlkAction(_tablaDeSimbolos, _gestorDeErrores, _pilaNodos);
+
             // Analiza la entrada a nivel sintactico
-            SlkParser.parse(0, new SlkAction(_tablaDeSimbolos, _gestorDeErrores, _pilaNodos), tokens, error, log, (short) 0);
+            SlkParser.parse(0,accionesSemanticas, tokens, error, log, (short) 0);
 
             // Muestra el resultado de la ejecucion en sus pestañas correspondientes
             mostrarResultadoAnalisis();
@@ -485,10 +490,16 @@ private void _opcionCompilarActionPerformed(java.awt.event.ActionEvent evt) {//G
 
         } catch (Exception e) {
 
-            if (_txtEditor.getText().length() > 0) {
-                System.err.println(e.getMessage());
-            } else {
-                System.err.println("Error en proceso E/S con el fichero: no hay parametro");
+            if (accionesSemanticas != null){
+                System.out.println("error, posiblemente en pila, ultima accion ejecutada:");
+                System.out.println("\t"+accionesSemanticas.ultimaAccionSemantica());
+            }
+            else{
+                if (_txtEditor.getText().length() > 0) {
+                    System.err.println(e.getMessage());
+                } else {
+                    System.err.println("Error en proceso E/S con el fichero: no hay parametro");
+                }
             }
         }
     } else {

@@ -38,6 +38,10 @@ public class SlkAction {
     private boolean _tablaGlobalNombrada = false;
     /** Objeto logger para mostrar trazas */
     private static final Logger logger = Logger.getLogger(SlkAction.class);
+    /**
+     * ultima accion semantica ejecutada
+     */
+    private String _ultimaAccion;
 
     /**
      * Constructor de la clase SlkAction.
@@ -59,6 +63,8 @@ public class SlkAction {
      */
 public void execute ( int  number )
 {
+    _ultimaAccion = SlkString.GetSymbolName((short)-number);
+
   switch ( number ) {
     case 1:  FinDeModulo();  break;
     case 2:  ComienzoDeModulo();  break;
@@ -1324,7 +1330,7 @@ public void execute ( int  number )
         while (!nodo.getLexema().equals(lexema)) {
 
             // primero, si el tipo semantico es uno definido por el usuario:
-            if (nodo.getLexema() != null){
+            if (nodo.getTipoToken() != TipoToken.TIPO_SIMPLE){
                 info = _tablaActual.busca(nodo.getLexema());
                 if (info.getTipoSimbolo() != TipoSimbolo.TIPO){
                     // no es una definición de tipo, crea un error
@@ -2061,5 +2067,10 @@ public void execute ( int  number )
         }
         // Si hemos llegado hasta aquí, es que son operables aritméticamente
         return true;
+    }
+
+
+    public String ultimaAccionSemantica(){
+        return _ultimaAccion;
     }
 }
