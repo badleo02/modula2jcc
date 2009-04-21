@@ -609,6 +609,8 @@ public void execute ( int  number )
         //ParteEjecutiva:
         //[ BEGIN SecuenciaDeSentencias _action_ParteEjecutiva ]
 
+        System.out.println("ParteEjecutiva");
+
         Nodo nodo1 = _pilaNodos.pop(); //SecuenciaDeSentencias
 
         if (nodo1.getTipoBasico().equals(TipoSemantico.ERROR)) {
@@ -638,22 +640,49 @@ public void execute ( int  number )
         //RestoSentenciaAsignacion:
         //ParteIzquierda RestoSentenciaRestoAsignacion _action_RestoSentenciaAsignacion
 
-        //RestoSentenciaRestoAsignacion y ParteIzquiera pueden ser epsilon
+        //RestoSentenciaRestoAsignacion y ParteIzquierda pueden ser epsilon
         System.out.println("RestoSentenciaAsignacion");
         
-        Nodo nodo1 = _pilaNodos.pop(); //RestoSentenciaRestoAsignacion
-        Nodo nodo2 = _pilaNodos.pop(); //ParteIzquierda
-
+        Nodo nodo1 = _pilaNodos.pop(); //Hay que comprobar si es RestoSentenciaAsignacion, ParteIzquierda o IDENTIFICADOR
         Nodo nuevo = new Nodo();
-        if (nodo1.getTipoBasico().equals(TipoSemantico.VOID) && nodo2.getTipoBasico().equals(TipoSemantico.VOID)) {
-            nuevo.addTipo(TipoSemantico.VOID);
+
+        if (nodo1.getTipoToken().equals(TipoToken.IDENTIFICADOR)){
+            //en este caso tanto ParteIzquierda como RestoSentenciaRestoAsignacion son _epsilon
+            //volvemos a meter el IDENTIFICADOR en la pila
+            _pilaNodos.push(nodo1);
+            //añadimos un nodo VOID para comprobaciones de que esta todo bien en RestoSentenciaAsignacion
+             nuevo.addTipo(TipoSemantico.VOID);
             _pilaNodos.push(nuevo);
         } else {
-            nuevo.addTipo(TipoSemantico.ERROR);
-            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación NO Válida",
-                    nodo1.getLinea(),
-                    nodo1.getColumna()));
-            _pilaNodos.push(nuevo);
+            //hay que ver si hay otro nodo mas o ya es directamente identificador
+            Nodo nodo2 = _pilaNodos.pop();
+            if (nodo2.getTipoToken().equals(TipoToken.IDENTIFICADOR)){
+                //en este caso solo hay o ParteIzquierda o RestoSentenciaRestoAsignacion
+                //comprobamos que no es error nodo1 y volvemos a meter el identificador (nodo2) en la pila
+                _pilaNodos.push(nodo2);
+                if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)){
+                    nuevo.addTipo(TipoSemantico.VOID);
+                    _pilaNodos.push(nuevo);
+                } else {
+                    nuevo.addTipo(TipoSemantico.ERROR);
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Resto Sentencia de Asignación NO Válida",
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
+                    _pilaNodos.push(nuevo);
+                }
+            } else {
+                //tanto ParteIzquierda como RestoSentenciaRestoAsignacion tienen algo y hay q ver si los dos son VOID
+                if (nodo1.getTipoBasico().equals(TipoSemantico.VOID) && nodo2.getTipoBasico().equals(TipoSemantico.VOID)) {
+                    nuevo.addTipo(TipoSemantico.VOID);
+                    _pilaNodos.push(nuevo);
+                } else {
+                    nuevo.addTipo(TipoSemantico.ERROR);
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación NO Válida",
+                            nodo1.getLinea(),
+                            nodo1.getColumna()));
+                    _pilaNodos.push(nuevo);
+                }
+            }
         }
 
     }
@@ -717,16 +746,144 @@ public void execute ( int  number )
     }
 
     private void RestoSentenciaRestoAsignacion_1() {
-        throw new UnsupportedOperationException("Not yet implemented: RestoSentenciaRestoAsignacion_1");
+        //RestoSentenciaRestoAsignacion:
+        //_epsilon_
+        //:= Expresion _action_RestoSentenciaRestoAsignacion_1
+        //ParametrosDeLlamada _action_RestoSentenciaRestoAsignacion_2
+
+        System.out.println("RestoSentenciaRestoAsignacion_1 (Id:=Exp)");
+
+        Nodo nodo1 = _pilaNodos.pop(); //Expresion
+        _pilaNodos.pop(); //:=
+        Nodo nodo2 = _pilaNodos.pop(); //puede ser o VOID de ParteIzquierda o Identificador si ParteIzquierda es _epsilon
+        Nodo nuevo = new Nodo();
+
+        if (nodo2.getTipoToken().equals(TipoToken.IDENTIFICADOR)){
+            _pilaNodos.push(nodo2); //le vuelvo a meter en la pila
+            //Comprobamos que ninguno sea error y que sean del mismo tipo
+            ArrayList<TipoSemantico> tipo = _tablaActual.busca(nodo2.getLexema()).getTipoSemantico();
+            if (!nodo1.getTipoBasico().equals(TipoSemantico.ERROR) &&
+                    !nodo2.getTipoBasico().equals(TipoSemantico.ERROR) &&
+                    nodo1.getTipoSemantico().equals(tipo)){ //??
+                nuevo.addTipo(TipoSemantico.VOID);
+                _pilaNodos.push(nuevo);
+            } else {
+                nuevo.addTipo(TipoSemantico.ERROR);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación Id:=Exp mal tipada",
+                            nuevo.getLinea(),
+                            nuevo.getColumna()));
+                _pilaNodos.push(nuevo);
+            }
+        } else {
+            //hay un VOID de ParteIzquierda
+            Nodo nodo3 = _pilaNodos.peek(); //Identificador (OJO, no se saca de la pila solo se consulta)
+            _pilaNodos.push(nodo2);
+            //Comprobamos que ninguno sea error y que sean del mismo tipo
+            ArrayList<TipoSemantico> tipo = _tablaActual.busca(nodo3.getLexema()).getTipoSemantico();
+            if (!nodo1.getTipoBasico().equals(TipoSemantico.ERROR) &&
+                    !nodo3.getTipoBasico().equals(TipoSemantico.ERROR) &&
+                    nodo1.getTipoSemantico().equals(tipo)){ //esto da error pq no se guarda bien el tipo semantico
+                nuevo.addTipo(TipoSemantico.VOID);
+                _pilaNodos.push(nuevo);
+            } else {
+                nuevo.addTipo(TipoSemantico.ERROR);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación Id:=Exp mal tipada",
+                            nuevo.getLinea(),
+                            nuevo.getColumna()));
+                _pilaNodos.push(nuevo);
+            }
+        }
     }
 
     private void RestoSentenciaRestoAsignacion_2() {
-        throw new UnsupportedOperationException("Not yet implemented: RestoSentenciaRestoAsignacion_2");
+       //RestoSentenciaRestoAsignacion:
+        //_epsilon_
+        //:= Expresion _action_RestoSentenciaRestoAsignacion_1
+        //ParametrosDeLlamada _action_RestoSentenciaRestoAsignacion_2
+
+        System.out.println("RestoSentenciaRestoAsignacion_2 (Id ParametrosDeLlamada)");
+
+        /*ParametrosDeLlamada es o una ListaExpresiones o nada
+          - si es una ListaExpresiones, espero en la pila que haya un único nodo con el tipo de todas las expresiones
+         que debería ser el mismo, para poder comprobarlo con identificador
+          - si es nada, espero que haya un nodo VOID en la pila
+          - si es error, espero un nodo ERROR en la pila
+         */
+
+        Nodo nodo1 = _pilaNodos.pop(); //ParametrosDeLlamada
+        Nodo nodo2 = _pilaNodos.pop(); //puede ser o VOID de ParteIzquierda o Identificador si ParteIzquierda es _epsilon
+        Nodo nuevo = new Nodo();
+
+        if (nodo2.getTipoToken().equals(TipoToken.IDENTIFICADOR)){
+            _pilaNodos.push(nodo2); //le vuelvo a meter en la pila
+
+            if (nodo1.getTipoBasico()==TipoSemantico.ERROR){
+                //ParametrosDeLlamada tiene un error
+                nuevo.addTipo(TipoSemantico.ERROR);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación (Id ParamLlamada) mal tipada",
+                            nuevo.getLinea(),
+                            nuevo.getColumna()));
+                _pilaNodos.push(nuevo);
+            } else if (nodo1.getTipoBasico()==TipoSemantico.VOID){
+                //ParametrosDeLlamada es vacio asi que se añade un nodo void para indicar q esta bien construido esto
+                nuevo.addTipo(TipoSemantico.VOID);
+                _pilaNodos.push(nuevo);
+            } else {
+                //aquí comprobamos que identificador y ListaExpresiones tengan el mismo tipo
+                ArrayList<TipoSemantico> tipo = _tablaActual.busca(nodo2.getLexema()).getTipoSemantico();
+                if (nodo1.getTipoSemantico().equals(tipo)){
+                    //está bien y devuelvo un nodo VOID
+                    nuevo.addTipo(TipoSemantico.VOID);
+                    _pilaNodos.push(nuevo);
+                } else {
+                    //hay un error de incompatibilidad de tipos
+                    nuevo.addTipo(TipoSemantico.ERROR);
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación (Id ParamLlamada) mal tipada",
+                            nuevo.getLinea(),
+                            nuevo.getColumna()));
+                    _pilaNodos.push(nuevo);
+                }
+            }
+        } else {
+            //hay un VOID de ParteIzquierda
+            Nodo nodo3 = _pilaNodos.peek(); //Identificador (OJO, no se saca de la pila solo se consulta)
+            _pilaNodos.push(nodo2);
+            if (nodo1.getTipoBasico()==TipoSemantico.ERROR){
+                //ParametrosDeLlamada tiene un error
+                nuevo.addTipo(TipoSemantico.ERROR);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación (Id ParamLlamada) mal tipada",
+                            nuevo.getLinea(),
+                            nuevo.getColumna()));
+                _pilaNodos.push(nuevo);
+            } else if (nodo1.getTipoBasico()==TipoSemantico.VOID){
+                //ParametrosDeLlamada es vacio asi que se añade un nodo void para indicar q esta bien construido esto
+                nuevo.addTipo(TipoSemantico.VOID);
+                _pilaNodos.push(nuevo);
+            } else {
+                //aquí comprobamos que identificador y ListaExpresiones tengan el mismo tipo
+                ArrayList<TipoSemantico> tipo = _tablaActual.busca(nodo3.getLexema()).getTipoSemantico();
+                if (nodo1.getTipoSemantico().equals(tipo)){
+                    //está bien y devuelvo un nodo VOID
+                    nuevo.addTipo(TipoSemantico.VOID);
+                    _pilaNodos.push(nuevo);
+                } else {
+                    //hay un error de incompatibilidad de tipos
+                    nuevo.addTipo(TipoSemantico.ERROR);
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación (Id ParamLlamada) mal tipada",
+                            nuevo.getLinea(),
+                            nuevo.getColumna()));
+                    _pilaNodos.push(nuevo);
+                }
+            }
+
+        }
     }
 
     private void SecuenciaDeSentencias() {
         //SecuenciaDeSentencias:
         //Sentencia { ; Sentencia _action_SecuenciaDeSentencias2 } _action_SecuenciaDeSentencias
+
+        System.out.println("SecuenciaDeSentencias");
 
         boolean SSError = false;
         int SSLinea = 0;
@@ -830,7 +987,7 @@ public void execute ( int  number )
 
             Nodo nuevo = new Nodo();
             if (nodo1.getTipoBasico().equals(TipoSemantico.VOID) &&
-                    (nodo2.getTipoBasico().equals(TipoSemantico.VOID))) {
+                    (nodo2.getTipoToken().equals(TipoToken.IDENTIFICADOR))) {
                 nuevo.addTipo(TipoSemantico.VOID);
                 _pilaNodos.push(nuevo);
             } else {
@@ -842,7 +999,7 @@ public void execute ( int  number )
             }
         } else { //solo esta el nodo de identificador en la pila
             Nodo nuevo = new Nodo();
-            if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)) {
+            if (nodo1.getTipoToken().equals(TipoToken.IDENTIFICADOR)) {
                 nuevo.addTipo(TipoSemantico.VOID);
                 _pilaNodos.push(nuevo);
             } else {
