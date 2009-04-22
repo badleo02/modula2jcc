@@ -408,6 +408,8 @@ public void execute ( int  number )
             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipo no booleano en la expresion ELSIF",
                     nodo1.getLinea(),
                     nodo1.getColumna()));
+            nuevo.setColumna(nodo1.getColumna());
+            nuevo.setLinea(nodo1.getLinea());
             _pilaNodos.push(nuevo);
         }
 
@@ -435,6 +437,8 @@ public void execute ( int  number )
             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipo no booleano en la expresion if",
                     nodo1.getLinea(),
                     nodo1.getColumna()));
+            nuevo.setColumna(nodo1.getColumna());
+            nuevo.setLinea(nodo1.getLinea());
             _pilaNodos.push(nuevo);
         }
 
@@ -465,6 +469,8 @@ public void execute ( int  number )
             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipo no booleano en la expresion REPEAT",
                     nodo1.getLinea(),
                     nodo1.getColumna()));
+            nuevo.setColumna(nodo1.getColumna());
+            nuevo.setLinea(nodo1.getLinea());
             _pilaNodos.push(nuevo);
         }
 
@@ -481,12 +487,14 @@ public void execute ( int  number )
         if ((nodo1.getTipoBasico().equals(nodo3.getTipoBasico())) && (nodo1.getLexema().compareTo(nodo3.getLexema()) > 0)) {
             _pilaNodos.push(nodo1);
         } else {
-            Nodo n = new Nodo();
-            n.addTipo(TipoSemantico.ERROR);
+            Nodo nuevo = new Nodo();
+            nuevo.addTipo(TipoSemantico.ERROR);
             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia ExpresionTO mal tipada",
                     nodo1.getLinea(),
                     nodo1.getColumna()));
-            _pilaNodos.push(n);
+            nuevo.setColumna(nodo1.getColumna());
+            nuevo.setLinea(nodo1.getLinea());
+            _pilaNodos.push(nuevo);
         }
     }
 
@@ -512,6 +520,8 @@ public void execute ( int  number )
             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipo no booleano en la expresion WHILE",
                     nodo1.getLinea(),
                     nodo1.getColumna()));
+            nuevo.setColumna(nodo1.getColumna());
+            nuevo.setLinea(nodo1.getLinea());
             _pilaNodos.push(nuevo);
         }
 
@@ -552,9 +562,11 @@ public void execute ( int  number )
         if (tipo.equals(nodo1.getTipoBasico())) {
             _pilaNodos.push(nodo1);
         } else {
-            Nodo n = new Nodo();
-            n.addTipo(TipoSemantico.ERROR);
-            _pilaNodos.add(n);
+            Nodo nuevo = new Nodo();
+            nuevo.addTipo(TipoSemantico.ERROR);
+            nuevo.setColumna(nodo1.getColumna());
+            nuevo.setLinea(nodo1.getLinea());
+            _pilaNodos.add(nuevo);
             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia IdentificadorFOR mal tipada",
                     nodo1.getLinea(),
                     nodo1.getColumna()));
@@ -565,10 +577,17 @@ public void execute ( int  number )
         //IdentificadorOProcPredef:
         //Identificador _action_IdentificadorOProcPredef_Ident
 
+        Nodo nodo2 = _pilaNodos.peek();
         Nodo nodo1 = _pilaNodos.pop(); //Identificador
+        if (nodo2.getTipoToken()==TipoToken.OPERADOR_ASIGNACION){
+            nodo1 = _pilaNodos.pop(); //Identificador
+        }
         Nodo nuevo = new Nodo();
 
-        if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)) {
+        //if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)) {
+        if (nodo1.getTipoToken()==TipoToken.IDENTIFICADOR) {
+            //comprobamos ahora que el identificador esta en la tabla de simbolos???
+            //@TODO
             nuevo.addTipo(TipoSemantico.VOID);
             _pilaNodos.push(nuevo);
         } else {
@@ -576,9 +595,14 @@ public void execute ( int  number )
             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Identificador NO Válido",
                     nodo1.getLinea(),
                     nodo1.getColumna()));
+            nuevo.setColumna(nodo1.getColumna());
+            nuevo.setLinea(nodo1.getLinea());
             _pilaNodos.push(nuevo);
         }
-
+        //se vuelve a meter en operador de asignacion que se habia quitado antes
+        if (nodo2.getTipoToken()==TipoToken.OPERADOR_ASIGNACION){
+            _pilaNodos.push(nodo2);
+        }
     }
 
     private void IdentificadorOProcPredef_ProcPredef() {
@@ -593,9 +617,11 @@ public void execute ( int  number )
             _pilaNodos.push(nuevo);
         } else {
             nuevo.addTipo(TipoSemantico.ERROR);
-            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Llamada a Procedimiento Predefinido NO Válida",
+            /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Llamada a Procedimiento Predefinido NO Válida",
                     nodo1.getLinea(),
-                    nodo1.getColumna()));
+                    nodo1.getColumna()));*/
+            nuevo.setColumna(nodo1.getColumna());
+            nuevo.setLinea(nodo1.getLinea());
             _pilaNodos.push(nuevo);
         }
 
@@ -622,23 +648,44 @@ public void execute ( int  number )
         if (nodo1.getTipoBasico().equals(TipoSemantico.ERROR)) {
             Nodo nuevo = new Nodo();
             nuevo.addTipo(TipoSemantico.ERROR);
-            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Llamada a Procedimiento Predefinido NO Válida",
+            nuevo.setColumna(nodo1.getColumna());
+            nuevo.setLinea(nodo1.getLinea());
+            /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Llamada a Parte Ejecutiva NO Válida",
                     nodo1.getLinea(),
-                    nodo1.getColumna()));
+                    nodo1.getColumna()));*/
             //_pilaNodos.push(nuevo); //????????? no se mete en la pila??
         }
 
     }
 
     private void ParteIzquierda_1() {
+        //ParteIzquierda:
+        //_epsilon_
+        //\[ ListaDeExpresiones \] ParteIzquierda _action_ParteIzquierda_1
+        //. IdentificadorOProcPredef ParteIzquierda _action_ParteIzquierda_2
+        //^ ParteIzquierda _action_ParteIzquierda_3
+
+        //supongo que los [ y los ] no se meten en la pila
+        //ListaExpresiones: espero en la pila que haya un único nodo con el tipo de todas las expresiones
+        //que debería ser el mismo, para poder comprobarlo con identificador
         throw new UnsupportedOperationException("Not yet implemented: ParteIzquierda_1");
     }
 
     private void ParteIzquierda_2() {
+        //ParteIzquierda:
+        //_epsilon_
+        //\[ ListaDeExpresiones \] ParteIzquierda _action_ParteIzquierda_1
+        //. IdentificadorOProcPredef ParteIzquierda _action_ParteIzquierda_2
+        //^ ParteIzquierda _action_ParteIzquierda_3
         throw new UnsupportedOperationException("Not yet implemented: ParteIzquierda_2");
     }
 
     private void ParteIzquierda_3() {
+        //ParteIzquierda:
+        //_epsilon_
+        //\[ ListaDeExpresiones \] ParteIzquierda _action_ParteIzquierda_1
+        //. IdentificadorOProcPredef ParteIzquierda _action_ParteIzquierda_2
+        //^ ParteIzquierda _action_ParteIzquierda_3
         throw new UnsupportedOperationException("Not yet implemented: ParteIzquierda_3");
     }
 
@@ -653,30 +700,34 @@ public void execute ( int  number )
         Nodo nuevo = new Nodo();
 
         if (nodo1.getTipoToken()!=null){
-        if (nodo1.getTipoToken().equals(TipoToken.IDENTIFICADOR)){
-            //en este caso tanto ParteIzquierda como RestoSentenciaRestoAsignacion son _epsilon
-            //volvemos a meter el IDENTIFICADOR en la pila
-            _pilaNodos.push(nodo1);
-            //añadimos un nodo VOID para comprobaciones de que esta todo bien en RestoSentenciaAsignacion
-             nuevo.addTipo(TipoSemantico.VOID);
-            _pilaNodos.push(nuevo);
-        }
+            if (nodo1.getTipoToken().equals(TipoToken.IDENTIFICADOR)){
+                //en este caso tanto ParteIzquierda como RestoSentenciaRestoAsignacion son _epsilon
+                //volvemos a meter el IDENTIFICADOR en la pila
+                _pilaNodos.push(nodo1);
+                //añadimos un nodo VOID para comprobaciones de que esta todo bien en RestoSentenciaAsignacion
+                 nuevo.addTipo(TipoSemantico.VOID);
+                _pilaNodos.push(nuevo);
+            }
         } else {
-            //hay que ver si hay otro nodo mas o ya es directamente identificador
+            //hay que ver si hay otro nodo mas y si ya es directamente identificador
             Nodo nodo2 = _pilaNodos.pop();
-            if (nodo2.getTipoToken().equals(TipoToken.IDENTIFICADOR)){
-                //en este caso solo hay o ParteIzquierda o RestoSentenciaRestoAsignacion
-                //comprobamos que no es error nodo1 y volvemos a meter el identificador (nodo2) en la pila
-                _pilaNodos.push(nodo2);
-                if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)){
-                    nuevo.addTipo(TipoSemantico.VOID);
-                    _pilaNodos.push(nuevo);
-                } else {
-                    nuevo.addTipo(TipoSemantico.ERROR);
-                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Resto Sentencia de Asignación NO Válida",
-                        nodo1.getLinea(),
-                        nodo1.getColumna()));
-                    _pilaNodos.push(nuevo);
+            if (nodo2.getTipoToken()!=null){
+                if (nodo2.getTipoToken().equals(TipoToken.IDENTIFICADOR)){
+                    //en este caso solo hay o ParteIzquierda o RestoSentenciaRestoAsignacion
+                    //comprobamos que no es error nodo1 y volvemos a meter el identificador (nodo2) en la pila
+                    _pilaNodos.push(nodo2);
+                    if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)){
+                        nuevo.addTipo(TipoSemantico.VOID);
+                        _pilaNodos.push(nuevo);
+                    } else {
+                        nuevo.addTipo(TipoSemantico.ERROR);
+                        /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Resto Sentencia de Asignación NO Válida",
+                            nodo1.getLinea(),
+                            nodo1.getColumna()));*/
+                        nuevo.setColumna(nodo1.getColumna());
+                        nuevo.setLinea(nodo1.getLinea());
+                        _pilaNodos.push(nuevo);
+                    }
                 }
             } else {
                 //tanto ParteIzquierda como RestoSentenciaRestoAsignacion tienen algo y hay q ver si los dos son VOID
@@ -685,9 +736,11 @@ public void execute ( int  number )
                     _pilaNodos.push(nuevo);
                 } else {
                     nuevo.addTipo(TipoSemantico.ERROR);
-                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación NO Válida",
+                    /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación NO Válida",
                             nodo1.getLinea(),
-                            nodo1.getColumna()));
+                            nodo1.getColumna()));*/
+                    nuevo.setColumna(nodo1.getColumna());
+                    nuevo.setLinea(nodo1.getLinea());
                     _pilaNodos.push(nuevo);
                 }
             }
@@ -720,12 +773,14 @@ public void execute ( int  number )
                     n.addTipo(TipoSemantico.VOID);
                     _pilaNodos.push(n);
                 } else {
-                    Nodo n = new Nodo();
-                    n.addTipo(TipoSemantico.ERROR);
-                    _pilaNodos.push(n);
+                    Nodo nuevo = new Nodo();
+                    nuevo.addTipo(TipoSemantico.ERROR);                    
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia RestoSentenciaIF mal tipada",
                             nodo1.getLinea(),
                             nodo1.getColumna()));
+                    nuevo.setColumna(nodo1.getColumna());
+                    nuevo.setLinea(nodo1.getLinea());
+                    _pilaNodos.push(nuevo);
                 }
 
             } else { //es Expresion
@@ -735,12 +790,14 @@ public void execute ( int  number )
                     n.addTipo(TipoSemantico.VOID);
                     _pilaNodos.push(n);
                 } else {
-                    Nodo n = new Nodo();
-                    n.addTipo(TipoSemantico.ERROR);
-                    _pilaNodos.push(n);
+                    Nodo nuevo = new Nodo();
+                    nuevo.addTipo(TipoSemantico.ERROR);
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia RestoSentenciaIF mal tipada",
                             nodo1.getLinea(),
                             nodo1.getColumna()));
+                    nuevo.setColumna(nodo1.getColumna());
+                    nuevo.setLinea(nodo1.getLinea());
+                    _pilaNodos.push(nuevo);
                 }
             }
         } else {//es SecuenciaDeSentencias            
@@ -781,8 +838,10 @@ public void execute ( int  number )
                     } else {
                         nuevo.addTipo(TipoSemantico.ERROR);
                         _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación Id:=Exp mal tipada",
-                                    nuevo.getLinea(),
-                                    nuevo.getColumna()));
+                                    nodo2.getLinea(),
+                                    nodo2.getColumna()));
+                        nuevo.setColumna(nodo2.getColumna());
+                        nuevo.setLinea(nodo2.getLinea());
                         _pilaNodos.push(nuevo);
                     }
                 } else {
@@ -791,6 +850,8 @@ public void execute ( int  number )
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '"+ nodo2.getLexema()+"' no está en la TS",
                             nodo2.getLinea(),
                             nodo2.getColumna()));
+                    nuevo.setColumna(nodo2.getColumna());
+                    nuevo.setLinea(nodo2.getLinea());
                     _pilaNodos.push(nuevo);
                 }
                 
@@ -811,8 +872,10 @@ public void execute ( int  number )
                 } else {
                     nuevo.addTipo(TipoSemantico.ERROR);
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación Id:=Exp mal tipada",
-                                nuevo.getLinea(),
-                                nuevo.getColumna()));
+                                nodo3.getLinea(),
+                                nodo3.getColumna()));
+                    nuevo.setColumna(nodo3.getColumna());
+                    nuevo.setLinea(nodo3.getLinea());
                     _pilaNodos.push(nuevo);
                 }
             } else {
@@ -821,6 +884,8 @@ public void execute ( int  number )
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '"+ nodo3.getLexema()+"' no está en la TS",
                      nodo3.getLinea(),
                      nodo3.getColumna()));
+                nuevo.setColumna(nodo3.getColumna());
+                nuevo.setLinea(nodo3.getLinea());
                 _pilaNodos.push(nuevo);
             }
         }
@@ -853,8 +918,10 @@ public void execute ( int  number )
                     //ParametrosDeLlamada tiene un error
                     nuevo.addTipo(TipoSemantico.ERROR);
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación (Id ParamLlamada) mal tipada",
-                                nuevo.getLinea(),
-                                nuevo.getColumna()));
+                                nodo1.getLinea(),
+                                nodo1.getColumna()));
+                    nuevo.setColumna(nodo1.getColumna());
+                    nuevo.setLinea(nodo1.getLinea());
                     _pilaNodos.push(nuevo);
                 } else if (nodo1.getTipoBasico()==TipoSemantico.VOID){
                     //ParametrosDeLlamada es vacio asi que se añade un nodo void para indicar q esta bien construido esto
@@ -873,8 +940,10 @@ public void execute ( int  number )
                             //hay un error de incompatibilidad de tipos
                             nuevo.addTipo(TipoSemantico.ERROR);
                             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación (Id ParamLlamada) mal tipada",
-                                    nuevo.getLinea(),
-                                    nuevo.getColumna()));
+                                    nodo2.getLinea(),
+                                    nodo2.getColumna()));
+                            nuevo.setColumna(nodo2.getColumna());
+                            nuevo.setLinea(nodo2.getLinea());
                             _pilaNodos.push(nuevo);
                         }
                     } else {
@@ -883,6 +952,8 @@ public void execute ( int  number )
                         _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '"+ nodo2.getLexema()+"' no está en la TS",
                              nodo2.getLinea(),
                              nodo2.getColumna()));
+                        nuevo.setColumna(nodo2.getColumna());
+                        nuevo.setLinea(nodo2.getLinea());
                         _pilaNodos.push(nuevo);
                     }
                 }
@@ -897,6 +968,8 @@ public void execute ( int  number )
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación (Id ParamLlamada) mal tipada",
                             nodo1.getLinea(),
                             nodo1.getColumna()));
+                nuevo.setColumna(nodo1.getColumna());
+                nuevo.setLinea(nodo1.getLinea());
                 _pilaNodos.push(nuevo);
             } else if (nodo1.getTipoBasico()==TipoSemantico.VOID){
                 //ParametrosDeLlamada es vacio asi que se añade un nodo void para indicar q esta bien construido esto
@@ -915,8 +988,10 @@ public void execute ( int  number )
                         //hay un error de incompatibilidad de tipos
                         nuevo.addTipo(TipoSemantico.ERROR);
                         _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación (Id ParamLlamada) mal tipada",
-                                nuevo.getLinea(),
-                                nuevo.getColumna()));
+                                nodo3.getLinea(),
+                                nodo3.getColumna()));
+                        nuevo.setColumna(nodo3.getColumna());
+                        nuevo.setLinea(nodo3.getLinea());
                         _pilaNodos.push(nuevo);
                     }
                 } else {
@@ -925,6 +1000,8 @@ public void execute ( int  number )
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '"+ nodo3.getLexema()+"' no está en la TS",
                          nodo3.getLinea(),
                          nodo3.getColumna()));
+                    nuevo.setColumna(nodo3.getColumna());
+                    nuevo.setLinea(nodo3.getLinea());
                     _pilaNodos.push(nuevo);
                 }
             }
@@ -970,12 +1047,16 @@ public void execute ( int  number )
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Secuencia de Sentencias NO Válida",
                             nodo1.getLinea(),
                             nodo1.getColumna()));
+                    nuevo.setColumna(nodo1.getColumna());
+                    nuevo.setLinea(nodo1.getLinea());
                     //_pilaNodos.push(nuevo);
                 } else {
                     nuevo.addTipo(TipoSemantico.ERROR);
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Secuencia de Sentencias NO Válida",
                             SSLinea,
                             SSColumna));
+                    nuevo.setColumna(SSColumna);
+                    nuevo.setLinea(SSLinea);
                     _pilaNodos.push(nuevo);
                 }
 
@@ -988,6 +1069,8 @@ public void execute ( int  number )
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Secuencia de Sentencias NO Válida",
                             nodo1.getLinea(),
                             nodo1.getColumna()));
+                    nuevo.setColumna(nodo1.getColumna());
+                    nuevo.setLinea(nodo1.getLinea());
                     _pilaNodos.push(nuevo);
                 }
             }
@@ -1017,6 +1100,8 @@ public void execute ( int  number )
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia NO Válida",
                         nodo1.getLinea(),
                         nodo1.getColumna()));
+                nuevo.setColumna(nodo1.getColumna());
+                nuevo.setLinea(nodo1.getLinea());
                 _pilaNodos.push(nuevo);
             }
 
@@ -1045,9 +1130,11 @@ public void execute ( int  number )
                 _pilaNodos.push(nuevo);
             } else {
                 nuevo.addTipo(TipoSemantico.ERROR);
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación mal tipada",
-                        nuevo.getLinea(),
-                        nuevo.getColumna()));
+                /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación mal tipada",
+                        nodo2.getLinea(),
+                        nodo2.getColumna()));*/
+                nuevo.setColumna(nodo2.getColumna());
+                nuevo.setLinea(nodo2.getLinea());
                 _pilaNodos.push(nuevo);
             }
         } else { //solo esta el nodo de identificador en la pila
@@ -1057,9 +1144,11 @@ public void execute ( int  number )
                 _pilaNodos.push(nuevo);
             } else {
                 nuevo.addTipo(TipoSemantico.ERROR);
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación mal tipada",
-                        nuevo.getLinea(),
-                        nuevo.getColumna()));
+                /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación mal tipada",
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));*/
+                nuevo.setColumna(nodo1.getColumna());
+                nuevo.setLinea(nodo1.getLinea());
                 _pilaNodos.push(nuevo);
             }
         }
@@ -1092,12 +1181,14 @@ public void execute ( int  number )
                 n.addTipo(TipoSemantico.VOID);
                 _pilaNodos.push(n);
             } else {
-                Nodo n = new Nodo();
-                n.addTipo(TipoSemantico.ERROR);
-                _pilaNodos.push(n);
+                Nodo nuevo = new Nodo();
+                nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia SentenciaFOR mal tipada",
                         nodo1.getLinea(),
                         nodo1.getColumna()));
+                nuevo.setColumna(nodo1.getColumna());
+                nuevo.setLinea(nodo1.getLinea());
+                _pilaNodos.push(nuevo);
             }
 
         } else {// miramos que la expresion no sea de tipo error y que secuencia de sentencias sea de tipo void
@@ -1106,12 +1197,14 @@ public void execute ( int  number )
                 n.addTipo(TipoSemantico.VOID);
                 _pilaNodos.push(n);
             } else {
-                Nodo n = new Nodo();
-                n.addTipo(TipoSemantico.ERROR);
-                _pilaNodos.push(n);
+                Nodo nuevo = new Nodo();
+                nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia SentenciaFOR mal tipada",
                         nodo1.getLinea(),
                         nodo1.getColumna()));
+                nuevo.setColumna(nodo1.getColumna());
+                nuevo.setLinea(nodo1.getLinea());
+                _pilaNodos.push(nuevo);
             }
         }
 

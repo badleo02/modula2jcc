@@ -206,6 +206,10 @@ public class Nodo {
         return _columna;
     }
 
+    public void setColumna(int c){
+        _columna = c;
+    }
+
     /**
      * Devuelve la linea asociada al token.
      *
@@ -214,6 +218,10 @@ public class Nodo {
     public int getLinea() {
 
         return _linea;
+    }
+
+    public void setLinea (int l){
+        _linea = l;
     }
 
     /**
