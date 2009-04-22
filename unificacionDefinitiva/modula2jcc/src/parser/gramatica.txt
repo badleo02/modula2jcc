@@ -126,7 +126,11 @@ CabeceraSubprograma:
 PROCEDURE Identificador _action_InicioDeclaracionProcedure [ ParametrosFormales ] 
 
 ParametrosFormales:
-( [ GrupoDeParametros { ; GrupoDeParametros } ] ) [ : IdentificadorDeTipo ] _action_CabeceraDeProcedure
+( [ GrupoDeParametros { ; GrupoDeParametros } ] ) RetornoFunc _action_CabeceraDeProcedure
+
+RetornoFunc:
+: IdentificadorDeTipo _action_retornoFunc
+_epsilon_
 
 GrupoDeParametros:
 [ VAR _action_por_referencia ] ListaDeIdentificadores : TipoFormal

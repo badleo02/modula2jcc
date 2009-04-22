@@ -107,9 +107,11 @@ public class InfoSimboloSubprograma extends InfoSimbolo{
         }
        
         cadena += ")";
-        if (!super._tipoSemantico.isEmpty()){
-             cadena += ":"; 
-              cadena += super.toString();
+        if (!getValorRetorno().isEmpty()){
+            cadena += ":";
+            for (TipoSemantico tipoSemantico : _tipoSemantico) {
+                cadena += tipoSemantico;
+            }
         }
         
         cadena += "\n";
