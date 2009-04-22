@@ -1986,10 +1986,26 @@ public void execute ( int  number )
      * @return true si el nodo es de tipo booleano, false en otro caso
      */
     private boolean esBooleano(Nodo nodo) {
-        if (nodo != null && nodo.getTipoBasico() == TipoSemantico.ENTERO) {
-            return true;
+        if(logger.isDebugEnabled()){
+            logger.debug("Entrando en esEntero con nodo " + nodo);
         }
-        return false;
+        if (nodo.getTipoToken() == TipoToken.IDENTIFICADOR) {
+            InfoSimbolo simbNodo = _tablaActual.busca(nodo.getLexema());
+            if (simbNodo == null)
+                return false;
+            else if (simbNodo.getTipoBasico() != TipoSemantico.BOOLEANO)
+                return false;
+        }
+        else if (nodo.getTipoToken() == TipoToken.PALABRA_RESERVADA) {
+                if (nodo.getLexema().equals("TRUE") || nodo.getLexema().equals("FALSE")) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+        }
+        else return false;
+        return true;
     }
 
     /**
@@ -2014,10 +2030,21 @@ public void execute ( int  number )
      * @return true si el nodo es de tipo entero, false en otro caso
      */
     private boolean esEntero(Nodo nodo) {
-        if (nodo != null && nodo.getTipoBasico() == TipoSemantico.ENTERO) {
-            return true;
+        if(logger.isDebugEnabled()){
+            logger.debug("Entrando en esEntero con nodo " + nodo);
         }
-        return false;
+        if (nodo.getTipoToken() == TipoToken.IDENTIFICADOR) {
+            InfoSimbolo simbNodo = _tablaActual.busca(nodo.getLexema());
+            if (simbNodo == null)
+                return false;
+            else if (simbNodo.getTipoBasico() != TipoSemantico.ENTERO)
+                return false;
+        }
+        else if (nodo.getTipoToken() != TipoToken.NUMERO_ENTERO) {
+                return false;
+        }
+        else return false;
+        return true;
     }
 
     /**
@@ -2042,10 +2069,21 @@ public void execute ( int  number )
      * @return true si el nodo es de tipo real, false en otro caso
      */
     private boolean esReal(Nodo nodo) {
-        if (nodo != null && nodo.getTipoBasico() == TipoSemantico.REAL) {
-            return true;
+        if(logger.isDebugEnabled()){
+            logger.debug("Entrando en esReal con nodo " + nodo);
         }
-        return false;
+        if (nodo.getTipoToken() == TipoToken.IDENTIFICADOR) {
+            InfoSimbolo simbNodo = _tablaActual.busca(nodo.getLexema());
+            if (simbNodo == null)
+                return false;
+            else if (simbNodo.getTipoBasico() != TipoSemantico.REAL)
+                return false;
+        }
+        else if (nodo.getTipoToken() != TipoToken.NUMERO_REAL) {
+                return false;
+        }
+        else return false;
+        return true;
     }
 
     /**
@@ -2070,10 +2108,21 @@ public void execute ( int  number )
      * @return true si el nodo es de tipo chars, false en otro caso
      */
     private boolean esChar(Nodo nodo) {
-        if (nodo != null && nodo.getTipoBasico() == TipoSemantico.CARACTER) {
-            return true;
+        if(logger.isDebugEnabled()){
+            logger.debug("Entrando en esChar con nodo " + nodo);
         }
-        return false;
+        if (nodo.getTipoToken() == TipoToken.IDENTIFICADOR) {
+            InfoSimbolo simbNodo = _tablaActual.busca(nodo.getLexema());
+            if (simbNodo == null)
+                return false;
+            else if (simbNodo.getTipoBasico() != TipoSemantico.CARACTER)
+                return false;
+        }
+        else if (nodo.getTipoToken() != TipoToken.CARACTER) {
+                return false;
+        }
+        else return false;
+        return true;
     }
 
     /**
