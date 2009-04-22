@@ -61,81 +61,216 @@ public class SlkAction {
      * 
      * @param number La accion semantica correspondiente.
      */
-public void execute ( int  number )
-{
-    _ultimaAccion = SlkString.GetSymbolName((short)-number);
+    public void execute(int number) {
+        _ultimaAccion = SlkString.GetSymbolName((short) -number);
 
-  switch ( number ) {
-    case 1:  FinDeModulo();  break;
-    case 2:  ComienzoDeModulo();  break;
-    case 3:  ListaImportados();  break;
-    case 4:  ListaExportados();  break;
-    case 5:  finDeAmbito();  break;
-    case 6:  DefinicionDeTipo();  break;
-    case 7:  AsociacionConstante();  break;
-    case 8:  EsquemaDeTipo_TipoFormacion();  break;
-    case 9:  TipoSimple_TipoEnumerado();  break;
-    case 10:  TipoEnumerado();  break;
-    case 11:  TipoConjunto();  break;
-    case 12:  TipoFormacion();  break;
-    case 13:  TipoPuntero();  break;
-    case 14:  ponerMarcaListaVariables();  break;
-    case 15:  quitarMarcaListaVariables();  break;
-    case 16:  DeclaracionVariables();  break;
-    case 17:  InicioDeclaracionProcedure();  break;
-    case 18:  CabeceraDeProcedure();  break;
-    case 19:  por_referencia();  break;
-    case 20:  ParteEjecutiva();  break;
-    case 21:  SecuenciaDeSentencias2();  break;
-    case 22:  SecuenciaDeSentencias();  break;
-    case 23:  SentenciaAsignacion();  break;
-    case 24:  RestoSentenciaAsignacion();  break;
-    case 25:  RestoSentenciaRestoAsignacion_1();  break;
-    case 26:  RestoSentenciaRestoAsignacion_2();  break;
-    case 27:  ParteIzquierda_1();  break;
-    case 28:  ParteIzquierda_2();  break;
-    case 29:  ParteIzquierda_3();  break;
-    case 30:  IdentificadorOProcPredef_Ident();  break;
-    case 31:  IdentificadorOProcPredef_ProcPredef();  break;
-    case 32:  ExpresionIF();  break;
-    case 33:  SentenciaIF();  break;
-    case 34:  ExpresionELSIF();  break;
-    case 35:  RestoSentenciaELSIF();  break;
-    case 36:  RestoSentenciaELSE();  break;
-    case 37:  RestoSentenciaIF();  break;
-    case 38:  ExpresionWHILE();  break;
-    case 39:  SentenciaWHILE();  break;
-    case 40:  ExpresionREPEAT();  break;
-    case 41:  SentenciaREPEAT();  break;
-    case 42:  SentenciaLOOP();  break;
-    case 43:  IdentificadorFOR();  break;
-    case 44:  ExpresionTO();  break;
-    case 45:  ExpresionConstanteFOR();  break;
-    case 46:  SentenciaFOR();  break;
-    case 47:  Cadena();  break;
-    case 48:  Caracter();  break;
-    case 49:  expresionSinParentesisDeSuma();  break;
-    case 50:  operadorUnario();  break;
-    case 51:  expresionSinParentesisDeMultiplicacion();  break;
-    case 52:  OperadorBooleano();  break;
-    case 53:  TipoFormal();  break;
-    case 54:  NumeroEntero();  break;
-    case 55:  NumeroReal();  break;
-    case 56:  TipoPredefinidoPorUsuario();  break;
-    case 57:  BITSET();  break;
-    case 58:  BOOLEAN();  break;
-    case 59:  CARDINAL();  break;
-    case 60:  CHAR();  break;
-    case 61:  INTEGER();  break;
-    case 62:  LONGINT();  break;
-    case 63:  LONGREAL();  break;
-    case 64:  PROC();  break;
-    case 65:  REAL();  break;
-    case 66:  TRUE();  break;
-    case 67:  FALSE();  break;
-    case 68:  NIL();  break;
-  }
-}
+        switch (number) {
+            case 1:
+                FinDeModulo();
+                break;
+            case 2:
+                ComienzoDeModulo();
+                break;
+            case 3:
+                ListaImportados();
+                break;
+            case 4:
+                ListaExportados();
+                break;
+            case 5:
+                finDeAmbito();
+                break;
+            case 6:
+                DefinicionDeTipo();
+                break;
+            case 7:
+                AsociacionConstante();
+                break;
+            case 8:
+                EsquemaDeTipo_TipoFormacion();
+                break;
+            case 9:
+                TipoSimple_TipoEnumerado();
+                break;
+            case 10:
+                TipoEnumerado();
+                break;
+            case 11:
+                TipoConjunto();
+                break;
+            case 12:
+                TipoFormacion();
+                break;
+            case 13:
+                TipoPuntero();
+                break;
+            case 14:
+                ponerMarcaListaVariables();
+                break;
+            case 15:
+                quitarMarcaListaVariables();
+                break;
+            case 16:
+                DeclaracionVariables();
+                break;
+            case 17:
+                InicioDeclaracionProcedure();
+                break;
+            case 18:
+                CabeceraDeProcedure();
+                break;
+            case 19:
+                por_referencia();
+                break;
+            case 20:
+                ParteEjecutiva();
+                break;
+            case 21:
+                SecuenciaDeSentencias2();
+                break;
+            case 22:
+                SecuenciaDeSentencias();
+                break;
+            case 23:
+                SentenciaAsignacion();
+                break;
+            case 24:
+                RestoSentenciaAsignacion();
+                break;
+            case 25:
+                RestoSentenciaRestoAsignacion_1();
+                break;
+            case 26:
+                RestoSentenciaRestoAsignacion_2();
+                break;
+            case 27:
+                ParteIzquierda_1();
+                break;
+            case 28:
+                ParteIzquierda_2();
+                break;
+            case 29:
+                ParteIzquierda_3();
+                break;
+            case 30:
+                IdentificadorOProcPredef_Ident();
+                break;
+            case 31:
+                IdentificadorOProcPredef_ProcPredef();
+                break;
+            case 32:
+                ExpresionIF();
+                break;
+            case 33:
+                SentenciaIF();
+                break;
+            case 34:
+                ExpresionELSIF();
+                break;
+            case 35:
+                RestoSentenciaELSIF();
+                break;
+            case 36:
+                RestoSentenciaELSE();
+                break;
+            case 37:
+                RestoSentenciaIF();
+                break;
+            case 38:
+                ExpresionWHILE();
+                break;
+            case 39:
+                SentenciaWHILE();
+                break;
+            case 40:
+                ExpresionREPEAT();
+                break;
+            case 41:
+                SentenciaREPEAT();
+                break;
+            case 42:
+                SentenciaLOOP();
+                break;
+            case 43:
+                IdentificadorFOR();
+                break;
+            case 44:
+                ExpresionTO();
+                break;
+            case 45:
+                ExpresionConstanteFOR();
+                break;
+            case 46:
+                SentenciaFOR();
+                break;
+            case 47:
+                Cadena();
+                break;
+            case 48:
+                Caracter();
+                break;
+            case 49:
+                expresionSinParentesisDeSuma();
+                break;
+            case 50:
+                operadorUnario();
+                break;
+            case 51:
+                expresionSinParentesisDeMultiplicacion();
+                break;
+            case 52:
+                OperadorBooleano();
+                break;
+            case 53:
+                TipoFormal();
+                break;
+            case 54:
+                NumeroEntero();
+                break;
+            case 55:
+                NumeroReal();
+                break;
+            case 56:
+                TipoPredefinidoPorUsuario();
+                break;
+            case 57:
+                BITSET();
+                break;
+            case 58:
+                BOOLEAN();
+                break;
+            case 59:
+                CARDINAL();
+                break;
+            case 60:
+                CHAR();
+                break;
+            case 61:
+                INTEGER();
+                break;
+            case 62:
+                LONGINT();
+                break;
+            case 63:
+                LONGREAL();
+                break;
+            case 64:
+                PROC();
+                break;
+            case 65:
+                REAL();
+                break;
+            case 66:
+                TRUE();
+                break;
+            case 67:
+                FALSE();
+                break;
+            case 68:
+                NIL();
+                break;
+        }
+    }
 
     /**
      * Abre un nuevo ambito y actualiza el nombre de la nueva tabla 
@@ -200,32 +335,32 @@ public void execute ( int  number )
         //Si hay un ambito superior significa que es un modulo dentro de otro y debo copiar
         //al ambito superior las entradas de la TS (InfoSimbolo) de los identificadores que tengan
         //el modificador EXPORT
-        if(_tablaActual.getContinente() == null ){
-          //Estoy en el ambito mas superior( Si las import se consideran de ambitos inferiores )
-          System.out.println("Nombre de la TS <"+_tablaActual.getNombre()+">");
-          //Luego esta es la que exporta la funcion y por tanto ya la tiene en la TS, es decir,
-          //ya puede usar la funcion exportada
-        }else{
-          //Estoy en un ambito inferior, es decir, tiene superior
-          System.out.println("Nombre de la TS inf <"+_tablaActual.getNombre()+">");
-          while( _pilaNodos.empty() == false ){
-              Nodo nodoExportado = _pilaNodos.pop();
-              InfoSimbolo infoNodoExportado = _tablaActual.busca( nodoExportado.getLexema() );
-              if( infoNodoExportado != null ){ //Si lo encuentra
-                TablaDeSimbolos tablaSuperior = _tablaActual.getContinente();
-                System.out.println("Tabla sup <"+tablaSuperior.getNombre()+"> de la TS inf <"+_tablaActual.getNombre()+">");
-                tablaSuperior.getTS().put( nodoExportado.getLexema(), infoNodoExportado ); //no me mola asi
-                nodoNuevo.addTipo(TipoSemantico.VOID);
-              }else{
-                //Sino lo encuentra habr� que informar del error de que no existe lo que se exporta, no?                
-                nodoNuevo.addTipo(TipoSemantico.ERROR);
-                
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("No existe el identificador exportado",
-                    nodoExportado.getLinea(),
-                    nodoExportado.getColumna()));
-              }
-          }
-          _pilaNodos.add(nodoNuevo);
+        if (_tablaActual.getContinente() == null) {
+            //Estoy en el ambito mas superior( Si las import se consideran de ambitos inferiores )
+            System.out.println("Nombre de la TS <" + _tablaActual.getNombre() + ">");
+        //Luego esta es la que exporta la funcion y por tanto ya la tiene en la TS, es decir,
+        //ya puede usar la funcion exportada
+        } else {
+            //Estoy en un ambito inferior, es decir, tiene superior
+            System.out.println("Nombre de la TS inf <" + _tablaActual.getNombre() + ">");
+            while (_pilaNodos.empty() == false) {
+                Nodo nodoExportado = _pilaNodos.pop();
+                InfoSimbolo infoNodoExportado = _tablaActual.busca(nodoExportado.getLexema());
+                if (infoNodoExportado != null) { //Si lo encuentra
+                    TablaDeSimbolos tablaSuperior = _tablaActual.getContinente();
+                    System.out.println("Tabla sup <" + tablaSuperior.getNombre() + "> de la TS inf <" + _tablaActual.getNombre() + ">");
+                    tablaSuperior.getTS().put(nodoExportado.getLexema(), infoNodoExportado); //no me mola asi
+                    nodoNuevo.addTipo(TipoSemantico.VOID);
+                } else {
+                    //Sino lo encuentra habr� que informar del error de que no existe lo que se exporta, no?
+                    nodoNuevo.addTipo(TipoSemantico.ERROR);
+
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("No existe el identificador exportado",
+                            nodoExportado.getLinea(),
+                            nodoExportado.getColumna()));
+                }
+            }
+            _pilaNodos.add(nodoNuevo);
         }
     }
 
@@ -235,7 +370,7 @@ public void execute ( int  number )
 
         //Cuento los elementos en la pila (size()) y saco los size()-1 dejando
         //El ultimo nodo en la pila es el nombre del .MOD que debo abrir
-        
+
         //Debo procesar el fichero MOD... esto es mu gordo, un nuevo compila-Archivo dentro de otro
 
         //Le abro y copio de la TS el InfoSimbolo de cada uno de los ids, menos del del nombre del modulo
@@ -245,60 +380,63 @@ public void execute ( int  number )
         Nodo nodoDesapilado;
         InfoSimbolo infoNodoImportado;
         int cantidadDesapilar = _pilaNodos.size();
-        for( int i = 0;  i < cantidadDesapilar - 1;  i++ ){
+        for (int i = 0; i < cantidadDesapilar - 1; i++) {
             nodoDesapilado = _pilaNodos.pop();
-            infoNodoImportado = new InfoSimboloVar( new ArrayList<TipoSemantico>() ); //Como no se de que tipo es el simbolo importado, simplemente le paso un nulo de info, no se si dara problem
-            _tablaActual.getTS().put( nodoDesapilado.getLexema(), infoNodoImportado );
+            infoNodoImportado = new InfoSimboloVar(new ArrayList<TipoSemantico>()); //Como no se de que tipo es el simbolo importado, simplemente le paso un nulo de info, no se si dara problem
+            _tablaActual.getTS().put(nodoDesapilado.getLexema(), infoNodoImportado);
         }
         //Saco el id correspondiente al nombre del MOD
         nodoDesapilado = _pilaNodos.pop();
-        
-        //Sino existen en el MOD debo llamar/avisar al gestor de errores
 
-        //Nodo nodoNuevo = new Nodo(); No hay tipo aqui, no?
-        //nodoNuevo.addTipo( TipoSemantico.VOID );
-        //_pilaNodos.add( nodoNuevo );
+    //Sino existen en el MOD debo llamar/avisar al gestor de errores
 
-        //IDEA: importaciones predefinidas, se puede crear una TS para los MOD de funciones por defecto
-        //Supongo que se podrá hacer algo parecido para el codigo ensamblador
+    //Nodo nodoNuevo = new Nodo(); No hay tipo aqui, no?
+    //nodoNuevo.addTipo( TipoSemantico.VOID );
+    //_pilaNodos.add( nodoNuevo );
+
+    //IDEA: importaciones predefinidas, se puede crear una TS para los MOD de funciones por defecto
+    //Supongo que se podrá hacer algo parecido para el codigo ensamblador
     }
 
     private void EsquemaDeTipo_TipoFormacion() {
         System.out.println("EsquemaDeTipo_TipoFormacion");
     }
-    
+
     private void TipoEnumerado() {
         System.out.println("TipoEnumerado");
         Nodo nodoDesapilado;
         boolean error = false;
-        while( _pilaNodos.size() > 2 ){ //Igual mejor preguntar por la marca (2=marca+id)
+        while (_pilaNodos.size() > 2) { //Igual mejor preguntar por la marca (2=marca+id)
             nodoDesapilado = _pilaNodos.pop();
-            InfoSimbolo infoNodoDesapilado = _tablaActual.busca( nodoDesapilado.getLexema() );
-            if( infoNodoDesapilado != null )//Si ya esta es un error, ya que ha sido utilizado el id antes
+            InfoSimbolo infoNodoDesapilado = _tablaActual.busca(nodoDesapilado.getLexema());
+            if (infoNodoDesapilado != null)//Si ya esta es un error, ya que ha sido utilizado el id antes
+            {
                 error = true;
-            else{
+            } else {
                 //lo meto en la ts como nuevo simbolo de tipo enumerado
                 ArrayList<TipoSemantico> tipoSemanticoNodoDesapilado = new ArrayList<TipoSemantico>();
-                tipoSemanticoNodoDesapilado.add( TipoSemantico.ENUMERADO );
-                infoNodoDesapilado = new InfoSimboloVar( tipoSemanticoNodoDesapilado );
+                tipoSemanticoNodoDesapilado.add(TipoSemantico.ENUMERADO);
+                infoNodoDesapilado = new InfoSimboloVar(tipoSemanticoNodoDesapilado);
                 //infoNodoDesapilado.getTipoSemantico().add( TipoSemantico.ENUMERADO );
                 //Lo que no se es como se distinguen estos elementos del identifacor del enumerado                
-                _tablaActual.getTS().put( nodoDesapilado.getLexema(), infoNodoDesapilado);
+                _tablaActual.getTS().put(nodoDesapilado.getLexema(), infoNodoDesapilado);
             }
         }
         Nodo nuevoNodo = new Nodo();
-        if( error == false )//Solo meto si todo fue correcto, con un id mal ya error
-             nuevoNodo.addTipo( TipoSemantico.ENUMERADO );
-        else
-            nuevoNodo.addTipo( TipoSemantico.ERROR );
-        
-        _pilaNodos.push( nuevoNodo );
+        if (error == false)//Solo meto si todo fue correcto, con un id mal ya error
+        {
+            nuevoNodo.addTipo(TipoSemantico.ENUMERADO);
+        } else {
+            nuevoNodo.addTipo(TipoSemantico.ERROR);
+        }
+
+        _pilaNodos.push(nuevoNodo);
     }
 
-    public void completaSiEsIdentificador( Nodo nodo ){
-        if( nodo.getTipoToken().equals( TipoToken.IDENTIFICADOR ) == true ){
-            InfoSimbolo infoDimInicial = _tablaActual.busca( nodo.getLexema() );
-            nodo.addTipo( infoDimInicial.getTipoBasico() );
+    public void completaSiEsIdentificador(Nodo nodo) {
+        if (nodo.getTipoToken().equals(TipoToken.IDENTIFICADOR) == true) {
+            InfoSimbolo infoDimInicial = _tablaActual.busca(nodo.getLexema());
+            nodo.addTipo(infoDimInicial.getTipoBasico());
         }
     }
 
@@ -308,58 +446,58 @@ public void execute ( int  number )
         ArrayList<Nodo> listaNodos = new ArrayList<Nodo>();
 
         Nodo nodoNuevo;
-        while( _pilaNodos.size() > 3 ){ //Para cuando hay listas de arrays... marca+id+tipo , no mola
-        //Desapilo el tipo del array
-        Nodo nodoTipoArray = _pilaNodos.pop();
+        while (_pilaNodos.size() > 3) { //Para cuando hay listas de arrays... marca+id+tipo , no mola
+            //Desapilo el tipo del array
+            Nodo nodoTipoArray = _pilaNodos.pop();
 
-        if( _pilaNodos.peek().getTipoBasico().equals( TipoSemantico.ENUMERADO ) != true ){
-        //Desapilo la dimension final del rango
-        Nodo nodoDimensionFinal = _pilaNodos.pop();
-        completaSiEsIdentificador( nodoDimensionFinal );
+            if (_pilaNodos.peek().getTipoBasico().equals(TipoSemantico.ENUMERADO) != true) {
+                //Desapilo la dimension final del rango
+                Nodo nodoDimensionFinal = _pilaNodos.pop();
+                completaSiEsIdentificador(nodoDimensionFinal);
 
-        //Desapilo la dimension inicial del rango
-        Nodo nodoDimensionInicial = _pilaNodos.pop();
-        //Si es un id, saco de la TS su tipoSem
-        completaSiEsIdentificador( nodoDimensionInicial );
-        
-        //Desapilo la marca
-        //Nodo nodoMarca = _pilaNodos.pop();
+                //Desapilo la dimension inicial del rango
+                Nodo nodoDimensionInicial = _pilaNodos.pop();
+                //Si es un id, saco de la TS su tipoSem
+                completaSiEsIdentificador(nodoDimensionInicial);
 
-        //Supuestamente las comprobaciones de si hay espacio en el rango se hacen en codigo intermedio
+                //Desapilo la marca
+                //Nodo nodoMarca = _pilaNodos.pop();
 
-        //getTipoSemanticoInicial getTipoSemanticoFinal -comprobarCompatibilidad, comparaTipos, ...
-        //Sino son compatibles, debo generar un nodo error y meterlo en pila
-        //Cuando meto el nodo error, despues de meter el que? o antes de que?
-        if( nodoDimensionInicial.getTipoBasico().equals( nodoDimensionFinal.getTipoBasico() ) == true ){
-            nodoNuevo = new Nodo();
-            nodoNuevo.addTipo( TipoSemantico.ARRAY );
-            //nodoNuevo.addTipo( nodoTipoArray.getTipoBasico() ); //indica el tipo de datos del array
-            for( int i = 0;  i < nodoTipoArray.getTipoSemantico().size();  i++ ){ //Mejor un add sobrecargado, no?
-                nodoNuevo.addTipo( nodoTipoArray.getTipoSemantico().get( i ) );
+                //Supuestamente las comprobaciones de si hay espacio en el rango se hacen en codigo intermedio
+
+                //getTipoSemanticoInicial getTipoSemanticoFinal -comprobarCompatibilidad, comparaTipos, ...
+                //Sino son compatibles, debo generar un nodo error y meterlo en pila
+                //Cuando meto el nodo error, despues de meter el que? o antes de que?
+                if (nodoDimensionInicial.getTipoBasico().equals(nodoDimensionFinal.getTipoBasico()) == true) {
+                    nodoNuevo = new Nodo();
+                    nodoNuevo.addTipo(TipoSemantico.ARRAY);
+                    //nodoNuevo.addTipo( nodoTipoArray.getTipoBasico() ); //indica el tipo de datos del array
+                    for (int i = 0; i < nodoTipoArray.getTipoSemantico().size(); i++) { //Mejor un add sobrecargado, no?
+                        nodoNuevo.addTipo(nodoTipoArray.getTipoSemantico().get(i));
+                    }
+                //_pilaNodos.push(nodoNuevo);
+                } else {
+                    nodoNuevo = new Nodo();
+                    nodoNuevo.addTipo(TipoSemantico.ERROR);
+                    //_pilaNodos.push( nodoNuevo );
+                    //Mismamente pillo los valores del nodoInicial, aunque el de verdad icompatible podr�a ser el otro(columna)
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Valores de las dimensiones incompatibles",
+                            nodoDimensionInicial.getLinea(),
+                            nodoDimensionInicial.getColumna()));
+                }
+                _pilaNodos.push(nodoNuevo);
+            } else {
+                Nodo nodoEnumerado = _pilaNodos.pop();
+                nodoNuevo = new Nodo();
+                nodoNuevo.addTipo(TipoSemantico.ARRAY);
+                for (int i = 0; i < nodoTipoArray.getTipoSemantico().size(); i++) { //Mejor un add sobrecargado, no?
+                    nodoNuevo.addTipo(nodoTipoArray.getTipoSemantico().get(i));
+                }
+                _pilaNodos.push(nodoNuevo);
             }
-            //_pilaNodos.push(nodoNuevo);
-        }else{
-            nodoNuevo = new Nodo();
-            nodoNuevo.addTipo( TipoSemantico.ERROR );
-            //_pilaNodos.push( nodoNuevo );
-            //Mismamente pillo los valores del nodoInicial, aunque el de verdad icompatible podr�a ser el otro(columna)
-            _gestorDeErrores.insertaErrorSemantico( new TErrorSemantico( "Valores de las dimensiones incompatibles",
-                        nodoDimensionInicial.getLinea(),
-                        nodoDimensionInicial.getColumna() ) );
-        }
-        _pilaNodos.push( nodoNuevo );
-        }else{
-            Nodo nodoEnumerado = _pilaNodos.pop();
-            nodoNuevo = new Nodo();
-            nodoNuevo.addTipo( TipoSemantico.ARRAY );
-            for( int i = 0;  i < nodoTipoArray.getTipoSemantico().size();  i++ ){ //Mejor un add sobrecargado, no?
-                nodoNuevo.addTipo( nodoTipoArray.getTipoSemantico().get( i ) );
-            }
-            _pilaNodos.push( nodoNuevo );
-        }
         //Apilo los el nodos generados
         }
-       
+
     }
 
     private void TipoFormal() {
@@ -369,8 +507,6 @@ public void execute ( int  number )
     private void TipoSimple_TipoEnumerado() {
         System.out.println("TipoSimple_TipoEnumerado");
     }
-
-
 
     private void ExpresionConstanteFOR() {
 
@@ -579,13 +715,13 @@ public void execute ( int  number )
 
         Nodo nodo2 = _pilaNodos.peek();
         Nodo nodo1 = _pilaNodos.pop(); //Identificador
-        if (nodo2.getTipoToken()==TipoToken.OPERADOR_ASIGNACION){
+        if (nodo2.getTipoToken() == TipoToken.OPERADOR_ASIGNACION) {
             nodo1 = _pilaNodos.pop(); //Identificador
         }
         Nodo nuevo = new Nodo();
 
         //if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)) {
-        if (nodo1.getTipoToken()==TipoToken.IDENTIFICADOR) {
+        if (nodo1.getTipoToken() == TipoToken.IDENTIFICADOR) {
             //comprobamos ahora que el identificador esta en la tabla de simbolos???
             //@TODO
             nuevo.addTipo(TipoSemantico.VOID);
@@ -600,7 +736,7 @@ public void execute ( int  number )
             _pilaNodos.push(nuevo);
         }
         //se vuelve a meter en operador de asignacion que se habia quitado antes
-        if (nodo2.getTipoToken()==TipoToken.OPERADOR_ASIGNACION){
+        if (nodo2.getTipoToken() == TipoToken.OPERADOR_ASIGNACION) {
             _pilaNodos.push(nodo2);
         }
     }
@@ -618,8 +754,8 @@ public void execute ( int  number )
         } else {
             nuevo.addTipo(TipoSemantico.ERROR);
             /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Llamada a Procedimiento Predefinido NO Válida",
-                    nodo1.getLinea(),
-                    nodo1.getColumna()));*/
+            nodo1.getLinea(),
+            nodo1.getColumna()));*/
             nuevo.setColumna(nodo1.getColumna());
             nuevo.setLinea(nodo1.getLinea());
             _pilaNodos.push(nuevo);
@@ -631,10 +767,27 @@ public void execute ( int  number )
         if (logger.isDebugEnabled()) {
             logger.debug("Entrando en el metodo operadorBooleano");
         }
+        Nodo op1 = _pilaNodos.pop();
+        Nodo operador = _pilaNodos.pop();
+        Nodo op2 = _pilaNodos.pop();
+        if (!op1.esError() && !operador.esError() && !op2.esError()) {
+            if (sonOperablesLogicamente(op1, op2)) {
+                Nodo salida = new Nodo();
+                ArrayList<TipoSemantico> tipo = new ArrayList();
+                tipo.add(TipoSemantico.BOOLEANO);
+                salida.setTipo(tipo);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Salida con exito del metodo OperadorBooleano");
+                }
+            } else {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Salida con error del metodo OperadorBooleano");
+                }
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Salida con exito de OperadorBooleano");
+            }
         }
+
+
     }
 
     private void ParteEjecutiva() {
@@ -650,10 +803,10 @@ public void execute ( int  number )
             nuevo.addTipo(TipoSemantico.ERROR);
             nuevo.setColumna(nodo1.getColumna());
             nuevo.setLinea(nodo1.getLinea());
-            /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Llamada a Parte Ejecutiva NO Válida",
-                    nodo1.getLinea(),
-                    nodo1.getColumna()));*/
-            //_pilaNodos.push(nuevo); //????????? no se mete en la pila??
+        /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Llamada a Parte Ejecutiva NO Válida",
+        nodo1.getLinea(),
+        nodo1.getColumna()));*/
+        //_pilaNodos.push(nuevo); //????????? no se mete en la pila??
         }
 
     }
@@ -695,35 +848,35 @@ public void execute ( int  number )
 
         //RestoSentenciaRestoAsignacion y ParteIzquierda pueden ser epsilon
         System.out.println("RestoSentenciaAsignacion");
-        
+
         Nodo nodo1 = _pilaNodos.pop(); //Hay que comprobar si es RestoSentenciaAsignacion, ParteIzquierda o IDENTIFICADOR
         Nodo nuevo = new Nodo();
 
-        if (nodo1.getTipoToken()!=null){
-            if (nodo1.getTipoToken().equals(TipoToken.IDENTIFICADOR)){
+        if (nodo1.getTipoToken() != null) {
+            if (nodo1.getTipoToken().equals(TipoToken.IDENTIFICADOR)) {
                 //en este caso tanto ParteIzquierda como RestoSentenciaRestoAsignacion son _epsilon
                 //volvemos a meter el IDENTIFICADOR en la pila
                 _pilaNodos.push(nodo1);
                 //añadimos un nodo VOID para comprobaciones de que esta todo bien en RestoSentenciaAsignacion
-                 nuevo.addTipo(TipoSemantico.VOID);
+                nuevo.addTipo(TipoSemantico.VOID);
                 _pilaNodos.push(nuevo);
             }
         } else {
             //hay que ver si hay otro nodo mas y si ya es directamente identificador
             Nodo nodo2 = _pilaNodos.pop();
-            if (nodo2.getTipoToken()!=null){
-                if (nodo2.getTipoToken().equals(TipoToken.IDENTIFICADOR)){
+            if (nodo2.getTipoToken() != null) {
+                if (nodo2.getTipoToken().equals(TipoToken.IDENTIFICADOR)) {
                     //en este caso solo hay o ParteIzquierda o RestoSentenciaRestoAsignacion
                     //comprobamos que no es error nodo1 y volvemos a meter el identificador (nodo2) en la pila
                     _pilaNodos.push(nodo2);
-                    if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)){
+                    if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)) {
                         nuevo.addTipo(TipoSemantico.VOID);
                         _pilaNodos.push(nuevo);
                     } else {
                         nuevo.addTipo(TipoSemantico.ERROR);
                         /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Resto Sentencia de Asignación NO Válida",
-                            nodo1.getLinea(),
-                            nodo1.getColumna()));*/
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));*/
                         nuevo.setColumna(nodo1.getColumna());
                         nuevo.setLinea(nodo1.getLinea());
                         _pilaNodos.push(nuevo);
@@ -737,8 +890,8 @@ public void execute ( int  number )
                 } else {
                     nuevo.addTipo(TipoSemantico.ERROR);
                     /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación NO Válida",
-                            nodo1.getLinea(),
-                            nodo1.getColumna()));*/
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));*/
                     nuevo.setColumna(nodo1.getColumna());
                     nuevo.setLinea(nodo1.getLinea());
                     _pilaNodos.push(nuevo);
@@ -774,7 +927,7 @@ public void execute ( int  number )
                     _pilaNodos.push(n);
                 } else {
                     Nodo nuevo = new Nodo();
-                    nuevo.addTipo(TipoSemantico.ERROR);                    
+                    nuevo.addTipo(TipoSemantico.ERROR);
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia RestoSentenciaIF mal tipada",
                             nodo1.getLinea(),
                             nodo1.getColumna()));
@@ -823,23 +976,23 @@ public void execute ( int  number )
         Nodo nodo2 = _pilaNodos.pop(); //puede ser o VOID de ParteIzquierda o Identificador si ParteIzquierda es _epsilon
         Nodo nuevo = new Nodo();
 
-        if (nodo2.getTipoToken()!=null){ //es Identificador pq los VOID lo tienen a null
-            if (nodo2.getTipoToken().equals(TipoToken.IDENTIFICADOR)){
+        if (nodo2.getTipoToken() != null) { //es Identificador pq los VOID lo tienen a null
+            if (nodo2.getTipoToken().equals(TipoToken.IDENTIFICADOR)) {
                 _pilaNodos.push(nodo2); //le vuelvo a meter en la pila
                 //Comprobamos que ninguno sea error y que sean del mismo tipo
                 ArrayList<TipoSemantico> tipo;
-                if (_tablaActual.busca(nodo2.getLexema())!=null){
+                if (_tablaActual.busca(nodo2.getLexema()) != null) {
                     tipo = _tablaActual.busca(nodo2.getLexema()).getTipoSemantico();
                     if (!nodo1.getTipoBasico().equals(TipoSemantico.ERROR) &&
-                        /*!nodo2.getTipoBasico().equals(TipoSemantico.ERROR) &&*/
-                        nodo1.getTipoSemantico().equals(tipo)){ //??
-                    nuevo.addTipo(TipoSemantico.VOID);
-                    _pilaNodos.push(nuevo);
+                            /*!nodo2.getTipoBasico().equals(TipoSemantico.ERROR) &&*/
+                            nodo1.getTipoSemantico().equals(tipo)) { //??
+                        nuevo.addTipo(TipoSemantico.VOID);
+                        _pilaNodos.push(nuevo);
                     } else {
                         nuevo.addTipo(TipoSemantico.ERROR);
                         _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación Id:=Exp mal tipada",
-                                    nodo2.getLinea(),
-                                    nodo2.getColumna()));
+                                nodo2.getLinea(),
+                                nodo2.getColumna()));
                         nuevo.setColumna(nodo2.getColumna());
                         nuevo.setLinea(nodo2.getLinea());
                         _pilaNodos.push(nuevo);
@@ -847,14 +1000,14 @@ public void execute ( int  number )
                 } else {
                     //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
                     nuevo.addTipo(TipoSemantico.ERROR);
-                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '"+ nodo2.getLexema()+"' no está en la TS",
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo2.getLexema() + "' no está en la TS",
                             nodo2.getLinea(),
                             nodo2.getColumna()));
                     nuevo.setColumna(nodo2.getColumna());
                     nuevo.setLinea(nodo2.getLinea());
                     _pilaNodos.push(nuevo);
                 }
-                
+
             }
         } else {
             //hay un VOID de ParteIzquierda
@@ -862,18 +1015,18 @@ public void execute ( int  number )
             _pilaNodos.push(nodo2);
             //Comprobamos que ninguno sea error y que sean del mismo tipo
             ArrayList<TipoSemantico> tipo;
-            if (_tablaActual.busca(nodo3.getLexema())!=null){
+            if (_tablaActual.busca(nodo3.getLexema()) != null) {
                 tipo = _tablaActual.busca(nodo3.getLexema()).getTipoSemantico();
                 if (!nodo1.getTipoBasico().equals(TipoSemantico.ERROR) &&
                         /*!nodo3.getTipoBasico().equals(TipoSemantico.ERROR) && */
-                        nodo1.getTipoSemantico().equals(tipo)){ //esto da error pq no se guarda bien el tipo semantico
+                        nodo1.getTipoSemantico().equals(tipo)) { //esto da error pq no se guarda bien el tipo semantico
                     nuevo.addTipo(TipoSemantico.VOID);
                     _pilaNodos.push(nuevo);
                 } else {
                     nuevo.addTipo(TipoSemantico.ERROR);
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación Id:=Exp mal tipada",
-                                nodo3.getLinea(),
-                                nodo3.getColumna()));
+                            nodo3.getLinea(),
+                            nodo3.getColumna()));
                     nuevo.setColumna(nodo3.getColumna());
                     nuevo.setLinea(nodo3.getLinea());
                     _pilaNodos.push(nuevo);
@@ -881,9 +1034,9 @@ public void execute ( int  number )
             } else {
                 //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
                 nuevo.addTipo(TipoSemantico.ERROR);
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '"+ nodo3.getLexema()+"' no está en la TS",
-                     nodo3.getLinea(),
-                     nodo3.getColumna()));
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo3.getLexema() + "' no está en la TS",
+                        nodo3.getLinea(),
+                        nodo3.getColumna()));
                 nuevo.setColumna(nodo3.getColumna());
                 nuevo.setLinea(nodo3.getLinea());
                 _pilaNodos.push(nuevo);
@@ -892,7 +1045,7 @@ public void execute ( int  number )
     }
 
     private void RestoSentenciaRestoAsignacion_2() {
-       //RestoSentenciaRestoAsignacion:
+        //RestoSentenciaRestoAsignacion:
         //_epsilon_
         //:= Expresion _action_RestoSentenciaRestoAsignacion_1
         //ParametrosDeLlamada _action_RestoSentenciaRestoAsignacion_2
@@ -900,39 +1053,39 @@ public void execute ( int  number )
         System.out.println("RestoSentenciaRestoAsignacion_2 (Id ParametrosDeLlamada)");
 
         /*ParametrosDeLlamada es o una ListaExpresiones o nada
-          - si es una ListaExpresiones, espero en la pila que haya un único nodo con el tipo de todas las expresiones
-         que debería ser el mismo, para poder comprobarlo con identificador
-          - si es nada, espero que haya un nodo VOID en la pila
-          - si es error, espero un nodo ERROR en la pila
+        - si es una ListaExpresiones, espero en la pila que haya un único nodo con el tipo de todas las expresiones
+        que debería ser el mismo, para poder comprobarlo con identificador
+        - si es nada, espero que haya un nodo VOID en la pila
+        - si es error, espero un nodo ERROR en la pila
          */
 
         Nodo nodo1 = _pilaNodos.pop(); //ParametrosDeLlamada
         Nodo nodo2 = _pilaNodos.pop(); //puede ser o VOID de ParteIzquierda o Identificador si ParteIzquierda es _epsilon
         Nodo nuevo = new Nodo();
 
-        if (nodo2.getTipoToken()!=null){
-            if (nodo2.getTipoToken().equals(TipoToken.IDENTIFICADOR)){
+        if (nodo2.getTipoToken() != null) {
+            if (nodo2.getTipoToken().equals(TipoToken.IDENTIFICADOR)) {
                 _pilaNodos.push(nodo2); //le vuelvo a meter en la pila
 
-                if (nodo1.getTipoBasico()==TipoSemantico.ERROR){
+                if (nodo1.getTipoBasico() == TipoSemantico.ERROR) {
                     //ParametrosDeLlamada tiene un error
                     nuevo.addTipo(TipoSemantico.ERROR);
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación (Id ParamLlamada) mal tipada",
-                                nodo1.getLinea(),
-                                nodo1.getColumna()));
+                            nodo1.getLinea(),
+                            nodo1.getColumna()));
                     nuevo.setColumna(nodo1.getColumna());
                     nuevo.setLinea(nodo1.getLinea());
                     _pilaNodos.push(nuevo);
-                } else if (nodo1.getTipoBasico()==TipoSemantico.VOID){
+                } else if (nodo1.getTipoBasico() == TipoSemantico.VOID) {
                     //ParametrosDeLlamada es vacio asi que se añade un nodo void para indicar q esta bien construido esto
                     nuevo.addTipo(TipoSemantico.VOID);
                     _pilaNodos.push(nuevo);
                 } else {
                     //aquí comprobamos que identificador y ListaExpresiones tengan el mismo tipo
                     ArrayList<TipoSemantico> tipo;
-                    if (_tablaActual.busca(nodo2.getLexema())!=null){
+                    if (_tablaActual.busca(nodo2.getLexema()) != null) {
                         tipo = _tablaActual.busca(nodo2.getLexema()).getTipoSemantico();
-                        if (nodo1.getTipoSemantico().equals(tipo)){
+                        if (nodo1.getTipoSemantico().equals(tipo)) {
                             //está bien y devuelvo un nodo VOID
                             nuevo.addTipo(TipoSemantico.VOID);
                             _pilaNodos.push(nuevo);
@@ -949,9 +1102,9 @@ public void execute ( int  number )
                     } else {
                         //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
                         nuevo.addTipo(TipoSemantico.ERROR);
-                        _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '"+ nodo2.getLexema()+"' no está en la TS",
-                             nodo2.getLinea(),
-                             nodo2.getColumna()));
+                        _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo2.getLexema() + "' no está en la TS",
+                                nodo2.getLinea(),
+                                nodo2.getColumna()));
                         nuevo.setColumna(nodo2.getColumna());
                         nuevo.setLinea(nodo2.getLinea());
                         _pilaNodos.push(nuevo);
@@ -962,25 +1115,25 @@ public void execute ( int  number )
             //hay un VOID de ParteIzquierda (nodo2)
             Nodo nodo3 = _pilaNodos.peek(); //Identificador (OJO, no se saca de la pila solo se consulta)
             _pilaNodos.push(nodo2); //con este nodo no se hace nada
-            if (nodo1.getTipoBasico()==TipoSemantico.ERROR){
+            if (nodo1.getTipoBasico() == TipoSemantico.ERROR) {
                 //ParametrosDeLlamada tiene un error
                 nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación (Id ParamLlamada) mal tipada",
-                            nodo1.getLinea(),
-                            nodo1.getColumna()));
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
                 nuevo.setColumna(nodo1.getColumna());
                 nuevo.setLinea(nodo1.getLinea());
                 _pilaNodos.push(nuevo);
-            } else if (nodo1.getTipoBasico()==TipoSemantico.VOID){
+            } else if (nodo1.getTipoBasico() == TipoSemantico.VOID) {
                 //ParametrosDeLlamada es vacio asi que se añade un nodo void para indicar q esta bien construido esto
                 nuevo.addTipo(TipoSemantico.VOID);
                 _pilaNodos.push(nuevo);
             } else {
                 //aquí comprobamos que identificador y ListaExpresiones tengan el mismo tipo
                 ArrayList<TipoSemantico> tipo;
-                if (_tablaActual.busca(nodo3.getLexema())!=null){
+                if (_tablaActual.busca(nodo3.getLexema()) != null) {
                     tipo = _tablaActual.busca(nodo3.getLexema()).getTipoSemantico();
-                    if (nodo1.getTipoSemantico().equals(tipo)){
+                    if (nodo1.getTipoSemantico().equals(tipo)) {
                         //está bien y devuelvo un nodo VOID
                         nuevo.addTipo(TipoSemantico.VOID);
                         _pilaNodos.push(nuevo);
@@ -997,9 +1150,9 @@ public void execute ( int  number )
                 } else {
                     //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
                     nuevo.addTipo(TipoSemantico.ERROR);
-                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '"+ nodo3.getLexema()+"' no está en la TS",
-                         nodo3.getLinea(),
-                         nodo3.getColumna()));
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo3.getLexema() + "' no está en la TS",
+                            nodo3.getLinea(),
+                            nodo3.getColumna()));
                     nuevo.setColumna(nodo3.getColumna());
                     nuevo.setLinea(nodo3.getLinea());
                     _pilaNodos.push(nuevo);
@@ -1019,7 +1172,7 @@ public void execute ( int  number )
         int SSLinea = 0;
         int SSColumna = 0;
 
-        if (!_pilaNodos.isEmpty()){ //Secuencia puede ser _epsilon
+        if (!_pilaNodos.isEmpty()) { //Secuencia puede ser _epsilon
             //saca de la pila un nodo y comprueba si es una marca o si ya es directamente una Sentencia
             Nodo nodo1 = _pilaNodos.pop(); //Sentencia o Marca
             Nodo nuevo = new Nodo();
@@ -1049,7 +1202,7 @@ public void execute ( int  number )
                             nodo1.getColumna()));
                     nuevo.setColumna(nodo1.getColumna());
                     nuevo.setLinea(nodo1.getLinea());
-                    //_pilaNodos.push(nuevo);
+                //_pilaNodos.push(nuevo);
                 } else {
                     nuevo.addTipo(TipoSemantico.ERROR);
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Secuencia de Sentencias NO Válida",
@@ -1120,7 +1273,7 @@ public void execute ( int  number )
 
         Nodo nodo1 = _pilaNodos.pop(); //RestoSentenciaAsignacion o Identificador si es _epsilon lo otro
 
-        if (!_pilaNodos.isEmpty()){ //entonces hay otro nodo mas en la pila
+        if (!_pilaNodos.isEmpty()) { //entonces hay otro nodo mas en la pila
             Nodo nodo2 = _pilaNodos.pop(); //Identificador
 
             Nodo nuevo = new Nodo();
@@ -1131,8 +1284,8 @@ public void execute ( int  number )
             } else {
                 nuevo.addTipo(TipoSemantico.ERROR);
                 /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación mal tipada",
-                        nodo2.getLinea(),
-                        nodo2.getColumna()));*/
+                nodo2.getLinea(),
+                nodo2.getColumna()));*/
                 nuevo.setColumna(nodo2.getColumna());
                 nuevo.setLinea(nodo2.getLinea());
                 _pilaNodos.push(nuevo);
@@ -1145,8 +1298,8 @@ public void execute ( int  number )
             } else {
                 nuevo.addTipo(TipoSemantico.ERROR);
                 /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación mal tipada",
-                        nodo1.getLinea(),
-                        nodo1.getColumna()));*/
+                nodo1.getLinea(),
+                nodo1.getColumna()));*/
                 nuevo.setColumna(nodo1.getColumna());
                 nuevo.setLinea(nodo1.getLinea());
                 _pilaNodos.push(nuevo);
@@ -1269,20 +1422,19 @@ public void execute ( int  number )
                 if (logger.isDebugEnabled()) {
                     logger.debug("Salida con exito de operadorSinParentesisDeSuma");
                 }
-            }
-            else{
+            } else {
                 Nodo error = new Nodo();
-            error.addTipo(TipoSemantico.ERROR);
-            _pilaNodos.push(error);
-            if (logger.isDebugEnabled()) {
-                logger.debug("Salida con FALLO de expresionSinParentesisDeSuma");
-            }
+                error.addTipo(TipoSemantico.ERROR);
+                _pilaNodos.push(error);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Salida con FALLO de expresionSinParentesisDeSuma");
+                }
             }
         }
 
 
 
-       
+
     }
 
     /**
@@ -1449,7 +1601,7 @@ public void execute ( int  number )
      * completa la definicion de un modulo
      */
     private void CabeceraDeProcedure() {
-      // extrae elementos hasta que extraigo el nombre de la tabla de simbolos.
+        // extrae elementos hasta que extraigo el nombre de la tabla de simbolos.
         // en ese momento puedo parar y definir el procedure.
         Nodo nodo = _pilaNodos.pop();
         String lexema = _tablaActual.getNombre();
@@ -1470,32 +1622,32 @@ public void execute ( int  number )
         while (!nodo.getLexema().equals(lexema)) {
 
             // primero, si el tipo semantico es uno definido por el usuario:
-            if (nodo.getTipoToken() != TipoToken.TIPO_SIMPLE){
+            if (nodo.getTipoToken() != TipoToken.TIPO_SIMPLE) {
                 info = _tablaActual.busca(nodo.getLexema());
-                if (info.getTipoSimbolo() != TipoSimbolo.TIPO){
+                if (info.getTipoSimbolo() != TipoSimbolo.TIPO) {
                     // no es una definición de tipo, crea un error
-                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("el identificador <"+
-                                                                               nodo.getLexema()+
-                                                                               "> no es una definicion de tipo",
-                                                                               nodo.getLinea(),
-                                                                               nodo.getColumna()));
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("el identificador <" +
+                            nodo.getLexema() +
+                            "> no es una definicion de tipo",
+                            nodo.getLinea(),
+                            nodo.getColumna()));
+                } else {
+                    tipoArgumentos.add(((InfoSimboloTipo) info).getTipoSemantico());
                 }
-                else
-                    tipoArgumentos.add(((InfoSimboloTipo)info).getTipoSemantico());
+            } else {
+                tipoArgumentos.add(nodo.getTipoSemantico());
             }
-            else
-               tipoArgumentos.add(nodo.getTipoSemantico());
 
             // despues el identificador, si encotramos la marca antes, es por referencia:
             nodo = _pilaNodos.pop();
 
-             //si encontramos una marca es por referencia:
-            if (nodo.esMarca()){
+            //si encontramos una marca es por referencia:
+            if (nodo.esMarca()) {
                 modo = TipoPasoParametro.REFERENCIA;
                 nodo = _pilaNodos.pop();
-            }
-            else
+            } else {
                 modo = TipoPasoParametro.VALOR;
+            }
 
             pasoArgumentos.add(modo);
 
@@ -1626,9 +1778,9 @@ public void execute ( int  number )
         } else {
             nuevo.addTipo(TipoSemantico.ERROR);
             _pilaNodos.push(nuevo);
-            /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia IF mal tipada",
-                    nodo1.getLinea(),
-                    nodo1.getColumna()));*/
+        /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia IF mal tipada",
+        nodo1.getLinea(),
+        nodo1.getColumna()));*/
         }
 
     }
@@ -1806,6 +1958,9 @@ public void execute ( int  number )
     }
 
     private void TRUE() {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Entrando en el metodo TRUE()");
+        }
 
         _pilaNodos.peek().addTipo(TipoSemantico.BOOLEANO);
     }
@@ -1910,24 +2065,52 @@ public void execute ( int  number )
         if (!_pilaNodos.peek().esError()) {
             Nodo numero = _pilaNodos.pop();
             Nodo signo = _pilaNodos.pop();
-            if (signo.getTipoToken() == TipoToken.OPERADOR_SUMADOR) {
-                /*  if(esEntero(numero) || esReal(numero)){
-                _pilaNodos.push(numero);
-                }*/
-            } else if (signo.getTipoToken() == TipoToken.PALABRA_RESERVADA) {
-                /*if(esBooleano(numero)){
-                _pilaNodos.push(numero);
-                }*/
-            } else {
-                Nodo nodoError = new Nodo();
-                ArrayList<TipoSemantico> tipos = new ArrayList();
-                tipos.add(TipoSemantico.ERROR);
-                _pilaNodos.push(nodoError);
+            if (numero != null && signo != null) {
+                if (signo.getTipoToken() == TipoToken.OPERADOR_SUMADOR) {
+                    if (esEntero(numero) || esReal(numero)) {
+                        _pilaNodos.push(numero);
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Salida con EXITO de operadorUnario");
+                        }
+                    } else {
+                        _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Operador unario no aplicable.", numero.getLinea(), numero.getColumna()));
+                        Nodo nodoError = new Nodo();
+                        ArrayList<TipoSemantico> tipos = new ArrayList();
+                        tipos.add(TipoSemantico.ERROR);
+                        _pilaNodos.push(nodoError);
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Salida con ERROR de operadorUnario. El presunto numero no es valido para los metodos de suma y resta");
+                        }
+                    }
+                } else if (signo.getTipoToken() == TipoToken.PALABRA_RESERVADA && ((!signo.getLexema().equals("TRUE")) && (!signo.getLexema().equals("FALSE")))) {
+                    if (esBooleano(numero)) {
+                        _pilaNodos.push(numero);
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Salida con EXITO de operadorUnario");
+                        }
+                    } else {
+                        _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Operador unario no aplicable.", numero.getLinea(), numero.getColumna()));
+                        Nodo nodoError = new Nodo();
+                        ArrayList<TipoSemantico> tipos = new ArrayList();
+                        tipos.add(TipoSemantico.ERROR);
+                        _pilaNodos.push(nodoError);
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Salida con ERROR de operadorUnario. El presunto numero no es valido para los metodos booleanos");
+                        }
+                    }
+                } else {
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Operador unario no existente.", numero.getLinea(), numero.getColumna()));
+                    Nodo nodoError = new Nodo();
+                    ArrayList<TipoSemantico> tipos = new ArrayList();
+                    tipos.add(TipoSemantico.ERROR);
+                    _pilaNodos.push(nodoError);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Salida con ERROR de operadorUnario. El operador unario introducido no existe");
+                    }
+                }
             }
         }
-        if (logger.isDebugEnabled()) {
-            logger.debug("Salida con exito de operadorUnario");
-        }
+
 
     }
 
@@ -1948,14 +2131,14 @@ public void execute ( int  number )
     }
 
     private void por_referencia() {
-       // apila un nodo que indica referncia por delante de la variable a la
-       // que se refiere
+        // apila un nodo que indica referncia por delante de la variable a la
+        // que se refiere
 
         Nodo marca = new Nodo();
         marca.crearMarca();
         _pilaNodos.push(marca);
     }
-    
+
     /**
      * Quita la marca de la cima de la pila.
      */
@@ -2040,10 +2223,156 @@ public void execute ( int  number )
             else if (simbNodo.getTipoBasico() != TipoSemantico.ENTERO)
                 return false;
         }
-        else if (nodo.getTipoToken() != TipoToken.NUMERO_ENTERO) {
-                return false;
+        else if (nodo.getTipoToken() == TipoToken.NUMERO_ENTERO) {
+                return true;
         }
-        else return false;
+        else
+            return false;
+        return true;
+    }
+
+    private boolean sonOperablesLogicamente(Nodo op1, Nodo op2) {
+        if (logger.isDebugEnabled()) {
+            StringBuilder trace = new StringBuilder("Entrando en el metodo sonOperablesLogicamente con los nodos ");
+            trace.append(op1);
+            trace.append(" y ");
+            trace.append(op2);
+            logger.debug(trace.toString());
+        }
+        TipoSemantico sem1 = null;
+        TipoSemantico sem2 = null;
+        if (op1.getTipoToken() == TipoToken.IDENTIFICADOR) {
+            // Si es identificador, accedemos a la tabla de símbolos
+            InfoSimbolo simbNodo1 = _tablaActual.busca(op1.getLexema());
+            if (simbNodo1 != null) {
+                // Hemos encontrado el símbolo, miramos que su tipo semántico
+                // sea integer o real
+                sem1 = simbNodo1.getTipoBasico();
+                if ((sem1 != TipoSemantico.ENTERO) ||
+                        (sem1 != TipoSemantico.REAL) || (sem1 != TipoSemantico.BOOLEANO)) {
+                    StringBuilder trace = new StringBuilder();
+                    trace.append("Tipo de la variable ");
+                    trace.append(op1.getLexema());
+                    trace.append(" no operable aritmeticamente");
+
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), op1.getLinea(), op1.getColumna()));
+
+                    // TODO: ¿Entero largo, real largo, etc?
+                    return false;
+                }
+            } else {
+                StringBuilder trace = new StringBuilder("Variable ");
+                trace.append(op1.getLexema());
+                trace.append(" no definida.");
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), op1.getLinea(), op1.getColumna()));
+                return false;
+            }
+        }
+        if (op2.getTipoToken() == TipoToken.IDENTIFICADOR) {
+            // Si es identificador, accedemos a la tabla de símbolos
+            InfoSimbolo simbNodo2 = _tablaActual.busca(op2.getLexema());
+            if (simbNodo2 != null) {
+                // Hemos encontrado el símbolo, miramos que su tipo semántico
+                // sea integer o real
+                sem2 = simbNodo2.getTipoBasico();
+                if ((sem2 != TipoSemantico.ENTERO) ||
+                        (sem2 != TipoSemantico.REAL) || (sem1 != TipoSemantico.BOOLEANO)) {
+                    StringBuilder trace = new StringBuilder();
+                    trace.append("Tipo de la variable ");
+                    trace.append(op2.getLexema());
+                    trace.append(" no operable aritmeticamente");
+
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), op2.getLinea(), op2.getColumna()));
+
+                    // TODO: ¿Entero largo, real largo, etc?
+                    return false;
+                }
+            } else {
+                StringBuilder trace = new StringBuilder("Variable ");
+                trace.append(op2.getLexema());
+                trace.append(" no definida.");
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), op2.getLinea(), op2.getColumna()));
+                return false;
+            }
+        }
+        if (op1.getTipoToken() == TipoToken.NUMERO_ENTERO) {
+            if (op2.getTipoToken() != TipoToken.NUMERO_ENTERO) {
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", op1.getLinea(), op1.getColumna()));
+                return false;
+            }
+        }
+        if (op1.getTipoToken() == TipoToken.NUMERO_REAL) {
+            if (op2.getTipoToken() != TipoToken.NUMERO_REAL) {
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", op1.getLinea(), op1.getColumna()));
+                return false;
+            }
+        }
+
+        if (op1.getTipoToken() == TipoToken.PALABRA_RESERVADA) {
+            if (op2.getTipoToken() != TipoToken.PALABRA_RESERVADA) {
+                return false;
+            } else {
+                if (!op1.getLexema().equals("TRUE")) {
+                    if (!op1.getLexema().equals("FALSE")) {
+                        _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", op1.getLinea(), op1.getColumna()));
+                        return false;
+                    }
+                }
+                if (!op2.getLexema().equals("TRUE")) {
+                    if (!op2.getLexema().equals("FALSE")) {
+                        _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", op1.getLinea(), op1.getColumna()));
+                        return false;
+                    }
+                }
+            }
+        }
+        // Hay 4 casos:
+        //   1. Identificadores los dos
+        //   2. Identificador y no identificador
+        //   3. No identificador e identificador
+        //   4. No identificadores los dos (ya comprobado arriba)
+        if (sem1 != null && sem2 != null) {
+            // Caso 1: Dos identificadores
+            if (sem1 != sem2) {
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", op1.getLinea(), op1.getColumna()));
+                return false;
+            }
+        } else if (sem1 != null && sem2 == null) {
+            // Caso 2: Identificador y no identificador
+            if (sem1 == TipoSemantico.ENTERO) {
+                if (op2.getTipoToken() != TipoToken.NUMERO_ENTERO) {
+
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", op1.getLinea(), op1.getColumna()));
+                    return false;
+                }
+            } else if (sem1 == TipoSemantico.REAL) {
+                if (op2.getTipoToken() != TipoToken.NUMERO_REAL) {
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", op1.getLinea(), op1.getColumna()));
+                    return false;
+                }
+            } else if (sem1 == TipoSemantico.REAL) {
+                if (op2.getTipoBasico() != TipoSemantico.BOOLEANO) {
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", op1.getLinea(), op1.getColumna()));
+                    return false;
+                }
+            }
+        } else if (sem1 == null && sem2 != null) {
+            // Caso 3: No identificador e identificador
+            if (sem2 == TipoSemantico.ENTERO) {
+                if (op1.getTipoToken() != TipoToken.NUMERO_ENTERO) {
+                    return false;
+                }
+            } else if (sem2 == TipoSemantico.REAL) {
+                if (op1.getTipoToken() != TipoToken.NUMERO_REAL) {
+                    return false;
+                }
+            } else if (sem2 == TipoSemantico.REAL) {
+                if (op1.getTipoBasico() != TipoSemantico.BOOLEANO) {
+                    return false;
+                }
+            }
+        }
+        // Si hemos llegado hasta aquí, es que son operables aritméticamente
         return true;
     }
 
@@ -2079,10 +2408,11 @@ public void execute ( int  number )
             else if (simbNodo.getTipoBasico() != TipoSemantico.REAL)
                 return false;
         }
-        else if (nodo.getTipoToken() != TipoToken.NUMERO_REAL) {
-                return false;
+        else if (nodo.getTipoToken() == TipoToken.NUMERO_REAL) {
+                return true;
         }
-        else return false;
+        else
+            return false;
         return true;
     }
 
@@ -2118,10 +2448,11 @@ public void execute ( int  number )
             else if (simbNodo.getTipoBasico() != TipoSemantico.CARACTER)
                 return false;
         }
-        else if (nodo.getTipoToken() != TipoToken.CARACTER) {
-                return false;
+        else if (nodo.getTipoToken() == TipoToken.CARACTER) {
+                return true;
         }
-        else return false;
+        else
+            return false;
         return true;
     }
 
@@ -2178,7 +2509,7 @@ public void execute ( int  number )
      * @return
      */
     private boolean sonOperablesAritmeticamente(Nodo nodo1, Nodo nodo2) {
-        if(logger.isDebugEnabled()){
+        if (logger.isDebugEnabled()) {
             logger.debug("Entrando en sonOperablesAritmeticamente");
         }
         TipoSemantico sem1 = null;
@@ -2192,11 +2523,24 @@ public void execute ( int  number )
                 sem1 = simbNodo1.getTipoBasico();
                 if ((sem1 != TipoSemantico.ENTERO) ||
                         (sem1 != TipoSemantico.REAL)) {
+                    StringBuilder trace = new StringBuilder();
+                    trace.append("Tipo de la variable ");
+                    trace.append(nodo1.getLexema());
+                    trace.append(" no operable aritmeticamente");
+
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), nodo1.getLinea(), nodo1.getColumna()));
                     // TODO: ¿Entero largo, real largo, etc?
                     return false;
                 }
+            } else {
+                StringBuilder trace = new StringBuilder("Variable ");
+                trace.append(nodo1.getLexema());
+                trace.append(" no definida.");
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), nodo1.getLinea(), nodo1.getColumna()));
+                return false;
             }
         }
+
         if (nodo2.getTipoToken() == TipoToken.IDENTIFICADOR) {
             // Si es identificador, accedemos a la tabla de símbolos
             InfoSimbolo simbNodo2 = _tablaActual.busca(nodo2.getLexema());
@@ -2206,18 +2550,34 @@ public void execute ( int  number )
                 sem2 = simbNodo2.getTipoBasico();
                 if ((sem2 != TipoSemantico.ENTERO) ||
                         (sem2 != TipoSemantico.REAL)) {
+                    StringBuilder trace = new StringBuilder();
+                    trace.append("Tipo de la variable ");
+                    trace.append(nodo2.getLexema());
+                    trace.append(" no operable aritmeticamente");
+
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), nodo2.getLinea(), nodo2.getColumna()));
+
                     // TODO: ¿Entero largo, real largo, etc?
                     return false;
                 }
+            } else {
+                StringBuilder trace = new StringBuilder("Variable ");
+                trace.append(nodo2.getLexema());
+                trace.append(" no definida.");
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), nodo2.getLinea(), nodo2.getColumna()));
+                return false;
             }
         }
+
         if (nodo1.getTipoToken() == TipoToken.NUMERO_ENTERO) {
             if (nodo2.getTipoToken() != TipoToken.NUMERO_ENTERO) {
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", nodo1.getLinea(), nodo1.getColumna()));
                 return false;
             }
         }
         if (nodo1.getTipoToken() == TipoToken.NUMERO_REAL) {
             if (nodo2.getTipoToken() != TipoToken.NUMERO_REAL) {
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", nodo1.getLinea(), nodo1.getColumna()));
                 return false;
             }
         }
@@ -2229,16 +2589,26 @@ public void execute ( int  number )
         if (sem1 != null && sem2 != null) {
             // Caso 1: Dos identificadores
             if (sem1 != sem2) {
+                StringBuilder trace = new StringBuilder();
+                trace.append("Tipos de las variables ");
+                trace.append(nodo1.getLexema());
+                trace.append((" y "));
+                trace.append(nodo2.getLexema());
+                trace.append(" no operables aritmeticamente");
+
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), nodo1.getLinea(), nodo1.getColumna()));
                 return false;
             }
         } else if (sem1 != null && sem2 == null) {
             // Caso 2: Identificador y no identificador
             if (sem1 == TipoSemantico.ENTERO) {
                 if (nodo2.getTipoToken() != TipoToken.NUMERO_ENTERO) {
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", nodo1.getLinea(), nodo1.getColumna()));
                     return false;
                 }
             } else if (sem1 == TipoSemantico.REAL) {
                 if (nodo2.getTipoToken() != TipoToken.NUMERO_REAL) {
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", nodo1.getLinea(), nodo1.getColumna()));
                     return false;
                 }
             }
@@ -2246,10 +2616,12 @@ public void execute ( int  number )
             // Caso 3: No identificador e identificador
             if (sem2 == TipoSemantico.ENTERO) {
                 if (nodo1.getTipoToken() != TipoToken.NUMERO_ENTERO) {
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", nodo1.getLinea(), nodo1.getColumna()));
                     return false;
                 }
             } else if (sem2 == TipoSemantico.REAL) {
                 if (nodo1.getTipoToken() != TipoToken.NUMERO_REAL) {
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", nodo1.getLinea(), nodo1.getColumna()));
                     return false;
                 }
             }
@@ -2258,8 +2630,7 @@ public void execute ( int  number )
         return true;
     }
 
-
-    public String ultimaAccionSemantica(){
+    public String ultimaAccionSemantica() {
         return _ultimaAccion;
     }
 }
