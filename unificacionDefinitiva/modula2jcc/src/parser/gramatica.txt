@@ -110,8 +110,8 @@ ListaDeTiposFormales:
 ( [ [ VAR ] TipoFormal { , [ VAR ] TipoFormal } ] ) RetornoSubprograma
 
 RetornoSubprograma:
+: IdentificadorDeTipo 
 _epsilon_ 
-: IdentificadorDeTipo
 
 DeclaracionDeVariables:
 VAR _action_ponerMarcaListaVariables { ListaDeVariables ; } _action_quitarMarcaListaVariables

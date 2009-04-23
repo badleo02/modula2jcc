@@ -64,212 +64,77 @@ public class SlkAction {
     public void execute(int number) {
         _ultimaAccion = SlkString.GetSymbolName((short) -number);
 
-        switch (number) {
-            case 1:
-                FinDeModulo();
-                break;
-            case 2:
-                ComienzoDeModulo();
-                break;
-            case 3:
-                ListaImportados();
-                break;
-            case 4:
-                ListaExportados();
-                break;
-            case 5:
-                finDeAmbito();
-                break;
-            case 6:
-                DefinicionDeTipo();
-                break;
-            case 7:
-                AsociacionConstante();
-                break;
-            case 8:
-                EsquemaDeTipo_TipoFormacion();
-                break;
-            case 9:
-                TipoSimple_TipoEnumerado();
-                break;
-            case 10:
-                TipoEnumerado();
-                break;
-            case 11:
-                TipoConjunto();
-                break;
-            case 12:
-                TipoFormacion();
-                break;
-            case 13:
-                TipoPuntero();
-                break;
-            case 14:
-                ponerMarcaListaVariables();
-                break;
-            case 15:
-                quitarMarcaListaVariables();
-                break;
-            case 16:
-                DeclaracionVariables();
-                break;
-            case 17:
-                InicioDeclaracionProcedure();
-                break;
-            case 18:
-                CabeceraDeProcedure();
-                break;
-            case 19:
-                por_referencia();
-                break;
-            case 20:
-                ParteEjecutiva();
-                break;
-            case 21:
-                SecuenciaDeSentencias2();
-                break;
-            case 22:
-                SecuenciaDeSentencias();
-                break;
-            case 23:
-                SentenciaAsignacion();
-                break;
-            case 24:
-                RestoSentenciaAsignacion();
-                break;
-            case 25:
-                RestoSentenciaRestoAsignacion_1();
-                break;
-            case 26:
-                RestoSentenciaRestoAsignacion_2();
-                break;
-            case 27:
-                ParteIzquierda_1();
-                break;
-            case 28:
-                ParteIzquierda_2();
-                break;
-            case 29:
-                ParteIzquierda_3();
-                break;
-            case 30:
-                IdentificadorOProcPredef_Ident();
-                break;
-            case 31:
-                IdentificadorOProcPredef_ProcPredef();
-                break;
-            case 32:
-                ExpresionIF();
-                break;
-            case 33:
-                SentenciaIF();
-                break;
-            case 34:
-                ExpresionELSIF();
-                break;
-            case 35:
-                RestoSentenciaELSIF();
-                break;
-            case 36:
-                RestoSentenciaELSE();
-                break;
-            case 37:
-                RestoSentenciaIF();
-                break;
-            case 38:
-                ExpresionWHILE();
-                break;
-            case 39:
-                SentenciaWHILE();
-                break;
-            case 40:
-                ExpresionREPEAT();
-                break;
-            case 41:
-                SentenciaREPEAT();
-                break;
-            case 42:
-                SentenciaLOOP();
-                break;
-            case 43:
-                IdentificadorFOR();
-                break;
-            case 44:
-                ExpresionTO();
-                break;
-            case 45:
-                ExpresionConstanteFOR();
-                break;
-            case 46:
-                SentenciaFOR();
-                break;
-            case 47:
-                Cadena();
-                break;
-            case 48:
-                Caracter();
-                break;
-            case 49:
-                expresionSinParentesisDeSuma();
-                break;
-            case 50:
-                operadorUnario();
-                break;
-            case 51:
-                expresionSinParentesisDeMultiplicacion();
-                break;
-            case 52:
-                OperadorBooleano();
-                break;
-            case 53:
-                TipoFormal();
-                break;
-            case 54:
-                NumeroEntero();
-                break;
-            case 55:
-                NumeroReal();
-                break;
-            case 56:
-                TipoPredefinidoPorUsuario();
-                break;
-            case 57:
-                BITSET();
-                break;
-            case 58:
-                BOOLEAN();
-                break;
-            case 59:
-                CARDINAL();
-                break;
-            case 60:
-                CHAR();
-                break;
-            case 61:
-                INTEGER();
-                break;
-            case 62:
-                LONGINT();
-                break;
-            case 63:
-                LONGREAL();
-                break;
-            case 64:
-                PROC();
-                break;
-            case 65:
-                REAL();
-                break;
-            case 66:
-                TRUE();
-                break;
-            case 67:
-                FALSE();
-                break;
-            case 68:
-                NIL();
-                break;
-        }
+    switch ( number ) {
+    case 1:  FinDeModulo();  break;
+    case 2:  ComienzoDeModulo();  break;
+    case 3:  ListaImportados();  break;
+    case 4:  ListaExportados();  break;
+    case 5:  finDeAmbito();  break;
+    case 6:  DefinicionDeTipo();  break;
+    case 7:  AsociacionConstante();  break;
+    case 8:  EsquemaDeTipo_TipoFormacion();  break;
+    case 9:  TipoSimple_TipoEnumerado();  break;
+    case 10:  TipoEnumerado();  break;
+    case 11:  TipoConjunto();  break;
+    case 12:  TipoFormacion();  break;
+    case 13:  TipoPuntero();  break;
+    case 14:  ponerMarcaListaVariables();  break;
+    case 15:  quitarMarcaListaVariables();  break;
+    case 16:  DeclaracionVariables();  break;
+    case 17:  InicioDeclaracionProcedure();  break;
+    case 18:  CabeceraDeProcedure();  break;
+    case 19:  retornoFunc();  break;
+    case 20:  por_referencia();  break;
+    case 21:  ParteEjecutiva();  break;
+    case 22:  SecuenciaDeSentencias2();  break;
+    case 23:  SecuenciaDeSentencias();  break;
+    case 24:  SentenciaAsignacion();  break;
+    case 25:  RestoSentenciaAsignacion();  break;
+    case 26:  RestoSentenciaRestoAsignacion_1();  break;
+    case 27:  RestoSentenciaRestoAsignacion_2();  break;
+    case 28:  ParteIzquierda_1();  break;
+    case 29:  ParteIzquierda_2();  break;
+    case 30:  ParteIzquierda_3();  break;
+    case 31:  IdentificadorOProcPredef_Ident();  break;
+    case 32:  IdentificadorOProcPredef_ProcPredef();  break;
+    case 33:  ExpresionIF();  break;
+    case 34:  SentenciaIF();  break;
+    case 35:  ExpresionELSIF();  break;
+    case 36:  RestoSentenciaELSIF();  break;
+    case 37:  RestoSentenciaELSE();  break;
+    case 38:  RestoSentenciaIF();  break;
+    case 39:  ExpresionWHILE();  break;
+    case 40:  SentenciaWHILE();  break;
+    case 41:  ExpresionREPEAT();  break;
+    case 42:  SentenciaREPEAT();  break;
+    case 43:  SentenciaLOOP();  break;
+    case 44:  IdentificadorFOR();  break;
+    case 45:  ExpresionTO();  break;
+    case 46:  ExpresionConstanteFOR();  break;
+    case 47:  SentenciaFOR();  break;
+    case 48:  Cadena();  break;
+    case 49:  Caracter();  break;
+    case 50:  expresionSinParentesisDeSuma();  break;
+    case 51:  operadorUnario();  break;
+    case 52:  expresionSinParentesisDeMultiplicacion();  break;
+    case 53:  OperadorBooleano();  break;
+    case 54:  TipoFormal();  break;
+    case 55:  NumeroEntero();  break;
+    case 56:  NumeroReal();  break;
+    case 57:  TipoPredefinidoPorUsuario();  break;
+    case 58:  BITSET();  break;
+    case 59:  BOOLEAN();  break;
+    case 60:  CARDINAL();  break;
+    case 61:  CHAR();  break;
+    case 62:  INTEGER();  break;
+    case 63:  LONGINT();  break;
+    case 64:  LONGREAL();  break;
+    case 65:  PROC();  break;
+    case 66:  REAL();  break;
+    case 67:  TRUE();  break;
+    case 68:  FALSE();  break;
+    case 69:  NIL();  break;
+  }
     }
 
     /**
@@ -1390,7 +1255,8 @@ public class SlkAction {
                     if(esEntero(num2)){
                         tipoSem.add(TipoSemantico.ENTERO);
                     }
-                    num2.setTipo(tipoSem);
+                    num2.setTipo(tipoSem);
+
                     _pilaNodos.push(num2);
                     if (logger.isDebugEnabled()) {
                         logger.debug("Salida con exito de expresionSinParentesisDeMultiplicacion");
@@ -1433,7 +1299,8 @@ public class SlkAction {
         if (!num1.esError() && !oper.esError() && !num2.esError()) {
             if (sonOperablesAritmeticamente(num1, num2)) {
                 
-                num1.setLexema("");
+                num1.setLexema("");
+
                 ArrayList<TipoSemantico> tipoSem = new ArrayList();
                 if(esReal(num1))
                 {
@@ -1644,6 +1511,25 @@ public class SlkAction {
         ArrayList<String> nombres = new ArrayList<String>();
         TipoPasoParametro modo;
         InfoSimbolo info;
+
+        // comprobamos si es una función o un procediento
+        if (nodo.esMarca()){
+            nodo = _pilaNodos.pop();
+            if (nodo.getTipoToken() == TipoToken.TIPO_SIMPLE){
+                retorno = nodo.getTipoSemantico();
+            }
+            else{
+                InfoSimbolo inf = _tablaActual.busca(nodo.getLexema());
+                if ((inf != null) && (inf.getTipoSimbolo() == TipoSimbolo.TIPO)){
+                    retorno = inf.getTipoSemantico();
+                }
+                else
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("el indetificador " +
+                                                           nodo.getLexema() + " no es una declaracion de tipo",
+                                                           nodo.getLinea(), nodo.getColumna()));
+            }
+            nodo = _pilaNodos.pop();
+        }
 
         // mientras que no sea el nombre de la tabla
         while (!nodo.getLexema().equals(lexema)) {
@@ -2188,6 +2074,13 @@ public class SlkAction {
     private void quitarMarcaListaVariables() {
 
         _pilaNodos.pop();
+    }
+
+    private void retornoFunc() {
+       // añade una marca para indicar el retorno de funcion
+        Nodo marca = new Nodo();
+        marca.crearMarca();
+        _pilaNodos.add(marca);
     }
 
     /**
