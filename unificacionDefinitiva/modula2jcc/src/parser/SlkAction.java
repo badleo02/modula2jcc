@@ -781,11 +781,10 @@ public class SlkAction {
                     logger.debug("Salida con exito del metodo OperadorBooleano");
                 }
             } else {
-                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("No son operables logicamente.", op1.getLinea(), op2.getColumna()));
-                        Nodo nodoError = new Nodo();
-                        ArrayList<TipoSemantico> tipos = new ArrayList();
-                        tipos.add(TipoSemantico.ERROR);
-                        _pilaNodos.push(nodoError);
+                                                         
+                Nodo error = new Nodo();
+                error.addTipo(TipoSemantico.ERROR);
+
                 if (logger.isDebugEnabled()) {
                     logger.debug("Salida con error del metodo OperadorBooleano");
                 }
@@ -1382,6 +1381,7 @@ public class SlkAction {
                     //hago esto para generacion de codigo intermedio para ver si lo que nos viene
                     //en la pila era un numero en el codigo o el resultado de una expresion
                     num2.setLexema("");
+
                     ArrayList<TipoSemantico> tipoSem = new ArrayList();
                     if(esReal(num2))
                     {
@@ -1390,7 +1390,7 @@ public class SlkAction {
                     if(esEntero(num2)){
                         tipoSem.add(TipoSemantico.ENTERO);
                     }
-                    num2.setTipo(tipoSem);
+                    num2.setTipo(tipoSem);
                     _pilaNodos.push(num2);
                     if (logger.isDebugEnabled()) {
                         logger.debug("Salida con exito de expresionSinParentesisDeMultiplicacion");
@@ -1432,7 +1432,8 @@ public class SlkAction {
         Nodo num2 = _pilaNodos.pop();
         if (!num1.esError() && !oper.esError() && !num2.esError()) {
             if (sonOperablesAritmeticamente(num1, num2)) {
-                num1.setLexema("");
+                
+                num1.setLexema("");
                 ArrayList<TipoSemantico> tipoSem = new ArrayList();
                 if(esReal(num1))
                 {
@@ -1442,6 +1443,7 @@ public class SlkAction {
                     tipoSem.add(TipoSemantico.ENTERO);
                 }
                 num1.setTipo(tipoSem);
+
                 _pilaNodos.push(num1);
 
                 if (logger.isDebugEnabled()) {
@@ -2094,6 +2096,7 @@ public class SlkAction {
                 if (signo.getTipoToken() == TipoToken.OPERADOR_SUMADOR) {
                     if (esEntero(numero) || esReal(numero)) {
                         _pilaNodos.push(numero);
+
                         ArrayList<TipoSemantico> tipoSem = new ArrayList();
                         if(esReal(numero))
                         {
@@ -2103,6 +2106,7 @@ public class SlkAction {
                             tipoSem.add(TipoSemantico.ENTERO);
                         }
                         numero.setTipo(tipoSem);
+
                         if (logger.isDebugEnabled()) {
                             logger.debug("Salida con EXITO de operadorUnario");
                         }
@@ -2118,9 +2122,11 @@ public class SlkAction {
                     }
                 } else if (signo.getTipoToken() == TipoToken.PALABRA_RESERVADA && ((!signo.getLexema().equals("TRUE")) && (!signo.getLexema().equals("FALSE")))) {
                     if (esBooleano(numero)) {
+
                         ArrayList<TipoSemantico> array = new ArrayList();
                         array.add(TipoSemantico.BOOLEANO);
                         numero.setTipo(array);
+
                         _pilaNodos.push(numero);
                         if (logger.isDebugEnabled()) {
                             logger.debug("Salida con EXITO de operadorUnario");
