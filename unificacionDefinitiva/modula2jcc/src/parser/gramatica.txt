@@ -189,10 +189,10 @@ RestoSentenciaIF:
 { ELSIF Expresion _action_ExpresionELSIF THEN SecuenciaDeSentencias _action_RestoSentenciaELSIF } [ ELSE SecuenciaDeSentencias _action_RestoSentenciaELSE ] _action_RestoSentenciaIF
 
 SentenciaCASE:
-CASE Expresion OF Caso { | Caso } [ ELSE SecuenciaDeSentencias ] END
+CASE Expresion OF Caso { | Caso _action_Caso } [ ELSE SecuenciaDeSentencias _action_SentenciaCaseELSE ] END _action_SentenciaCase
 
 Caso:
-ListaDeValores : SecuenciaDeSentencias
+ListaDeValores : SecuenciaDeSentencias _action_SentenciaCaso
 
 SentenciaWHILE:
 WHILE Expresion _action_ExpresionWHILE DO SecuenciaDeSentencias END _action_SentenciaWHILE
@@ -207,10 +207,10 @@ SentenciaFOR:
 FOR Identificador := Expresion _action_IdentificadorFOR TO Expresion _action_ExpresionTO [ BY ExpresionConstante _action_ExpresionConstanteFOR ] DO SecuenciaDeSentencias END _action_SentenciaFOR
 
 SentenciaWITH:
-WITH Identificador ParteIzquierda DO SecuenciaDeSentencias END 
+WITH Identificador ParteIzquierda DO SecuenciaDeSentencias END  _action_SecuenciaWITH
 
 SentenciaRETURN:
-RETURN [ Expresion ] 
+RETURN [ Expresion _action_ExpresionRETURN ]
 
 //----------------------------------//
 //		EXPRESIONES			//
