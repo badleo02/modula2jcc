@@ -103,38 +103,66 @@ public class SlkAction {
     case 36:  RestoSentenciaELSIF();  break;
     case 37:  RestoSentenciaELSE();  break;
     case 38:  RestoSentenciaIF();  break;
-    case 39:  ExpresionWHILE();  break;
-    case 40:  SentenciaWHILE();  break;
-    case 41:  ExpresionREPEAT();  break;
-    case 42:  SentenciaREPEAT();  break;
-    case 43:  SentenciaLOOP();  break;
-    case 44:  IdentificadorFOR();  break;
-    case 45:  ExpresionTO();  break;
-    case 46:  ExpresionConstanteFOR();  break;
-    case 47:  SentenciaFOR();  break;
-    case 48:  Cadena();  break;
-    case 49:  Caracter();  break;
-    case 50:  expresionSinParentesisDeSuma();  break;
-    case 51:  operadorUnario();  break;
-    case 52:  expresionSinParentesisDeMultiplicacion();  break;
-    case 53:  OperadorBooleano();  break;
-    case 54:  TipoFormal();  break;
-    case 55:  NumeroEntero();  break;
-    case 56:  NumeroReal();  break;
-    case 57:  TipoPredefinidoPorUsuario();  break;
-    case 58:  BITSET();  break;
-    case 59:  BOOLEAN();  break;
-    case 60:  CARDINAL();  break;
-    case 61:  CHAR();  break;
-    case 62:  INTEGER();  break;
-    case 63:  LONGINT();  break;
-    case 64:  LONGREAL();  break;
-    case 65:  PROC();  break;
-    case 66:  REAL();  break;
-    case 67:  TRUE();  break;
-    case 68:  FALSE();  break;
-    case 69:  NIL();  break;
+    case 39:  Caso();  break;
+    case 40:  SentenciaCaseELSE();  break;
+    case 41:  SentenciaCase();  break;
+    case 42:  SentenciaCaso();  break;
+    case 43:  ExpresionWHILE();  break;
+    case 44:  SentenciaWHILE();  break;
+    case 45:  ExpresionREPEAT();  break;
+    case 46:  SentenciaREPEAT();  break;
+    case 47:  SentenciaLOOP();  break;
+    case 48:  IdentificadorFOR();  break;
+    case 49:  ExpresionTO();  break;
+    case 50:  ExpresionConstanteFOR();  break;
+    case 51:  SentenciaFOR();  break;
+    case 52:  SecuenciaWITH();  break;
+    case 53:  ExpresionRETURN();  break;
+    case 54:  Cadena();  break;
+    case 55:  Caracter();  break;
+    case 56:  expresionSinParentesisDeSuma();  break;
+    case 57:  operadorUnario();  break;
+    case 58:  expresionSinParentesisDeMultiplicacion();  break;
+    case 59:  OperadorBooleano();  break;
+    case 60:  TipoFormal();  break;
+    case 61:  NumeroEntero();  break;
+    case 62:  NumeroReal();  break;
+    case 63:  TipoPredefinidoPorUsuario();  break;
+    case 64:  BITSET();  break;
+    case 65:  BOOLEAN();  break;
+    case 66:  CARDINAL();  break;
+    case 67:  CHAR();  break;
+    case 68:  INTEGER();  break;
+    case 69:  LONGINT();  break;
+    case 70:  LONGREAL();  break;
+    case 71:  PROC();  break;
+    case 72:  REAL();  break;
+    case 73:  TRUE();  break;
+    case 74:  FALSE();  break;
+    case 75:  NIL();  break;
   }
+    }
+
+    private void Caso() {
+        //SentenciaCASE:
+        //CASE Expresion OF Caso { | Caso _action_Caso } [ ELSE SecuenciaDeSentencias _action_SentenciaCaseELSE ] END _action_SentenciaCase
+
+        Nodo nodo1 = _pilaNodos.pop(); // Caso
+        Nodo nodo2 = _pilaNodos.pop(); // Caso
+
+        if (nodo1.getTipoBasico() != TipoSemantico.ERROR && nodo2.getTipoBasico() != TipoSemantico.ERROR && nodo1.getTipoBasico() == nodo2.getTipoBasico()) {
+            Nodo n = new Nodo();
+            n.addTipo(nodo1.getTipoBasico());
+            _pilaNodos.push(n);
+        } else {
+            Nodo n = new Nodo();
+            n.addTipo(TipoSemantico.ERROR);
+            _pilaNodos.push(n);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia Caso mal tipada",
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));
+        }
+
     }
 
     /**
@@ -191,6 +219,55 @@ public class SlkAction {
         }
         _tablaActual.setNombre(id.getLexema());
         _tablaGlobalNombrada = true;
+    }
+
+    private void ExpresionRETURN() {
+        //SentenciaRETURN:
+        //RETURN [ Expresion _action_ExpresionRETURN ] _action_SentenciaRETURN
+
+        //NO dejo la expresion que se devuelve en la pila para comprobar
+        //tipos con lo que devuelve una funcion.
+        Nodo nodo1 = _pilaNodos.pop(); //Expresion
+        Nodo nuevo = new Nodo();
+        boolean errIdent = false;
+
+        if (nodo1.getTipoToken() == TipoToken.IDENTIFICADOR) {
+            // buscamos el tipo del identificador en la tabla
+            if (_tablaActual.busca(nodo1.getLexema()) != null) {
+                TipoSemantico tipo = _tablaActual.busca(nodo1.getLexema()).getTipoBasico();
+                ArrayList<TipoSemantico> tSem = new ArrayList<TipoSemantico>();
+                tSem.add(tipo);
+                nodo1.setTipo(tSem);
+            } else {
+                errIdent = true;
+                //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
+                nuevo.addTipo(TipoSemantico.ERROR);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo1.getLexema() + "' no estÃ¡ en la TS",
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
+                nuevo.setColumna(nodo1.getColumna());
+                nuevo.setLinea(nodo1.getLinea());
+                _pilaNodos.push(nuevo);
+            }
+        }
+
+        if (!errIdent) {
+            if (nodo1.getTipoBasico() != TipoSemantico.ERROR) {
+                // Todo ha ido bien
+                // NO se mete ningun nodo en la pila para comprobar
+                // que la expresion es igual al tipo devuelto por la funcion
+                //_pilaNodos.push(nodo1);
+            } else {
+                nuevo.addTipo(TipoSemantico.ERROR);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia SentenciaRETURN mal tipada",
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
+                nuevo.setColumna(nodo1.getColumna());
+                nuevo.setLinea(nodo1.getLinea());
+                _pilaNodos.push(nuevo);
+            }
+        }
+
     }
 
     private void ListaExportados() {
@@ -265,6 +342,221 @@ public class SlkAction {
 
     private void EsquemaDeTipo_TipoFormacion() {
         System.out.println("EsquemaDeTipo_TipoFormacion");
+    }
+
+    private void SecuenciaWITH() {
+        //SentenciaWITH:
+        //WITH Identificador ParteIzquierda DO SecuenciaDeSentencias END  _action_SecuenciaWITH
+
+        Nodo nodo1 = _pilaNodos.pop(); // SecuenciaDeSentencias
+        Nodo nodo2 = _pilaNodos.pop(); // ParteIzquierda
+        Nodo nodo3 = _pilaNodos.pop(); // Identificador
+        try {
+            //Miramos si el identificador esta en la tabla o no
+            TipoSemantico tipo = _tablaActual.busca(nodo3.getLexema()).getTipoBasico();
+
+            if (nodo1.getTipoBasico() == TipoSemantico.VOID && nodo2.getTipoBasico() == TipoSemantico.VOID) {
+                Nodo n = new Nodo();
+                n.addTipo(TipoSemantico.VOID);
+                _pilaNodos.add(n);
+            } else {
+                Nodo n = new Nodo();
+                n.addTipo(TipoSemantico.ERROR);
+                _pilaNodos.add(n);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia SentenciaWITH mal tipada",
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
+            }
+        } catch (Exception e) {
+            Nodo n = new Nodo();
+            n.addTipo(TipoSemantico.ERROR);
+            _pilaNodos.add(n);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Identificador SentenciaWITH mal",
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));
+        }
+
+    }
+
+    private void SentenciaCase() {
+        //SentenciaCASE:
+        //CASE Expresion OF Caso { | Caso _action_Caso } [ ELSE SecuenciaDeSentencias _action_SentenciaCaseELSE ] END _action_SentenciaCase
+
+        Nodo nodo1 = _pilaNodos.pop(); //Marca o SecuenciaDeSentencias o Caso
+        Nodo nodo2 = new Nodo();
+        Nodo nodo3 = new Nodo();
+        if (nodo1.esMarca()) {
+            nodo1 = _pilaNodos.pop(); // SecuenciaDeSentencias
+            nodo2 = _pilaNodos.pop(); // Caso
+            nodo3 = _pilaNodos.pop(); // Expresion
+            boolean errIdent = false;
+            Nodo nuevo = new Nodo();
+
+            if (nodo3.getTipoToken() == TipoToken.IDENTIFICADOR) {
+                // buscamos el tipo del identificador en la tabla
+                if (_tablaActual.busca(nodo3.getLexema()) != null) {
+                    TipoSemantico tipo = _tablaActual.busca(nodo3.getLexema()).getTipoBasico();
+                    ArrayList<TipoSemantico> tSem = new ArrayList<TipoSemantico>();
+                    tSem.add(tipo);
+                    nodo3.setTipo(tSem);
+                } else {
+                    errIdent = true;
+                    //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
+                    nuevo.addTipo(TipoSemantico.ERROR);
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo3.getLexema() + "' no estÃ¡ en la TS",
+                            nodo3.getLinea(),
+                            nodo3.getColumna()));
+                    nuevo.setColumna(nodo3.getColumna());
+                    nuevo.setLinea(nodo3.getLinea());
+                    _pilaNodos.push(nuevo);
+                }
+            }
+
+            if (!errIdent) {
+                if (nodo1.getTipoBasico() == TipoSemantico.VOID && nodo2.getTipoBasico() == nodo3.getTipoBasico()) {
+                    Nodo n = new Nodo();
+                    n.addTipo(TipoSemantico.VOID);
+                    _pilaNodos.push(n);
+                } else {
+                    nuevo.addTipo(TipoSemantico.ERROR);
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia SentenciaCase mal tipada",
+                            nodo1.getLinea(),
+                            nodo1.getColumna()));
+                    nuevo.setColumna(nodo1.getColumna());
+                    nuevo.setLinea(nodo1.getLinea());
+                    _pilaNodos.push(nuevo);
+                }
+            }
+        } else {//No hay ELSE SecuenciaDeSentencias
+            nodo3 = _pilaNodos.pop(); // Expresion
+            boolean errIdent = false;
+            Nodo nuevo = new Nodo();
+
+            if (nodo3.getTipoToken() == TipoToken.IDENTIFICADOR) {
+                // buscamos el tipo del identificador en la tabla
+                if (_tablaActual.busca(nodo3.getLexema()) != null) {
+                    TipoSemantico tipo = _tablaActual.busca(nodo3.getLexema()).getTipoBasico();
+                    ArrayList<TipoSemantico> tSem = new ArrayList<TipoSemantico>();
+                    tSem.add(tipo);
+                    nodo3.setTipo(tSem);
+                } else {
+                    errIdent = true;
+                    //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
+                    nuevo.addTipo(TipoSemantico.ERROR);
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo3.getLexema() + "' no estÃ¡ en la TS",
+                            nodo3.getLinea(),
+                            nodo3.getColumna()));
+                    nuevo.setColumna(nodo3.getColumna());
+                    nuevo.setLinea(nodo3.getLinea());
+                    _pilaNodos.push(nuevo);
+                }
+            }
+
+            if (!errIdent) {
+                if (nodo1.getTipoBasico() == nodo3.getTipoBasico()) {
+                    Nodo n = new Nodo();
+                    n.addTipo(TipoSemantico.VOID);
+                    _pilaNodos.push(n);
+                } else {
+                    nuevo.addTipo(TipoSemantico.ERROR);
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia SentenciaCase mal tipada",
+                            nodo1.getLinea(),
+                            nodo1.getColumna()));
+                    nuevo.setColumna(nodo1.getColumna());
+                    nuevo.setLinea(nodo1.getLinea());
+                    _pilaNodos.push(nuevo);
+                }
+            }
+
+        }
+
+    }
+
+    private void SentenciaCaseELSE() {
+        //SentenciaCASE:
+        //CASE Expresion OF Caso { | Caso _action_Caso } [ ELSE SecuenciaDeSentencias _action_SentenciaCaseELSE ] END _action_SentenciaCase
+
+        /***pruebas***/
+        Nodo SecuenciaDeSentencias = new Nodo();
+        SecuenciaDeSentencias.addTipo(TipoSemantico.VOID);
+        _pilaNodos.pop();
+        _pilaNodos.push(SecuenciaDeSentencias);
+        /***pruebas***/
+        Nodo nodo1 = _pilaNodos.pop(); // SecuenciaDeSentencias
+
+        if (nodo1.getTipoBasico() == TipoSemantico.VOID) {
+            Nodo n = new Nodo();
+            n.addTipo(nodo1.getTipoBasico());
+            _pilaNodos.push(n);
+        } else {
+            Nodo n = new Nodo();
+            n.addTipo(TipoSemantico.ERROR);
+            _pilaNodos.push(n);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia SentenciaCaseELSE mal tipada",
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));
+        }
+
+        //insertamos el nodo marca en la pila
+        Nodo nodoMarca = new Nodo();
+        nodoMarca.crearMarca();
+        _pilaNodos.push(nodoMarca);
+
+    }
+
+    private void SentenciaCaso() {
+        //Caso:
+        //ListaDeValores : SecuenciaDeSentencias _action_SentenciaCaso
+
+        /***pruebas***/
+        Nodo SecuenciaDeSentencias = new Nodo();
+        SecuenciaDeSentencias.addTipo(TipoSemantico.VOID);
+        _pilaNodos.pop();
+        _pilaNodos.push(SecuenciaDeSentencias);
+        /***pruebas***/
+        boolean errIdent = false;
+        Nodo nuevo = new Nodo();
+
+
+        Nodo nodo1 = _pilaNodos.pop(); // SecuenciaDeSentencias
+        Nodo nodo2 = _pilaNodos.pop();// ListaDeValores
+
+        if (nodo2.getTipoToken() == TipoToken.IDENTIFICADOR) {
+            // buscamos el tipo del identificador en la tabla
+            if (_tablaActual.busca(nodo2.getLexema()) != null) {
+                TipoSemantico tipo = _tablaActual.busca(nodo2.getLexema()).getTipoBasico();
+                ArrayList<TipoSemantico> tSem = new ArrayList<TipoSemantico>();
+                tSem.add(tipo);
+                nodo2.setTipo(tSem);
+            } else {
+                errIdent = true;
+                //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
+                nuevo.addTipo(TipoSemantico.ERROR);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo2.getLexema() + "' no estÃ¡ en la TS",
+                        nodo2.getLinea(),
+                        nodo2.getColumna()));
+                nuevo.setColumna(nodo2.getColumna());
+                nuevo.setLinea(nodo2.getLinea());
+                _pilaNodos.push(nuevo);
+            }
+        }
+
+        if (!errIdent) {
+            if (nodo2.getTipoBasico() != TipoSemantico.ERROR && nodo1.getTipoBasico() == TipoSemantico.VOID) {
+                Nodo n = new Nodo();
+                n.addTipo(nodo2.getTipoBasico());
+                _pilaNodos.push(n);
+            } else {
+                nuevo.addTipo(TipoSemantico.ERROR);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia SentenciaCaso mal tipada",
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
+                nuevo.setColumna(nodo1.getColumna());
+                nuevo.setLinea(nodo1.getLinea());
+                _pilaNodos.push(nuevo);
+            }
+        }
+
     }
 
     private void TipoEnumerado() {
