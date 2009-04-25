@@ -145,10 +145,9 @@ ParteEjecutiva:
 [ BEGIN SecuenciaDeSentencias _action_ParteEjecutiva ]
 
 SecuenciaDeSentencias:
-Sentencia { ; Sentencia _action_SecuenciaDeSentencias2 } _action_SecuenciaDeSentencias
+Sentencia _action_SecuenciaDeSentencias_Marca { ; Sentencia _action_SecuenciaDeSentencias2 } _action_SecuenciaDeSentencias
 
 Sentencia:
-_epsilon_
 SentenciaAsignacion
 SentenciaIF
 SentenciaCASE
@@ -160,6 +159,7 @@ SentenciaWITH
 LlamadaProcedimientoPredefinido
 SentenciaRETURN
 EXIT
+_epsilon_ _action_epsilonSentencia
 
 SentenciaAsignacion:
 Identificador RestoSentenciaAsignacion _action_SentenciaAsignacion
@@ -168,15 +168,15 @@ RestoSentenciaAsignacion:
 ParteIzquierda RestoSentenciaRestoAsignacion _action_RestoSentenciaAsignacion
 
 RestoSentenciaRestoAsignacion:
-_epsilon_
 := Expresion _action_RestoSentenciaRestoAsignacion_1
 ParametrosDeLlamada _action_RestoSentenciaRestoAsignacion_2
+_epsilon_
 
 ParteIzquierda:
-_epsilon_
 \[ ListaDeExpresiones \] ParteIzquierda _action_ParteIzquierda_1
 . IdentificadorOProcPredef ParteIzquierda _action_ParteIzquierda_2
 ^ ParteIzquierda _action_ParteIzquierda_3
+_epsilon_
 
 IdentificadorOProcPredef:
 Identificador _action_IdentificadorOProcPredef_Ident
