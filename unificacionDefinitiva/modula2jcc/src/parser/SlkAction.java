@@ -10,7 +10,7 @@ import semantico.Nodo;
 import semantico.TipoSemantico;
 import tabla_de_simbolos.TablaDeSimbolos;
 import tabla_de_simbolos.simbolo.*;
-
+import generador.*;
 /**
  * Clase que implementa las acciones semanticas.
  *
@@ -43,6 +43,8 @@ public class SlkAction {
      */
     private String _ultimaAccion;
 
+    private generador _generador;
+
     /**
      * Constructor de la clase SlkAction.
      *
@@ -53,6 +55,7 @@ public class SlkAction {
         _gestorDeErrores = gestorDeErrores;
         _pilaNodos = pilaNodos;
         _tablaActual = tablaActual;
+        _generador = new generador(tablaActual);
     }
 
     /**
@@ -221,6 +224,13 @@ public class SlkAction {
         }
         _tablaActual.setNombre(id.getLexema());
         _tablaGlobalNombrada = true;
+
+
+        //nombrePrograma = ((Atributos) (n).getToken().getAtributo()).obtener("LEXEMA").toString();
+		_generador.emite("begin:");
+		_generador.emite("CALL /" + "hola");
+		_generador.emite("HALT");
+		_generador.escribeSeccion();
     }
 
     private void ExpresionRETURN() {
@@ -952,6 +962,9 @@ public class SlkAction {
 //                    id.getLinea(),
 //                    id.getColumna()));
 //        }
+    
+        
+        _generador.generaCodigoSubprograma("hola", false);
     }
 
     private void IdentificadorFOR() {

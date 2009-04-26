@@ -4120,3 +4120,12 @@
 311  [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en cierra Ambito. 
 311  [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en cierra Ambito. 
 321  [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en unidadDeCompilacion1
+0    [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo expresionSinParentesisDeSuma
+16   [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en sonOperablesAritmeticamente
+16   [AWT-EventQueue-0] DEBUG parser.SlkAction  - Salida con FALLO de expresionSinParentesisDeSuma
+9203 [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo expresionSinParentesisDeSuma
+9203 [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en sonOperablesAritmeticamente
+9203 [AWT-EventQueue-0] DEBUG parser.SlkAction  - Salida con FALLO de expresionSinParentesisDeSuma
+0    [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo TRUE()
+0    [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo TRUE()
+28438 [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo TRUE()

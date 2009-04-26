@@ -48,7 +48,7 @@ public class generador {
 	 * Constructor de la clase
 	 */
 	public generador (TablaDeSimbolos arg0) {
-		String fichero = new String("a.out");
+		String fichero = new String("COMPILACION.out");
 		codigo = new String();
 		contadorEtiquetas = 0;
 		contadorVariables = new Stack<Integer>();
@@ -515,9 +515,11 @@ public class generador {
                      * por ahora dejo un 0
                      */
                     retorno = 0;
-					/*retorno = ((Integer)at.obtener("POSICION") + arg0.getOffset());*/
+                    //ARREGLAR ESTO CUANDO SE META ATRIBUTO POSICION EN SIMBOO
+					//retorno = ((Integer)at.obtener("POSICION") + arg0.getOffset());
 			}else
-				retorno = ((Integer)arg0.getLugar() + arg0.getOffset());
+				//retorno = ((Integer)arg0.getLugar() + arg0.getOffset());
+                  retorno = (Integer)arg0.getLugar();
 		} else {
 			retorno = (Integer)arg0.getValor();
 		}
