@@ -267,6 +267,10 @@ public class SlkAction {
                 // NO se mete ningun nodo en la pila para comprobar
                 // que la expresion es igual al tipo devuelto por la funcion
                 //_pilaNodos.push(nodo1);
+                //se necesita un nodo VOID para la confirmacion de que está bien en SecuenciaDeSentencias
+                Nodo n = new Nodo();
+                n.addTipo(TipoSemantico.VOID);
+                _pilaNodos.push(n);
             } else {
                 nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia SentenciaRETURN mal tipada",
@@ -1299,70 +1303,96 @@ public class SlkAction {
         Nodo nodo2 = _pilaNodos.pop(); //puede ser o VOID de ParteIzquierda o Identificador si ParteIzquierda es _epsilon
         Nodo nuevo = new Nodo();
 
-        if (nodo2.getTipoToken() != null) { //es Identificador pq los VOID lo tienen a null
-            if (nodo2.getTipoToken().equals(TipoToken.IDENTIFICADOR)) {
-                _pilaNodos.push(nodo2); //le vuelvo a meter en la pila
-                //Comprobamos que ninguno sea error y que sean del mismo tipo
-                ArrayList<TipoSemantico> tipo;
-                if (_tablaActual.busca(nodo2.getLexema()) != null) {
-                    tipo = _tablaActual.busca(nodo2.getLexema()).getTipoSemantico();
-                    if (!nodo1.getTipoBasico().equals(TipoSemantico.ERROR) &&
-                            /*!nodo2.getTipoBasico().equals(TipoSemantico.ERROR) &&*/
-                            nodo1.getTipoSemantico().equals(tipo)) { //??
-                        nuevo.addTipo(TipoSemantico.VOID);
-                        _pilaNodos.push(nuevo);
+        //añadimos el tipoSemantico a la Expresion en el caso de ser un IDENTIIFICADOR
+                boolean errIdent = false;
+
+        if (nodo1.getTipoToken()==TipoToken.IDENTIFICADOR){
+            // buscamos el tipo del identificador en la tabla
+            if (_tablaActual.busca(nodo1.getLexema())!= null){
+                ArrayList<TipoSemantico> tipo = _tablaActual.busca(nodo1.getLexema()).getTipoSemantico();
+                nodo1.setTipo(tipo);
+            } else {
+                errIdent = true;
+                //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
+                //meto el nodo2 en la pila pq luego se hacen comparaciones con el
+                _pilaNodos.push(nodo2);
+                nuevo.addTipo(TipoSemantico.ERROR);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo1.getLexema() + "' no está declarado",
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));
+                nuevo.setColumna(nodo1.getColumna());
+                nuevo.setLinea(nodo1.getLinea());
+                _pilaNodos.push(nuevo);
+            }
+        }
+
+        if (!errIdent){
+
+            if (nodo2.getTipoToken() != null) { //es Identificador pq los VOID lo tienen a null
+                if (nodo2.getTipoToken().equals(TipoToken.IDENTIFICADOR)) {
+                    _pilaNodos.push(nodo2); //le vuelvo a meter en la pila
+                    //Comprobamos que ninguno sea error y que sean del mismo tipo
+                    ArrayList<TipoSemantico> tipo;
+                    if (_tablaActual.busca(nodo2.getLexema()) != null) {
+                        tipo = _tablaActual.busca(nodo2.getLexema()).getTipoSemantico();
+                        if (!nodo1.getTipoBasico().equals(TipoSemantico.ERROR) &&
+                                /*!nodo2.getTipoBasico().equals(TipoSemantico.ERROR) &&*/
+                                nodo1.getTipoSemantico().equals(tipo)) { //??
+                            nuevo.addTipo(TipoSemantico.VOID);
+                            _pilaNodos.push(nuevo);
+                        } else {
+                            nuevo.addTipo(TipoSemantico.ERROR);
+                            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación Id:=Exp mal tipada",
+                                    nodo2.getLinea(),
+                                    nodo2.getColumna()));
+                            nuevo.setColumna(nodo2.getColumna());
+                            nuevo.setLinea(nodo2.getLinea());
+                            _pilaNodos.push(nuevo);
+                        }
                     } else {
+                        //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
                         nuevo.addTipo(TipoSemantico.ERROR);
-                        _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación Id:=Exp mal tipada",
+                        _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo2.getLexema() + "' no está declarado",
                                 nodo2.getLinea(),
                                 nodo2.getColumna()));
                         nuevo.setColumna(nodo2.getColumna());
                         nuevo.setLinea(nodo2.getLinea());
                         _pilaNodos.push(nuevo);
                     }
+
+                }
+            } else {
+                //hay un VOID de ParteIzquierda
+                Nodo nodo3 = _pilaNodos.peek(); //Identificador (OJO, no se saca de la pila solo se consulta)
+                _pilaNodos.push(nodo2);
+                //Comprobamos que ninguno sea error y que sean del mismo tipo
+                ArrayList<TipoSemantico> tipo;
+                if (_tablaActual.busca(nodo3.getLexema()) != null) {
+                    tipo = _tablaActual.busca(nodo3.getLexema()).getTipoSemantico();
+                    if (!nodo1.getTipoBasico().equals(TipoSemantico.ERROR) &&
+                            /*!nodo3.getTipoBasico().equals(TipoSemantico.ERROR) && */
+                            nodo1.getTipoSemantico().equals(tipo)) { //esto da error pq no se guarda bien el tipo semantico
+                        nuevo.addTipo(TipoSemantico.VOID);
+                        _pilaNodos.push(nuevo);
+                    } else {
+                        nuevo.addTipo(TipoSemantico.ERROR);
+                        _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación Id:=Exp mal tipada",
+                                nodo3.getLinea(),
+                                nodo3.getColumna()));
+                        nuevo.setColumna(nodo3.getColumna());
+                        nuevo.setLinea(nodo3.getLinea());
+                        _pilaNodos.push(nuevo);
+                    }
                 } else {
                     //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
                     nuevo.addTipo(TipoSemantico.ERROR);
-                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo2.getLexema() + "' no está declarado",
-                            nodo2.getLinea(),
-                            nodo2.getColumna()));
-                    nuevo.setColumna(nodo2.getColumna());
-                    nuevo.setLinea(nodo2.getLinea());
-                    _pilaNodos.push(nuevo);
-                }
-
-            }
-        } else {
-            //hay un VOID de ParteIzquierda
-            Nodo nodo3 = _pilaNodos.peek(); //Identificador (OJO, no se saca de la pila solo se consulta)
-            _pilaNodos.push(nodo2);
-            //Comprobamos que ninguno sea error y que sean del mismo tipo
-            ArrayList<TipoSemantico> tipo;
-            if (_tablaActual.busca(nodo3.getLexema()) != null) {
-                tipo = _tablaActual.busca(nodo3.getLexema()).getTipoSemantico();
-                if (!nodo1.getTipoBasico().equals(TipoSemantico.ERROR) &&
-                        /*!nodo3.getTipoBasico().equals(TipoSemantico.ERROR) && */
-                        nodo1.getTipoSemantico().equals(tipo)) { //esto da error pq no se guarda bien el tipo semantico
-                    nuevo.addTipo(TipoSemantico.VOID);
-                    _pilaNodos.push(nuevo);
-                } else {
-                    nuevo.addTipo(TipoSemantico.ERROR);
-                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación Id:=Exp mal tipada",
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo3.getLexema() + "' no está declarado",
                             nodo3.getLinea(),
                             nodo3.getColumna()));
                     nuevo.setColumna(nodo3.getColumna());
                     nuevo.setLinea(nodo3.getLinea());
                     _pilaNodos.push(nuevo);
                 }
-            } else {
-                //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
-                nuevo.addTipo(TipoSemantico.ERROR);
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo3.getLexema() + "' no está declarado",
-                        nodo3.getLinea(),
-                        nodo3.getColumna()));
-                nuevo.setColumna(nodo3.getColumna());
-                nuevo.setLinea(nodo3.getLinea());
-                _pilaNodos.push(nuevo);
             }
         }
     }
