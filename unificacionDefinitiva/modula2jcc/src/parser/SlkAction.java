@@ -1774,9 +1774,14 @@ public class SlkAction {
         if (logger.isDebugEnabled()) {
             logger.debug("Entrando en el metodo expresionSinParentesisDeSuma");
         }
+        Nodo auxiliar = null;
+        if(_pilaNodos.peek().getTipoToken() == TipoToken.OPERADOR_SUMADOR){
+            auxiliar = _pilaNodos.pop();
+        }
         Nodo num1 = _pilaNodos.pop();
         Nodo oper = _pilaNodos.pop();
         Nodo num2 = _pilaNodos.pop();
+
         if (!num1.esError() && !oper.esError() && !num2.esError()) {
             if (sonOperablesAritmeticamente(num1, num2)) {
                 
@@ -1793,6 +1798,10 @@ public class SlkAction {
                 num1.setTipo(tipoSem);
 
                 _pilaNodos.push(num1);
+
+                if(auxiliar != null){
+                    _pilaNodos.push(auxiliar);
+                }
 
                 if (logger.isDebugEnabled()) {
                     logger.debug("Salida con exito de operadorSinParentesisDeSuma");
@@ -2973,7 +2982,7 @@ public class SlkAction {
      *
      * @param nodo1
      * @param nodo2
-     * @return
+     * @return true si son operables aritmeticamente y false en otro caso
      */
     private boolean sonOperablesAritmeticamente(Nodo nodo1, Nodo nodo2) {
         if (logger.isDebugEnabled()) {
@@ -2988,7 +2997,7 @@ public class SlkAction {
                 // Hemos encontrado el símbolo, miramos que su tipo semántico
                 // sea integer o real
                 sem1 = simbNodo1.getTipoBasico();
-                if ((sem1 != TipoSemantico.ENTERO) ||
+                if ((sem1 != TipoSemantico.ENTERO) &&
                         (sem1 != TipoSemantico.REAL)) {
                     StringBuilder trace = new StringBuilder();
                     trace.append("Tipo de la variable ");
