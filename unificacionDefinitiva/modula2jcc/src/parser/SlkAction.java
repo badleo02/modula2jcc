@@ -196,6 +196,7 @@ public class SlkAction {
                         // Se abre un ambito
                         _tablaActual = _tablaActual.abrirAmbito();
                         _tablaActual.setNombre(id.getLexema());
+
                     } else {
                         error = true;
                     }
@@ -1340,6 +1341,11 @@ public class SlkAction {
                                 nodo1.getTipoSemantico().equals(tipo)) { //??
                             nuevo.addTipo(TipoSemantico.VOID);
                             _pilaNodos.push(nuevo);
+
+                            /**GENERADOR yo creo q debe ir aqui pero falla**/
+                            //hay que arreglar getposicionreal
+                            _generador.generaCodigoAsignacion(nuevo,nodo2);
+
                         } else {
                             nuevo.addTipo(TipoSemantico.ERROR);
                             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación Id:=Exp mal tipada",
@@ -1832,6 +1838,8 @@ public class SlkAction {
             Nodo id = _pilaNodos.pop();
             if (_tablaActual.getNombre().equals(id.getLexema())) {
                 _tablaActual = _tablaActual.cerrarAmbito();
+
+                
             } else {
 
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Simbolo \"" + id.getLexema() + "\" incorrecto, se esperaba \"" + _tablaActual.getNombre() + "\"",
@@ -1839,6 +1847,8 @@ public class SlkAction {
                         id.getColumna()));
             }
         }
+
+
 
     }
 
@@ -1914,6 +1924,12 @@ public class SlkAction {
                 } while (!id.esMarcaListaIdentificadores());
 
                 _pilaNodos.push(id); // Apilamos de nuevo la marca
+
+
+                //*****FALTA GENERADOR: FALTA PONER EL TAMAÑO Y BUSCAR EL NOMBRE DE LA VARIABLE
+                _generador.dameNuevaTemp(("PRUEBA"), 1);
+
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1978,6 +1994,7 @@ public class SlkAction {
         // abrimos ambito.
         _tablaActual = _tablaActual.abrirAmbito();
         _tablaActual.setNombre(nodo.getLexema());
+
     }
 
     /**

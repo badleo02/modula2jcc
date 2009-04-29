@@ -515,7 +515,7 @@ public class generador {
                      * por ahora dejo un 0
                      */
                     retorno = 0;
-                    //ARREGLAR ESTO CUANDO SE META ATRIBUTO POSICION EN SIMBOO
+                    //ARREGLAR ESTO CUANDO SE META POSICION EN SIMBOO
 					//retorno = ((Integer)at.obtener("POSICION") + arg0.getOffset());
 			}else
 				//retorno = ((Integer)arg0.getLugar() + arg0.getOffset());

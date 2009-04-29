@@ -402,6 +402,7 @@ public class TablaDeSimbolos {
         // Su tabla continente es la que estaba activa en ese momento
         nuevaTabla.setContinente(this);
 
+
         // Se devuelve el puntero de la nueva tabla para que sea ahora la tabla activa
         return nuevaTabla;
     }
