@@ -1106,6 +1106,7 @@ public class SlkAction {
                                                          
                 Nodo error = new Nodo();
                 error.addTipo(TipoSemantico.ERROR);
+                _pilaNodos.push(error);
 
                 if (logger.isDebugEnabled()) {
                     logger.debug("Salida con error del metodo OperadorBooleano");
@@ -1344,7 +1345,7 @@ public class SlkAction {
 
                             /**GENERADOR yo creo q debe ir aqui pero falla**/
                             //hay que arreglar getposicionreal
-                            _generador.generaCodigoAsignacion(nuevo,nodo2);
+                            //_generador.generaCodigoAsignacion(nuevo,nodo2);
 
                         } else {
                             nuevo.addTipo(TipoSemantico.ERROR);
@@ -2727,7 +2728,7 @@ public class SlkAction {
     }
 
     private boolean sonOperablesLogicamente(Nodo op1, Nodo op2) {
-        if (logger.isDebugEnabled()) {
+       if (logger.isDebugEnabled()) {
             StringBuilder trace = new StringBuilder("Entrando en el metodo sonOperablesLogicamente con los nodos ");
             trace.append(op1);
             trace.append(" y ");
@@ -2743,12 +2744,12 @@ public class SlkAction {
                 // Hemos encontrado el símbolo, miramos que su tipo semántico
                 // sea integer o real
                 sem1 = simbNodo1.getTipoBasico();
-                if ((sem1 != TipoSemantico.ENTERO) ||
-                        (sem1 != TipoSemantico.REAL) || (sem1 != TipoSemantico.BOOLEANO)) {
+                if ((sem1 != TipoSemantico.ENTERO) &&
+                        (sem1 != TipoSemantico.REAL) && (sem1 != TipoSemantico.BOOLEANO)) {
                     StringBuilder trace = new StringBuilder();
                     trace.append("Tipo de la variable ");
                     trace.append(op1.getLexema());
-                    trace.append(" no operable aritmeticamente");
+                    trace.append(" no operable lógicamente");
 
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), op1.getLinea(), op1.getColumna()));
 
@@ -2770,12 +2771,12 @@ public class SlkAction {
                 // Hemos encontrado el símbolo, miramos que su tipo semántico
                 // sea integer o real
                 sem2 = simbNodo2.getTipoBasico();
-                if ((sem2 != TipoSemantico.ENTERO) ||
-                        (sem2 != TipoSemantico.REAL) || (sem1 != TipoSemantico.BOOLEANO)) {
+                if ((sem2 != TipoSemantico.ENTERO) &&
+                        (sem2 != TipoSemantico.REAL) && (sem2 != TipoSemantico.BOOLEANO)) {
                     StringBuilder trace = new StringBuilder();
                     trace.append("Tipo de la variable ");
                     trace.append(op2.getLexema());
-                    trace.append(" no operable aritmeticamente");
+                    trace.append(" no operable lógicamente");
 
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), op2.getLinea(), op2.getColumna()));
 
@@ -2791,14 +2792,14 @@ public class SlkAction {
             }
         }
         if (op1.getTipoToken() == TipoToken.NUMERO_ENTERO) {
-            if (op2.getTipoToken() != TipoToken.NUMERO_ENTERO) {
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", op1.getLinea(), op1.getColumna()));
+            if ((op2.getTipoToken() != TipoToken.NUMERO_ENTERO) && (op2.getTipoToken() != TipoToken.IDENTIFICADOR)) {
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables lógicamente", op1.getLinea(), op1.getColumna()));
                 return false;
             }
         }
         if (op1.getTipoToken() == TipoToken.NUMERO_REAL) {
-            if (op2.getTipoToken() != TipoToken.NUMERO_REAL) {
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", op1.getLinea(), op1.getColumna()));
+            if ((op2.getTipoToken() != TipoToken.NUMERO_REAL) && (op2.getTipoToken() != TipoToken.IDENTIFICADOR)) {
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables lógicamente", op1.getLinea(), op1.getColumna()));
                 return false;
             }
         }
