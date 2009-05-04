@@ -1790,8 +1790,10 @@ public class SlkAction {
 
         if (!num1.esError() && !oper.esError() && !num2.esError()) {
             if (sonOperablesAritmeticamente(num1, num2)) {
+
+                // BUG: Con esta instrucción, interpreta como identificador ''
                 
-                num1.setLexema("");
+                //num1.setLexema("");
 
                 ArrayList<TipoSemantico> tipoSem = new ArrayList();
                 if(esReal(num1))
@@ -3041,7 +3043,7 @@ public class SlkAction {
                 // Hemos encontrado el símbolo, miramos que su tipo semántico
                 // sea integer o real
                 sem2 = simbNodo2.getTipoBasico();
-                if ((sem2 != TipoSemantico.ENTERO) ||
+                if ((sem2 != TipoSemantico.ENTERO) &&
                         (sem2 != TipoSemantico.REAL)) {
                     StringBuilder trace = new StringBuilder();
                     trace.append("Tipo de la variable ");
@@ -3063,12 +3065,12 @@ public class SlkAction {
         }
 
         if (nodo1.getTipoToken() == TipoToken.NUMERO_ENTERO) {
-            if (nodo2.getTipoToken() != TipoToken.NUMERO_ENTERO) {
+            if ((nodo2.getTipoToken() != TipoToken.NUMERO_ENTERO) && (nodo2.getTipoToken() != TipoToken.IDENTIFICADOR)) {
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", nodo1.getLinea(), nodo1.getColumna()));
                 return false;
             }
         }
-        if (nodo1.getTipoToken() == TipoToken.NUMERO_REAL) {
+        if ((nodo1.getTipoToken() == TipoToken.NUMERO_REAL) && (nodo2.getTipoToken() != TipoToken.IDENTIFICADOR)) {
             if (nodo2.getTipoToken() != TipoToken.NUMERO_REAL) {
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", nodo1.getLinea(), nodo1.getColumna()));
                 return false;
