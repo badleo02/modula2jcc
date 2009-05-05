@@ -45,17 +45,23 @@ public class SlkAction {
     private String _ultimaAccion;
     private generador _generador;
 
+    private boolean habilitageneracion=true;
+
     /**
      * Constructor de la clase SlkAction.
      *
      * @param tabla Tabla de simbolos del compilador.
-     */
+     */_
     public SlkAction(TablaDeSimbolos tablaActual, GestorErrores gestorDeErrores, PilaNodos pilaNodos) {
 
         _gestorDeErrores = gestorDeErrores;
         _pilaNodos = pilaNodos;
         _tablaActual = tablaActual;
+
+        if (this.habilitageneracion){
         _generador = new generador(tablaActual);
+        }
+
     }
 
     /**
@@ -382,10 +388,13 @@ public class SlkAction {
 
 
         //nombrePrograma = ((Atributos) (n).getToken().getAtributo()).obtener("LEXEMA").toString();
+
+        if (this.habilitageneracion){
         _generador.emite("begin:");
         _generador.emite("CALL /" + "hola");
         _generador.emite("HALT");
         _generador.escribeSeccion();
+        }
     }
 
     private void ExpresionRETURN() {
@@ -1122,8 +1131,10 @@ public class SlkAction {
 //                    id.getColumna()));
 //        }
 
-
+        if (this.habilitageneracion){
         _generador.generaCodigoSubprograma("hola", false);
+
+        }
     }
 
     private void IdentificadorFOR() {
