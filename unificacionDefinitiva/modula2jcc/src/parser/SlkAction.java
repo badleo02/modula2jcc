@@ -51,7 +51,7 @@ public class SlkAction {
      * Constructor de la clase SlkAction.
      *
      * @param tabla Tabla de simbolos del compilador.
-     */_
+     */
     public SlkAction(TablaDeSimbolos tablaActual, GestorErrores gestorDeErrores, PilaNodos pilaNodos) {
 
         _gestorDeErrores = gestorDeErrores;
@@ -950,6 +950,21 @@ public class SlkAction {
             if (nodo1.getTipoBasico().equals(TipoSemantico.BOOLEANO)) {
                 nuevo.addTipo(TipoSemantico.VOID);
                 _pilaNodos.push(nuevo);
+
+                //todo ha ido bien, generas la etiqueta, y si el valor es false, emites un salto a la etiqueta. en el if emites la etiqueta.
+                nuevo.setSiguiente(_generador.dameNuevaEtiqueta());
+                //suponiendo que en nuevo está el operador de comparación, se puede llamar al generaCodigoComparacion quietando lo de los CMPs y lo del arrayList.
+               ArrayList<Nodo> operadores = new ArrayList<Nodo>();
+               operadores.add(nuevo);
+               ArrayList<Nodo> operadores2 = new ArrayList<Nodo>();
+               Nodo op=new Nodo();
+              op.setValor("<");
+               operadores2.add(op);
+
+                _generador.generaCodigoComparacion(operadores,operadores2,nuevo);
+        
+
+
             } else {
                 nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipo no booleano en la expresion if",
@@ -1539,9 +1554,16 @@ public class SlkAction {
                             nuevo.addTipo(TipoSemantico.VOID);
                             _pilaNodos.push(nuevo);
 
+
+                            /**GENERADOR yo creo q debe ir aqui pero falla**/
+                            //hay que arreglar getposicionreal
+                           // _generador.generaCodigoAsignacion(nuevo,nodo2);
+
+
                         /**GENERADOR yo creo q debe ir aqui pero falla**/
                         //hay que arreglar getposicionreal
                         //_generador.generaCodigoAsignacion(nuevo,nodo2);
+
                         } else {
                             nuevo.addTipo(TipoSemantico.ERROR);
                             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación Id:=Exp mal tipada",
@@ -2408,6 +2430,8 @@ public class SlkAction {
                     Nodo n = new Nodo();
                     n.addTipo(TipoSemantico.VOID);
                     _pilaNodos.push(n);
+
+
                 } else {
                     Nodo nuevo = new Nodo();
                     nuevo.addTipo(TipoSemantico.ERROR);
@@ -2440,6 +2464,9 @@ public class SlkAction {
                 nodo3.getTipoBasico().equals(TipoSemantico.VOID)) {
             nuevo.addTipo(TipoSemantico.VOID);
             _pilaNodos.push(nuevo);
+
+            _generador.emite(nodo3.getSiguiente() + ":");
+
         } else {
             nuevo.addTipo(TipoSemantico.ERROR);
             _pilaNodos.push(nuevo);

@@ -4130,3 +4130,13 @@
 0    [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo TRUE()
 28438 [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo TRUE()
 0    [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo TRUE()
+0    [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo operadorBooleano
+24   [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo sonOperablesLogicamente con los nodos Nodo{tipo: []; tipo.size: 0} y Nodo{tipo: []; tipo.size: 0}
+37   [AWT-EventQueue-0] DEBUG parser.SlkAction  - Salida con error del metodo OperadorBooleano
+0    [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo TRUE()
+22916 [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo TRUE()
+0    [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo TRUE()
+5117 [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo TRUE()
+0    [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo TRUE()
+0    [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo TRUE()
+0    [AWT-EventQueue-0] DEBUG parser.SlkAction  - Entrando en el metodo TRUE()
