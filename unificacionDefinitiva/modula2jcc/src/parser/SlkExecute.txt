@@ -61,12 +61,12 @@ public void execute ( int  number )
     case 53:  SentenciaFOR();  break;
     case 54:  SecuenciaWITH();  break;
     case 55:  ExpresionRETURN();  break;
-    case 56:  Cadena();  break;
-    case 57:  Caracter();  break;
-    case 58:  expresionSinParentesisDeSuma();  break;
-    case 59:  operadorUnario();  break;
-    case 60:  expresionSinParentesisDeMultiplicacion();  break;
-    case 61:  OperadorBooleano();  break;
+    case 56:  operadorBooleano();  break;
+    case 57:  Cadena();  break;
+    case 58:  Caracter();  break;
+    case 59:  expresionSinParentesisDeSuma();  break;
+    case 60:  operadorUnario();  break;
+    case 61:  expresionSinParentesisDeMultiplicacion();  break;
     case 62:  TipoFormal();  break;
     case 63:  NumeroEntero();  break;
     case 64:  NumeroReal();  break;

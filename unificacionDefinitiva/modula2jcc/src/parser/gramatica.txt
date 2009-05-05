@@ -230,7 +230,7 @@ _epsilon_
 .. ExpresionConstante
 
 ExpresionConstante:
-ExpresionConstanteSimple [ OperadorComparador ExpresionConstanteSimple ]
+ExpresionConstanteSimple [ OperadorComparador ExpresionConstanteSimple _action_operadorBooleano ]
 
 ExpresionConstanteSimple:
 Signo TerminoConstante { OperadorSumador TerminoConstante }
@@ -262,7 +262,7 @@ ExpresionSimple RestoExpresion
 
 RestoExpresion:
 _epsilon_
-OperadorComparador ExpresionSimple 
+OperadorComparador ExpresionSimple _action_operadorBooleano
 
 ExpresionSimple:
 Signo Termino RestoExpresionSimple 
@@ -300,13 +300,13 @@ ParametrosDeLlamada
 ParteIzquierda
 
 OperadorComparador:
-= _action_OperadorBooleano
-<>  _action_OperadorBooleano
-#  _action_OperadorBooleano
-<  _action_OperadorBooleano
-<=  _action_OperadorBooleano
->  _action_OperadorBooleano
->=  _action_OperadorBooleano
+= 
+<>  
+#  
+< 
+<=  
+>  
+>=  
 IN 
 
 OperadorSumador:

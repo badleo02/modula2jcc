@@ -11,6 +11,7 @@ import semantico.TipoSemantico;
 import tabla_de_simbolos.TablaDeSimbolos;
 import tabla_de_simbolos.simbolo.*;
 import generador.*;
+
 /**
  * Clase que implementa las acciones semanticas.
  *
@@ -42,7 +43,6 @@ public class SlkAction {
      * ultima accion semantica ejecutada
      */
     private String _ultimaAccion;
-
     private generador _generador;
 
     /**
@@ -67,85 +67,239 @@ public class SlkAction {
     public void execute(int number) {
         _ultimaAccion = SlkString.GetSymbolName((short) -number);
 
-    switch ( number ) {
-    case 1:  FinDeModulo();  break;
-    case 2:  ComienzoDeModulo();  break;
-    case 3:  ListaImportados();  break;
-    case 4:  ListaExportados();  break;
-    case 5:  finDeAmbito();  break;
-    case 6:  DefinicionDeTipo();  break;
-    case 7:  AsociacionConstante();  break;
-    case 8:  EsquemaDeTipo_TipoFormacion();  break;
-    case 9:  TipoSimple_TipoEnumerado();  break;
-    case 10:  TipoEnumerado();  break;
-    case 11:  TipoConjunto();  break;
-    case 12:  TipoFormacion();  break;
-    case 13:  TipoPuntero();  break;
-    case 14:  ponerMarcaListaVariables();  break;
-    case 15:  quitarMarcaListaVariables();  break;
-    case 16:  DeclaracionVariables();  break;
-    case 17:  InicioDeclaracionProcedure();  break;
-    case 18:  CabeceraDeProcedure();  break;
-    case 19:  retornoFunc();  break;
-    case 20:  por_referencia();  break;
-    case 21:  ParteEjecutiva();  break;
-    case 22:  SecuenciaDeSentencias_Marca();  break;
-    case 23:  SecuenciaDeSentencias2();  break;
-    case 24:  SecuenciaDeSentencias();  break;
-    case 25:  epsilonSentencia();  break;
-    case 26:  SentenciaAsignacion();  break;
-    case 27:  RestoSentenciaAsignacion();  break;
-    case 28:  RestoSentenciaRestoAsignacion_1();  break;
-    case 29:  RestoSentenciaRestoAsignacion_2();  break;
-    case 30:  ParteIzquierda_1();  break;
-    case 31:  ParteIzquierda_2();  break;
-    case 32:  ParteIzquierda_3();  break;
-    case 33:  IdentificadorOProcPredef_Ident();  break;
-    case 34:  IdentificadorOProcPredef_ProcPredef();  break;
-    case 35:  ExpresionIF();  break;
-    case 36:  SentenciaIF();  break;
-    case 37:  ExpresionELSIF();  break;
-    case 38:  RestoSentenciaELSIF();  break;
-    case 39:  RestoSentenciaELSE();  break;
-    case 40:  RestoSentenciaIF();  break;
-    case 41:  Caso();  break;
-    case 42:  SentenciaCaseELSE();  break;
-    case 43:  SentenciaCase();  break;
-    case 44:  SentenciaCaso();  break;
-    case 45:  ExpresionWHILE();  break;
-    case 46:  SentenciaWHILE();  break;
-    case 47:  ExpresionREPEAT();  break;
-    case 48:  SentenciaREPEAT();  break;
-    case 49:  SentenciaLOOP();  break;
-    case 50:  IdentificadorFOR();  break;
-    case 51:  ExpresionTO();  break;
-    case 52:  ExpresionConstanteFOR();  break;
-    case 53:  SentenciaFOR();  break;
-    case 54:  SecuenciaWITH();  break;
-    case 55:  ExpresionRETURN();  break;
-    case 56:  Cadena();  break;
-    case 57:  Caracter();  break;
-    case 58:  expresionSinParentesisDeSuma();  break;
-    case 59:  operadorUnario();  break;
-    case 60:  expresionSinParentesisDeMultiplicacion();  break;
-    case 61:  OperadorBooleano();  break;
-    case 62:  TipoFormal();  break;
-    case 63:  NumeroEntero();  break;
-    case 64:  NumeroReal();  break;
-    case 65:  TipoPredefinidoPorUsuario();  break;
-    case 66:  BITSET();  break;
-    case 67:  BOOLEAN();  break;
-    case 68:  CARDINAL();  break;
-    case 69:  CHAR();  break;
-    case 70:  INTEGER();  break;
-    case 71:  LONGINT();  break;
-    case 72:  LONGREAL();  break;
-    case 73:  PROC();  break;
-    case 74:  REAL();  break;
-    case 75:  TRUE();  break;
-    case 76:  FALSE();  break;
-    case 77:  NIL();  break;
-  }
+        switch (number) {
+            case 1:
+                FinDeModulo();
+                break;
+            case 2:
+                ComienzoDeModulo();
+                break;
+            case 3:
+                ListaImportados();
+                break;
+            case 4:
+                ListaExportados();
+                break;
+            case 5:
+                finDeAmbito();
+                break;
+            case 6:
+                DefinicionDeTipo();
+                break;
+            case 7:
+                AsociacionConstante();
+                break;
+            case 8:
+                EsquemaDeTipo_TipoFormacion();
+                break;
+            case 9:
+                TipoSimple_TipoEnumerado();
+                break;
+            case 10:
+                TipoEnumerado();
+                break;
+            case 11:
+                TipoConjunto();
+                break;
+            case 12:
+                TipoFormacion();
+                break;
+            case 13:
+                TipoPuntero();
+                break;
+            case 14:
+                ponerMarcaListaVariables();
+                break;
+            case 15:
+                quitarMarcaListaVariables();
+                break;
+            case 16:
+                DeclaracionVariables();
+                break;
+            case 17:
+                InicioDeclaracionProcedure();
+                break;
+            case 18:
+                CabeceraDeProcedure();
+                break;
+            case 19:
+                retornoFunc();
+                break;
+            case 20:
+                por_referencia();
+                break;
+            case 21:
+                ParteEjecutiva();
+                break;
+            case 22:
+                SecuenciaDeSentencias_Marca();
+                break;
+            case 23:
+                SecuenciaDeSentencias2();
+                break;
+            case 24:
+                SecuenciaDeSentencias();
+                break;
+            case 25:
+                epsilonSentencia();
+                break;
+            case 26:
+                SentenciaAsignacion();
+                break;
+            case 27:
+                RestoSentenciaAsignacion();
+                break;
+            case 28:
+                RestoSentenciaRestoAsignacion_1();
+                break;
+            case 29:
+                RestoSentenciaRestoAsignacion_2();
+                break;
+            case 30:
+                ParteIzquierda_1();
+                break;
+            case 31:
+                ParteIzquierda_2();
+                break;
+            case 32:
+                ParteIzquierda_3();
+                break;
+            case 33:
+                IdentificadorOProcPredef_Ident();
+                break;
+            case 34:
+                IdentificadorOProcPredef_ProcPredef();
+                break;
+            case 35:
+                ExpresionIF();
+                break;
+            case 36:
+                SentenciaIF();
+                break;
+            case 37:
+                ExpresionELSIF();
+                break;
+            case 38:
+                RestoSentenciaELSIF();
+                break;
+            case 39:
+                RestoSentenciaELSE();
+                break;
+            case 40:
+                RestoSentenciaIF();
+                break;
+            case 41:
+                Caso();
+                break;
+            case 42:
+                SentenciaCaseELSE();
+                break;
+            case 43:
+                SentenciaCase();
+                break;
+            case 44:
+                SentenciaCaso();
+                break;
+            case 45:
+                ExpresionWHILE();
+                break;
+            case 46:
+                SentenciaWHILE();
+                break;
+            case 47:
+                ExpresionREPEAT();
+                break;
+            case 48:
+                SentenciaREPEAT();
+                break;
+            case 49:
+                SentenciaLOOP();
+                break;
+            case 50:
+                IdentificadorFOR();
+                break;
+            case 51:
+                ExpresionTO();
+                break;
+            case 52:
+                ExpresionConstanteFOR();
+                break;
+            case 53:
+                SentenciaFOR();
+                break;
+            case 54:
+                SecuenciaWITH();
+                break;
+            case 55:
+                ExpresionRETURN();
+                break;
+            case 56:
+                operadorBooleano();
+                break;
+            case 57:
+                Cadena();
+                break;
+            case 58:
+                Caracter();
+                break;
+            case 59:
+                expresionSinParentesisDeSuma();
+                break;
+            case 60:
+                operadorUnario();
+                break;
+            case 61:
+                expresionSinParentesisDeMultiplicacion();
+                break;
+            case 62:
+                TipoFormal();
+                break;
+            case 63:
+                NumeroEntero();
+                break;
+            case 64:
+                NumeroReal();
+                break;
+            case 65:
+                TipoPredefinidoPorUsuario();
+                break;
+            case 66:
+                BITSET();
+                break;
+            case 67:
+                BOOLEAN();
+                break;
+            case 68:
+                CARDINAL();
+                break;
+            case 69:
+                CHAR();
+                break;
+            case 70:
+                INTEGER();
+                break;
+            case 71:
+                LONGINT();
+                break;
+            case 72:
+                LONGREAL();
+                break;
+            case 73:
+                PROC();
+                break;
+            case 74:
+                REAL();
+                break;
+            case 75:
+                TRUE();
+                break;
+            case 76:
+                FALSE();
+                break;
+            case 77:
+                NIL();
+                break;
+        }
     }
 
     private void Caso() {
@@ -228,10 +382,10 @@ public class SlkAction {
 
 
         //nombrePrograma = ((Atributos) (n).getToken().getAtributo()).obtener("LEXEMA").toString();
-		_generador.emite("begin:");
-		_generador.emite("CALL /" + "hola");
-		_generador.emite("HALT");
-		_generador.escribeSeccion();
+        _generador.emite("begin:");
+        _generador.emite("CALL /" + "hola");
+        _generador.emite("HALT");
+        _generador.escribeSeccion();
     }
 
     private void ExpresionRETURN() {
@@ -715,9 +869,9 @@ public class SlkAction {
         Nodo nuevo = new Nodo();
         boolean errIdent = false;
 
-        if (nodo1.getTipoToken()==TipoToken.IDENTIFICADOR){
+        if (nodo1.getTipoToken() == TipoToken.IDENTIFICADOR) {
             // buscamos el tipo del identificador en la tabla
-            if (_tablaActual.busca(nodo1.getLexema())!= null){
+            if (_tablaActual.busca(nodo1.getLexema()) != null) {
                 ArrayList<TipoSemantico> tipo = _tablaActual.busca(nodo1.getLexema()).getTipoSemantico();
                 nodo1.setTipo(tipo);
             } else {
@@ -725,15 +879,15 @@ public class SlkAction {
                 //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
                 nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo1.getLexema() + "' no está declarado",
-                    nodo1.getLinea(),
-                    nodo1.getColumna()));
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
                 nuevo.setColumna(nodo1.getColumna());
                 nuevo.setLinea(nodo1.getLinea());
                 _pilaNodos.push(nuevo);
             }
         }
-            
-        if (!errIdent){
+
+        if (!errIdent) {
             if (nodo1.getTipoBasico().equals(TipoSemantico.BOOLEANO)) {
                 nuevo.addTipo(TipoSemantico.VOID);
                 _pilaNodos.push(nuevo);
@@ -765,9 +919,9 @@ public class SlkAction {
         Nodo nuevo = new Nodo();
         boolean errIdent = false;
 
-        if (nodo1.getTipoToken()==TipoToken.IDENTIFICADOR){
+        if (nodo1.getTipoToken() == TipoToken.IDENTIFICADOR) {
             // buscamos el tipo del identificador en la tabla
-            if (_tablaActual.busca(nodo1.getLexema())!= null){
+            if (_tablaActual.busca(nodo1.getLexema()) != null) {
                 ArrayList<TipoSemantico> tipo = _tablaActual.busca(nodo1.getLexema()).getTipoSemantico();
                 nodo1.setTipo(tipo);
             } else {
@@ -775,23 +929,23 @@ public class SlkAction {
                 //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
                 nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo1.getLexema() + "' no está declarado",
-                    nodo1.getLinea(),
-                    nodo1.getColumna()));
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
                 nuevo.setColumna(nodo1.getColumna());
                 nuevo.setLinea(nodo1.getLinea());
                 _pilaNodos.push(nuevo);
             }
         }
 
-        if (!errIdent){
+        if (!errIdent) {
             if (nodo1.getTipoBasico().equals(TipoSemantico.BOOLEANO)) {
                 nuevo.addTipo(TipoSemantico.VOID);
                 _pilaNodos.push(nuevo);
             } else {
                 nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipo no booleano en la expresion if",
-                    nodo1.getLinea(),
-                    nodo1.getColumna()));
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
                 nuevo.setColumna(nodo1.getColumna());
                 nuevo.setLinea(nodo1.getLinea());
                 _pilaNodos.push(nuevo);
@@ -818,9 +972,9 @@ public class SlkAction {
         Nodo nuevo = new Nodo();
         boolean errIdent = false;
 
-        if (nodo1.getTipoToken()==TipoToken.IDENTIFICADOR){
+        if (nodo1.getTipoToken() == TipoToken.IDENTIFICADOR) {
             // buscamos el tipo del identificador en la tabla
-            if (_tablaActual.busca(nodo1.getLexema())!= null){
+            if (_tablaActual.busca(nodo1.getLexema()) != null) {
                 ArrayList<TipoSemantico> tipo = _tablaActual.busca(nodo1.getLexema()).getTipoSemantico();
                 nodo1.setTipo(tipo);
             } else {
@@ -828,15 +982,15 @@ public class SlkAction {
                 //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
                 nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo1.getLexema() + "' no está declarado",
-                    nodo1.getLinea(),
-                    nodo1.getColumna()));
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
                 nuevo.setColumna(nodo1.getColumna());
                 nuevo.setLinea(nodo1.getLinea());
                 _pilaNodos.push(nuevo);
             }
         }
 
-        if (!errIdent){
+        if (!errIdent) {
 
             if (nodo1.getTipoBasico().equals(TipoSemantico.BOOLEANO)) {
                 nuevo.addTipo(TipoSemantico.VOID);
@@ -865,9 +1019,9 @@ public class SlkAction {
         boolean errIdent = false;
 
         //si Expresion es un identificador hay que guardar su tipo semántico
-        if (nodo1.getTipoToken()==TipoToken.IDENTIFICADOR){
+        if (nodo1.getTipoToken() == TipoToken.IDENTIFICADOR) {
             // buscamos el tipo del identificador en la tabla
-            if (_tablaActual.busca(nodo1.getLexema())!= null){
+            if (_tablaActual.busca(nodo1.getLexema()) != null) {
                 ArrayList<TipoSemantico> tipo = _tablaActual.busca(nodo1.getLexema()).getTipoSemantico();
                 nodo1.setTipo(tipo);
             } else {
@@ -875,15 +1029,15 @@ public class SlkAction {
                 //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
                 nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo1.getLexema() + "' no está declarado",
-                    nodo1.getLinea(),
-                    nodo1.getColumna()));
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
                 nuevo.setColumna(nodo1.getColumna());
                 nuevo.setLinea(nodo1.getLinea());
                 _pilaNodos.push(nuevo);
             }
         }
 
-        if (!errIdent){
+        if (!errIdent) {
 
             if ((nodo1.getTipoBasico().equals(nodo3.getTipoBasico())) /*&& (nodo1.getLexema().compareTo(nodo3.getLexema()) > 0)*/) {
                 _pilaNodos.push(nodo1);
@@ -913,11 +1067,11 @@ public class SlkAction {
         Nodo nodo1 = _pilaNodos.pop(); //Expresion
         Nodo nuevo = new Nodo();
 
-                boolean errIdent = false;
+        boolean errIdent = false;
 
-        if (nodo1.getTipoToken()==TipoToken.IDENTIFICADOR){
+        if (nodo1.getTipoToken() == TipoToken.IDENTIFICADOR) {
             // buscamos el tipo del identificador en la tabla
-            if (_tablaActual.busca(nodo1.getLexema())!= null){
+            if (_tablaActual.busca(nodo1.getLexema()) != null) {
                 ArrayList<TipoSemantico> tipo = _tablaActual.busca(nodo1.getLexema()).getTipoSemantico();
                 nodo1.setTipo(tipo);
             } else {
@@ -925,15 +1079,15 @@ public class SlkAction {
                 //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
                 nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo1.getLexema() + "' no está declarado",
-                    nodo1.getLinea(),
-                    nodo1.getColumna()));
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
                 nuevo.setColumna(nodo1.getColumna());
                 nuevo.setLinea(nodo1.getLinea());
                 _pilaNodos.push(nuevo);
             }
         }
 
-        if (!errIdent){
+        if (!errIdent) {
 
             if (nodo1.getTipoBasico().equals(TipoSemantico.BOOLEANO)) {
                 nuevo.addTipo(TipoSemantico.VOID);
@@ -967,8 +1121,8 @@ public class SlkAction {
 //                    id.getLinea(),
 //                    id.getColumna()));
 //        }
-    
-        
+
+
         _generador.generaCodigoSubprograma("hola", false);
     }
 
@@ -982,9 +1136,9 @@ public class SlkAction {
         Nodo nuevo = new Nodo();
 
         //hay que buscar si el identificador está o no en la TS
-        if (_tablaActual.busca(nodo2.getLexema())!= null){
+        if (_tablaActual.busca(nodo2.getLexema()) != null) {
             // buscamos el tipo del identificador en la tabla
-            ArrayList <TipoSemantico> tipo = _tablaActual.busca(nodo2.getLexema()).getTipoSemantico();
+            ArrayList<TipoSemantico> tipo = _tablaActual.busca(nodo2.getLexema()).getTipoSemantico();
 
             // miramos si la expresion es del mismo tipo del identificador para asignarselo
             if (tipo.equals(nodo1.getTipoSemantico())) {
@@ -1005,9 +1159,9 @@ public class SlkAction {
             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo2.getLexema() + "' no está declarado",
                     nodo2.getLinea(),
                     nodo2.getColumna()));
-                nuevo.setColumna(nodo2.getColumna());
-                nuevo.setLinea(nodo2.getLinea());
-                _pilaNodos.push(nuevo);
+            nuevo.setColumna(nodo2.getColumna());
+            nuevo.setLinea(nodo2.getLinea());
+            _pilaNodos.push(nuevo);
         }
 
     }
@@ -1023,18 +1177,18 @@ public class SlkAction {
         }
         Nodo nuevo = new Nodo();
 
-        if (nodo1.getTipoToken()!=null) {
+        if (nodo1.getTipoToken() != null) {
             if (nodo1.getTipoToken() == TipoToken.IDENTIFICADOR) {
                 //comprobamos ahora que el identificador esta en la tabla de simbolos
-                if (_tablaActual.busca(nodo1.getLexema())!= null){
+                if (_tablaActual.busca(nodo1.getLexema()) != null) {
                     nuevo.addTipo(TipoSemantico.VOID);
                     _pilaNodos.push(nuevo);
-                }else {
+                } else {
                     //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
                     nuevo.addTipo(TipoSemantico.ERROR);
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo1.getLexema() + "' no está declarado",
-                        nodo1.getLinea(),
-                        nodo1.getColumna()));
+                            nodo1.getLinea(),
+                            nodo1.getColumna()));
                     nuevo.setColumna(nodo1.getColumna());
                     nuevo.setLinea(nodo1.getLinea());
                     _pilaNodos.push(nuevo);
@@ -1085,7 +1239,7 @@ public class SlkAction {
 
     }
 
-    private void OperadorBooleano() {
+    private void operadorBooleano() {
         if (logger.isDebugEnabled()) {
             logger.debug("Entrando en el metodo operadorBooleano");
         }
@@ -1093,26 +1247,59 @@ public class SlkAction {
         Nodo operador = _pilaNodos.pop();
         Nodo op2 = _pilaNodos.pop();
         if (!op1.esError() && !operador.esError() && !op2.esError()) {
-            if (sonOperablesLogicamente(op1, op2)) {
-                Nodo salida = new Nodo();
-                ArrayList<TipoSemantico> tipo = new ArrayList();
-                tipo.add(TipoSemantico.BOOLEANO);
-                salida.setTipo(tipo);
-                _pilaNodos.push(salida);
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Salida con exito del metodo OperadorBooleano");
-                }
-            } else {
-                                                         
-                Nodo error = new Nodo();
-                error.addTipo(TipoSemantico.ERROR);
-                _pilaNodos.push(error);
+            if (operador.getLexema().equals("MAYOR") || operador.getLexema().equals("MAYOR_IGUAL") ||
+                    operador.getLexema().equals("MENOR") || operador.getLexema().equals("MENOR_IGUAL")) {
+                if (sonOperablesAritmeticamente(op1, op2)) {
+                    Nodo salida = new Nodo();
+                    ArrayList<TipoSemantico> tipo = new ArrayList();
+                    tipo.add(TipoSemantico.BOOLEANO);
+                    salida.setTipo(tipo);
+                    _pilaNodos.push(salida);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Salida con exito del metodo OperadorBooleano");
+                    }
+                } else {
+                    Nodo error = new Nodo();
+                    error.addTipo(TipoSemantico.ERROR);
+                    _pilaNodos.push(error);
+                    StringBuilder trace = new StringBuilder();
+                    trace.append("Tipo de la variable ");
+                    trace.append(op1.getLexema());
+                    trace.append(" no operable aritmeticamente");
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), op1.getLinea(), op2.getColumna()));
 
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Salida con error del metodo OperadorBooleano");
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Salida con error del metodo OperadorBooleano");
+                    }
                 }
+            } else if (operador.getLexema().equals("IGUAL") || operador.getLexema().equals("DISTINTO")) {
+                if (sonOperablesAritmeticamente(op1, op2) || sonBooleanos(op1, op2)) {
+                    Nodo salida = new Nodo();
+                    ArrayList<TipoSemantico> tipo = new ArrayList();
+                    tipo.add(TipoSemantico.BOOLEANO);
+                    salida.setTipo(tipo);
+                    _pilaNodos.push(salida);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Salida con exito del metodo OperadorBooleano");
+                    }
+                } else {
+                    Nodo error = new Nodo();
+                    error.addTipo(TipoSemantico.ERROR);
+                    _pilaNodos.push(error);
 
+                    StringBuilder trace = new StringBuilder();
+                    trace.append("Tipo de la variable ");
+                    trace.append(op1.getLexema());
+                    trace.append(" no operable aritmeticamente");
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), op1.getLinea(), op2.getColumna()));
+
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Salida con error del metodo OperadorBooleano");
+                    }
+                }
             }
+
+
         }
 
 
@@ -1236,60 +1423,58 @@ public class SlkAction {
         //sacamos el primerNodo de la pila, si es una marca entonces es que no es vacio y comprobamos lo que hay
         //si no es una marca es el nodo de SecuenciaDeSentencias, le volvemos a poner y colocamos otro nuevo tipo VOID
         //para indicar que RestoSentenciaIF aunque es vacio es correcto
-
         /***pruebas***
         System.out.println("Entrando en RestoSentenciaIF");
         /***fin pruebas***
         Nodo nodo1 = _pilaNodos.pop(); //puede ser MARCA o SencuenciaDeSentencias
 
         if (nodo1.esMarca()) { //puede haber ELSIF y ELSE, solo ELSIF o solo ELSE
-            Nodo nodo2 = _pilaNodos.pop(); //nodo VOID o ERROR de ELSIF o ELSE
-            Nodo nodo3 = _pilaNodos.pop(); //puede ser o MARCA de ELSIF o SecuenciaDeSentencias
-            if (nodo3.esMarca()) {
-                //sacamos y nodo (void o error) y comprobamos nodo2 (ELSIF) y nodo4 (ELSE)
-                Nodo nodo4 = _pilaNodos.pop(); //nodo VOID o ERROR de ELSE
-                if (nodo2.getTipoBasico().equals(TipoSemantico.VOID) && nodo4.getTipoBasico().equals(TipoSemantico.VOID) ) {
-                    Nodo n = new Nodo();
-                    n.addTipo(TipoSemantico.VOID);
-                    _pilaNodos.push(n);
-                } else {
-                    Nodo nuevo = new Nodo();
-                    nuevo.addTipo(TipoSemantico.ERROR);
-                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia RestoSentenciaIF mal tipada",
-                            nodo1.getLinea(),
-                            nodo1.getColumna()));
-                    nuevo.setColumna(nodo1.getColumna());
-                    nuevo.setLinea(nodo1.getLinea());
-                    _pilaNodos.push(nuevo);
-                }
+        Nodo nodo2 = _pilaNodos.pop(); //nodo VOID o ERROR de ELSIF o ELSE
+        Nodo nodo3 = _pilaNodos.pop(); //puede ser o MARCA de ELSIF o SecuenciaDeSentencias
+        if (nodo3.esMarca()) {
+        //sacamos y nodo (void o error) y comprobamos nodo2 (ELSIF) y nodo4 (ELSE)
+        Nodo nodo4 = _pilaNodos.pop(); //nodo VOID o ERROR de ELSE
+        if (nodo2.getTipoBasico().equals(TipoSemantico.VOID) && nodo4.getTipoBasico().equals(TipoSemantico.VOID) ) {
+        Nodo n = new Nodo();
+        n.addTipo(TipoSemantico.VOID);
+        _pilaNodos.push(n);
+        } else {
+        Nodo nuevo = new Nodo();
+        nuevo.addTipo(TipoSemantico.ERROR);
+        _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia RestoSentenciaIF mal tipada",
+        nodo1.getLinea(),
+        nodo1.getColumna()));
+        nuevo.setColumna(nodo1.getColumna());
+        nuevo.setLinea(nodo1.getLinea());
+        _pilaNodos.push(nuevo);
+        }
 
-            } else { //es SecuenciaDeSentencias
-                _pilaNodos.push(nodo1); //se vuelve a meter sin tocarlo
-                //comprobamos que nodo2 es VOID
-                if (nodo2.getTipoBasico().equals(TipoSemantico.VOID)) {
-                    Nodo n = new Nodo();
-                    n.addTipo(TipoSemantico.VOID);
-                    _pilaNodos.push(n);
-                } else {
-                    Nodo nuevo = new Nodo();
-                    nuevo.addTipo(TipoSemantico.ERROR);
-                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia RestoSentenciaIF mal tipada",
-                            nodo1.getLinea(),
-                            nodo1.getColumna()));
-                    nuevo.setColumna(nodo1.getColumna());
-                    nuevo.setLinea(nodo1.getLinea());
-                    _pilaNodos.push(nuevo);
-                }
-            }
+        } else { //es SecuenciaDeSentencias
+        _pilaNodos.push(nodo1); //se vuelve a meter sin tocarlo
+        //comprobamos que nodo2 es VOID
+        if (nodo2.getTipoBasico().equals(TipoSemantico.VOID)) {
+        Nodo n = new Nodo();
+        n.addTipo(TipoSemantico.VOID);
+        _pilaNodos.push(n);
+        } else {
+        Nodo nuevo = new Nodo();
+        nuevo.addTipo(TipoSemantico.ERROR);
+        _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia RestoSentenciaIF mal tipada",
+        nodo1.getLinea(),
+        nodo1.getColumna()));
+        nuevo.setColumna(nodo1.getColumna());
+        nuevo.setLinea(nodo1.getLinea());
+        _pilaNodos.push(nuevo);
+        }
+        }
 
         } else {//es SecuenciaDeSentencias
-            _pilaNodos.push(nodo1); //se vuelve a meter sin tocarlo
-            //se añade un nodo void nuevo
-            Nodo n = new Nodo();
-            n.addTipo(TipoSemantico.VOID);
-            _pilaNodos.push(n);
+        _pilaNodos.push(nodo1); //se vuelve a meter sin tocarlo
+        //se añade un nodo void nuevo
+        Nodo n = new Nodo();
+        n.addTipo(TipoSemantico.VOID);
+        _pilaNodos.push(n);
         }*/
-
     }
 
     private void RestoSentenciaRestoAsignacion_1() {
@@ -1306,11 +1491,11 @@ public class SlkAction {
         Nodo nuevo = new Nodo();
 
         //añadimos el tipoSemantico a la Expresion en el caso de ser un IDENTIIFICADOR
-                boolean errIdent = false;
+        boolean errIdent = false;
 
-        if (nodo1.getTipoToken()==TipoToken.IDENTIFICADOR){
+        if (nodo1.getTipoToken() == TipoToken.IDENTIFICADOR) {
             // buscamos el tipo del identificador en la tabla
-            if (_tablaActual.busca(nodo1.getLexema())!= null){
+            if (_tablaActual.busca(nodo1.getLexema()) != null) {
                 ArrayList<TipoSemantico> tipo = _tablaActual.busca(nodo1.getLexema()).getTipoSemantico();
                 nodo1.setTipo(tipo);
             } else {
@@ -1320,15 +1505,15 @@ public class SlkAction {
                 _pilaNodos.push(nodo2);
                 nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo1.getLexema() + "' no está declarado",
-                    nodo1.getLinea(),
-                    nodo1.getColumna()));
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
                 nuevo.setColumna(nodo1.getColumna());
                 nuevo.setLinea(nodo1.getLinea());
                 _pilaNodos.push(nuevo);
             }
         }
 
-        if (!errIdent){
+        if (!errIdent) {
 
             if (nodo2.getTipoToken() != null) { //es Identificador pq los VOID lo tienen a null
                 if (nodo2.getTipoToken().equals(TipoToken.IDENTIFICADOR)) {
@@ -1343,10 +1528,9 @@ public class SlkAction {
                             nuevo.addTipo(TipoSemantico.VOID);
                             _pilaNodos.push(nuevo);
 
-                            /**GENERADOR yo creo q debe ir aqui pero falla**/
-                            //hay que arreglar getposicionreal
-                            //_generador.generaCodigoAsignacion(nuevo,nodo2);
-
+                        /**GENERADOR yo creo q debe ir aqui pero falla**/
+                        //hay que arreglar getposicionreal
+                        //_generador.generaCodigoAsignacion(nuevo,nodo2);
                         } else {
                             nuevo.addTipo(TipoSemantico.ERROR);
                             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia de Asignación Id:=Exp mal tipada",
@@ -1535,7 +1719,7 @@ public class SlkAction {
         Nodo nodo1 = _pilaNodos.pop(); //Sentencia o Marca
         Nodo nuevo = new Nodo();
 
-        while (!nodo1.esMarca()){
+        while (!nodo1.esMarca()) {
             //comprobamos que está bien tipada
             if (nodo1.getTipoBasico().equals(TipoSemantico.ERROR)) {
                 SSError = true;
@@ -1554,16 +1738,16 @@ public class SlkAction {
         } else if (nodo1.getTipoBasico().equals(TipoSemantico.ERROR)) {
             nuevo.addTipo(TipoSemantico.ERROR);
             /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Secuencia de Sentencias NO Válida",
-                        nodo1.getLinea(),
-                        nodo1.getColumna()));*/
+            nodo1.getLinea(),
+            nodo1.getColumna()));*/
             nuevo.setColumna(nodo1.getColumna());
             nuevo.setLinea(nodo1.getLinea());
             _pilaNodos.push(nuevo);
         } else {
             nuevo.addTipo(TipoSemantico.ERROR);
             /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Secuencia de Sentencias NO Válida",
-                        SSLinea,
-                        SSColumna));*/
+            SSLinea,
+            SSColumna));*/
             nuevo.setColumna(SSColumna);
             nuevo.setLinea(SSLinea);
             _pilaNodos.push(nuevo);
@@ -1584,8 +1768,8 @@ public class SlkAction {
         } else {
             nuevo.addTipo(TipoSemantico.ERROR);
             /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia NO Válida",
-                    nodo1.getLinea(),
-                    nodo1.getColumna()));*/
+            nodo1.getLinea(),
+            nodo1.getColumna()));*/
             nuevo.setColumna(nodo1.getColumna());
             nuevo.setLinea(nodo1.getLinea());
             _pilaNodos.push(nuevo);
@@ -1657,12 +1841,12 @@ public class SlkAction {
         //Nodo nodo3 = _pilaNodos.pop(); // sacamos Expresion
 
         if (nodo4.esMarca()) { //hay BY
-            boolean errIdent=false;
+            boolean errIdent = false;
             Nodo nodo = new Nodo();
             //miramos si ExpresiónConstante (nodo3) es un identificador
-            if (nodo2.getTipoToken()==TipoToken.IDENTIFICADOR){
+            if (nodo2.getTipoToken() == TipoToken.IDENTIFICADOR) {
                 // buscamos el tipo del identificador en la tabla
-                if (_tablaActual.busca(nodo2.getLexema())!= null){
+                if (_tablaActual.busca(nodo2.getLexema()) != null) {
                     ArrayList<TipoSemantico> tipo = _tablaActual.busca(nodo2.getLexema()).getTipoSemantico();
                     nodo2.setTipo(tipo);
                 } else {
@@ -1670,14 +1854,14 @@ public class SlkAction {
                     //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
                     nodo.addTipo(TipoSemantico.ERROR);
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo2.getLexema() + "' no está declarado",
-                        nodo2.getLinea(),
-                        nodo2.getColumna()));
+                            nodo2.getLinea(),
+                            nodo2.getColumna()));
                     nodo.setColumna(nodo2.getColumna());
                     nodo.setLinea(nodo2.getLinea());
                     _pilaNodos.push(nodo);
                 }
             }
-            if (!errIdent){
+            if (!errIdent) {
                 // miramos si las expresiones son del mismo tipo y que secuencia de sentencias sea de tipo void
                 if (nodo2.getTipoBasico().equals(nodo3.getTipoBasico()) && nodo1.getTipoBasico().equals(TipoSemantico.VOID)) {
                     Nodo n = new Nodo();
@@ -1687,8 +1871,8 @@ public class SlkAction {
                     Nodo nuevo = new Nodo();
                     nuevo.addTipo(TipoSemantico.ERROR);
                     /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia SentenciaFOR mal tipada",
-                            nodo1.getLinea(),
-                            nodo1.getColumna()));*/
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));*/
                     nuevo.setColumna(nodo1.getColumna());
                     nuevo.setLinea(nodo1.getLinea());
                     _pilaNodos.push(nuevo);
@@ -1704,8 +1888,8 @@ public class SlkAction {
                 Nodo nuevo = new Nodo();
                 nuevo.addTipo(TipoSemantico.ERROR);
                 /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia SentenciaFOR mal tipada",
-                        nodo1.getLinea(),
-                        nodo1.getColumna()));*/
+                nodo1.getLinea(),
+                nodo1.getColumna()));*/
                 nuevo.setColumna(nodo1.getColumna());
                 nuevo.setLinea(nodo1.getLinea());
                 _pilaNodos.push(nuevo);
@@ -1736,11 +1920,10 @@ public class SlkAction {
                     num2.setLexema("");
 
                     ArrayList<TipoSemantico> tipoSem = new ArrayList();
-                    if(esReal(num2))
-                    {
+                    if (esReal(num2)) {
                         tipoSem.add(TipoSemantico.REAL);
                     }
-                    if(esEntero(num2)){
+                    if (esEntero(num2)) {
                         tipoSem.add(TipoSemantico.ENTERO);
                     }
                     num2.setTipo(tipoSem);
@@ -1782,7 +1965,7 @@ public class SlkAction {
             logger.debug("Entrando en el metodo expresionSinParentesisDeSuma");
         }
         Nodo auxiliar = null;
-        if(_pilaNodos.peek().getTipoToken() == TipoToken.OPERADOR_SUMADOR){
+        if (_pilaNodos.peek().getTipoToken() == TipoToken.OPERADOR_SUMADOR) {
             auxiliar = _pilaNodos.pop();
         }
         Nodo num1 = _pilaNodos.pop();
@@ -1793,22 +1976,21 @@ public class SlkAction {
             if (sonOperablesAritmeticamente(num1, num2)) {
 
                 // BUG: Con esta instrucción, interpreta como identificador ''
-                
+
                 //num1.setLexema("");
 
                 ArrayList<TipoSemantico> tipoSem = new ArrayList();
-                if(esReal(num1))
-                {
+                if (esReal(num1)) {
                     tipoSem.add(TipoSemantico.REAL);
                 }
-                if(esEntero(num1)){
+                if (esEntero(num1)) {
                     tipoSem.add(TipoSemantico.ENTERO);
                 }
                 num1.setTipo(tipoSem);
 
                 _pilaNodos.push(num1);
 
-                if(auxiliar != null){
+                if (auxiliar != null) {
                     _pilaNodos.push(auxiliar);
                 }
 
@@ -1842,7 +2024,7 @@ public class SlkAction {
             if (_tablaActual.getNombre().equals(id.getLexema())) {
                 _tablaActual = _tablaActual.cerrarAmbito();
 
-                
+
             } else {
 
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Simbolo \"" + id.getLexema() + "\" incorrecto, se esperaba \"" + _tablaActual.getNombre() + "\"",
@@ -2023,20 +2205,19 @@ public class SlkAction {
         InfoSimbolo info;
 
         // comprobamos si es una función o un procediento
-        if (nodo.esMarca()){
+        if (nodo.esMarca()) {
             nodo = _pilaNodos.pop();
-            if (nodo.getTipoToken() == TipoToken.TIPO_SIMPLE){
+            if (nodo.getTipoToken() == TipoToken.TIPO_SIMPLE) {
                 retorno = nodo.getTipoSemantico();
-            }
-            else{
+            } else {
                 InfoSimbolo inf = _tablaActual.busca(nodo.getLexema());
-                if ((inf != null) && (inf.getTipoSimbolo() == TipoSimbolo.TIPO)){
+                if ((inf != null) && (inf.getTipoSimbolo() == TipoSimbolo.TIPO)) {
                     retorno = inf.getTipoSemantico();
-                }
-                else
+                } else {
                     _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("el indetificador " +
-                                                           nodo.getLexema() + " no es una declaracion de tipo",
-                                                           nodo.getLinea(), nodo.getColumna()));
+                            nodo.getLexema() + " no es una declaracion de tipo",
+                            nodo.getLinea(), nodo.getColumna()));
+                }
             }
             nodo = _pilaNodos.pop();
         }
@@ -2122,9 +2303,9 @@ public class SlkAction {
             nuevo.setColumna(nodo1.getColumna());
             nuevo.setLinea(nodo1.getLinea());
             _pilaNodos.push(nuevo);
-            /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia ELSE mal tipada",
-                    nodo1.getLinea(),
-                    nodo1.getColumna()));*/
+        /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia ELSE mal tipada",
+        nodo1.getLinea(),
+        nodo1.getColumna()));*/
         }
 
         //insertamos el nodo marca en la pila para saber que hay un ELSE
@@ -2158,9 +2339,9 @@ public class SlkAction {
             nuevo.setColumna(nodo1.getColumna());
             nuevo.setLinea(nodo1.getLinea());
             _pilaNodos.push(nuevo);
-            /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia ELSIF mal tipada",
-                    nuevo.getLinea(),
-                    nuevo.getColumna()));*/
+        /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia ELSIF mal tipada",
+        nuevo.getLinea(),
+        nuevo.getColumna()));*/
         }
 
         //insertamos el nodo marca en la pila para saber que hay un ELSIF
@@ -2194,7 +2375,7 @@ public class SlkAction {
             if (nodo3.esMarca()) {
                 //sacamos y nodo (void o error) y comprobamos nodo2 (ELSIF) y nodo4 (ELSE)
                 Nodo nodo4 = _pilaNodos.pop(); //nodo VOID o ERROR de ELSE
-                if (nodo2.getTipoBasico().equals(TipoSemantico.VOID) && nodo4.getTipoBasico().equals(TipoSemantico.VOID) ) {
+                if (nodo2.getTipoBasico().equals(TipoSemantico.VOID) && nodo4.getTipoBasico().equals(TipoSemantico.VOID)) {
                     Nodo n = new Nodo();
                     n.addTipo(TipoSemantico.VOID);
                     _pilaNodos.push(n);
@@ -2202,8 +2383,8 @@ public class SlkAction {
                     Nodo nuevo = new Nodo();
                     nuevo.addTipo(TipoSemantico.ERROR);
                     /*_gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Sentencia RestoSentenciaIF mal tipada",
-                            nodo1.getLinea(),
-                            nodo1.getColumna()));*/
+                    nodo1.getLinea(),
+                    nodo1.getColumna()));*/
                     nuevo.setColumna(nodo1.getColumna());
                     nuevo.setLinea(nodo1.getLinea());
                     _pilaNodos.push(nuevo);
@@ -2435,12 +2616,12 @@ public class SlkAction {
             logger.debug("Entrando en el metodo TRUE()");
         }
 
-        _pilaNodos.peek().addTipo(TipoSemantico.BOOLEANO);
+    // _pilaNodos.peek().addTipo(TipoSemantico.BOOLEANO);
     }
 
     private void FALSE() {
 
-        _pilaNodos.peek().addTipo(TipoSemantico.BOOLEANO);
+        // _pilaNodos.peek().addTipo(TipoSemantico.BOOLEANO);
     }
 
     private void NIL() {
@@ -2504,13 +2685,15 @@ public class SlkAction {
     }
 
     private void NumeroEntero() {
-
-        _pilaNodos.peek().addTipo(TipoSemantico.ENTERO);
+        if (_pilaNodos.peek().getTipoToken() == TipoToken.NUMERO_ENTERO) {
+            _pilaNodos.peek().addTipo(TipoSemantico.ENTERO);
+        }
     }
 
     private void NumeroReal() {
-
-        _pilaNodos.peek().addTipo(TipoSemantico.REAL);
+        if (_pilaNodos.peek().getTipoToken() == TipoToken.NUMERO_REAL) {
+            _pilaNodos.peek().addTipo(TipoSemantico.REAL);
+        }
     }
 
     /**
@@ -2541,17 +2724,17 @@ public class SlkAction {
             if (numero != null && signo != null) {
                 if (signo.getTipoToken() == TipoToken.OPERADOR_SUMADOR) {
                     if (esEntero(numero) || esReal(numero)) {
-                        _pilaNodos.push(numero);
+                        
 
-                        ArrayList<TipoSemantico> tipoSem = new ArrayList();
-                        if(esReal(numero))
-                        {
+                        /*ArrayList<TipoSemantico> tipoSem = new ArrayList();
+                        if (esReal(numero)) {
                             tipoSem.add(TipoSemantico.REAL);
                         }
-                        if(esEntero(numero)){
+                        if (esEntero(numero)) {
                             tipoSem.add(TipoSemantico.ENTERO);
                         }
-                        numero.setTipo(tipoSem);
+                        numero.setTipo(tipoSem);*/
+                        _pilaNodos.push(numero);
 
                         if (logger.isDebugEnabled()) {
                             logger.debug("Salida con EXITO de operadorUnario");
@@ -2637,7 +2820,7 @@ public class SlkAction {
     }
 
     private void retornoFunc() {
-       // añade una marca para indicar el retorno de funcion
+        // añade una marca para indicar el retorno de funcion
         Nodo marca = new Nodo();
         marca.crearMarca();
         _pilaNodos.add(marca);
@@ -2649,14 +2832,141 @@ public class SlkAction {
      * @param nodo2 Segundo nodo a comprobar
      * @return true si los dos nodos son de tipo booleano y false en otro caso
      */
-    private boolean sonBooleanos(Nodo nodo1, Nodo nodo2) {
-        if (nodo1 != null && nodo2 != null) {
-            if (nodo1.getTipoBasico() == TipoSemantico.BOOLEANO && nodo2.getTipoBasico() == TipoSemantico.BOOLEANO) {
-                return true;
-            }
-            return false;
+    private boolean sonBooleanos(Nodo op1, Nodo op2) {
+        if (logger.isDebugEnabled()) {
+            StringBuilder trace = new StringBuilder("Entrando en el metodo sonBooleanos con los nodos ");
+            trace.append(op1);
+            trace.append(" y ");
+            trace.append(op2);
+            logger.debug(trace.toString());
         }
-        return false;
+        TipoSemantico sem1 = null;
+        TipoSemantico sem2 = null;
+        if (op1.getTipoToken() == TipoToken.IDENTIFICADOR) {
+            // Si es identificador, accedemos a la tabla de símbolos
+            InfoSimbolo simbNodo1 = _tablaActual.busca(op1.getLexema());
+            if (simbNodo1 != null) {
+                // Hemos encontrado el símbolo, miramos que su tipo semántico
+                // sea integer o real
+                sem1 = simbNodo1.getTipoBasico();
+                if (sem1 != TipoSemantico.BOOLEANO) {
+                    StringBuilder trace = new StringBuilder();
+                    trace.append("Tipo de la variable ");
+                    trace.append(op1.getLexema());
+                    trace.append(" no operable lógicamente");
+
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), op1.getLinea(), op1.getColumna()));
+
+                    // TODO: ¿Entero largo, real largo, etc?
+                    return false;
+                }
+            } else {
+                StringBuilder trace = new StringBuilder("Variable ");
+                trace.append(op1.getLexema());
+                trace.append(" no definida.");
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), op1.getLinea(), op1.getColumna()));
+                return false;
+            }
+        }
+        if (op2.getTipoToken() == TipoToken.IDENTIFICADOR) {
+            // Si es identificador, accedemos a la tabla de símbolos
+            InfoSimbolo simbNodo2 = _tablaActual.busca(op2.getLexema());
+            if (simbNodo2 != null) {
+                // Hemos encontrado el símbolo, miramos que su tipo semántico
+                // sea integer o real
+                sem2 = simbNodo2.getTipoBasico();
+                if (sem2 != TipoSemantico.BOOLEANO) {
+                    StringBuilder trace = new StringBuilder();
+                    trace.append("Tipo de la variable ");
+                    trace.append(op2.getLexema());
+                    trace.append(" no operable lógicamente");
+
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), op2.getLinea(), op2.getColumna()));
+
+                    // TODO: ¿Entero largo, real largo, etc?
+                    return false;
+                }
+            } else {
+                StringBuilder trace = new StringBuilder("Variable ");
+                trace.append(op2.getLexema());
+                trace.append(" no definida.");
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), op2.getLinea(), op2.getColumna()));
+                return false;
+            }
+        }
+
+        if (op1.getTipoToken() == TipoToken.PALABRA_RESERVADA) {
+            if (op2.getTipoToken() != TipoToken.PALABRA_RESERVADA) {
+                return false;
+            } else {
+                if (!op1.getLexema().equals("TRUE")) {
+                    if (!op1.getLexema().equals("FALSE")) {
+                        _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", op1.getLinea(), op1.getColumna()));
+                        return false;
+                    }
+                }
+                if (!op2.getLexema().equals("TRUE")) {
+                    if (!op2.getLexema().equals("FALSE")) {
+                        _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", op1.getLinea(), op1.getColumna()));
+                        return false;
+                    }
+                }
+            }
+        }
+        // Hay 4 casos:
+        //   1. Identificadores los dos
+        //   2. Identificador y no identificador
+        //   3. No identificador e identificador
+        //   4. No identificadores los dos (ya comprobado arriba)
+        if (sem1 != null && sem2 != null) {
+            // Caso 1: Dos identificadores
+            if (sem1 != sem2) {
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipos no operables aritmeticamente", op1.getLinea(), op1.getColumna()));
+                return false;
+            }
+        } else if (sem1 != null && sem2 == null) {
+            // Caso 2: Identificador y no identificador
+            if (sem1 == TipoSemantico.BOOLEANO) {
+                if (!op2.getLexema().equals("TRUE")) {
+                    if (!op2.getLexema().equals("FALSE")) {
+                        if (op2.getTipoSemantico().size() != 0 && op2.getTipoBasico() != TipoSemantico.BOOLEANO) {
+                            return false;
+                        } else if (op2.getTipoSemantico().size() == 0) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        } else if (sem1 == null && sem2 != null) {
+            // Caso 3: No identificador e identificador
+
+            if (sem2 == TipoSemantico.BOOLEANO) {
+                if (op1.getLexema() != null) {
+                    if (!op1.getLexema().equals("TRUE")) {
+                        if (!op1.getLexema().equals("FALSE")) {
+                            if (op1.getTipoSemantico().size() != 0 && op1.getTipoBasico() != TipoSemantico.BOOLEANO) {
+                                return false;
+                            } else if (op1.getTipoSemantico().size() == 0) {
+                                return false;
+                            }
+                        }
+
+
+                    }
+                } else {
+                    if (op1.getTipoSemantico().size() != 0 && op1.getTipoBasico() != TipoSemantico.BOOLEANO) {
+                        return false;
+                    } else if (op1.getTipoSemantico().size() == 0) {
+                        return false;
+                    }
+                }
+
+
+            }
+        }
+
+        // Si hemos llegado hasta aquí, es que son operables aritméticamente
+        return true;
     }
 
     /**
@@ -2665,25 +2975,25 @@ public class SlkAction {
      * @return true si el nodo es de tipo booleano, false en otro caso
      */
     private boolean esBooleano(Nodo nodo) {
-        if(logger.isDebugEnabled()){
+        if (logger.isDebugEnabled()) {
             logger.debug("Entrando en esEntero con nodo " + nodo);
         }
         if (nodo.getTipoToken() == TipoToken.IDENTIFICADOR) {
             InfoSimbolo simbNodo = _tablaActual.busca(nodo.getLexema());
-            if (simbNodo == null)
+            if (simbNodo == null) {
                 return false;
-            else if (simbNodo.getTipoBasico() != TipoSemantico.BOOLEANO)
+            } else if (simbNodo.getTipoBasico() != TipoSemantico.BOOLEANO) {
                 return false;
+            }
+        } else if (nodo.getTipoToken() == TipoToken.PALABRA_RESERVADA) {
+            if (nodo.getLexema().equals("TRUE") || nodo.getLexema().equals("FALSE")) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
-        else if (nodo.getTipoToken() == TipoToken.PALABRA_RESERVADA) {
-                if (nodo.getLexema().equals("TRUE") || nodo.getLexema().equals("FALSE")) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-        }
-        else return false;
         return true;
     }
 
@@ -2709,26 +3019,26 @@ public class SlkAction {
      * @return true si el nodo es de tipo entero, false en otro caso
      */
     private boolean esEntero(Nodo nodo) {
-        if(logger.isDebugEnabled()){
+        if (logger.isDebugEnabled()) {
             logger.debug("Entrando en esEntero con nodo " + nodo);
         }
         if (nodo.getTipoToken() == TipoToken.IDENTIFICADOR) {
             InfoSimbolo simbNodo = _tablaActual.busca(nodo.getLexema());
-            if (simbNodo == null)
+            if (simbNodo == null) {
                 return false;
-            else if (simbNodo.getTipoBasico() != TipoSemantico.ENTERO)
+            } else if (simbNodo.getTipoBasico() != TipoSemantico.ENTERO) {
                 return false;
-        }
-        else if (nodo.getTipoToken() == TipoToken.NUMERO_ENTERO) {
-                return true;
-        }
-        else
+            }
+        } else if (nodo.getTipoToken() == TipoToken.NUMERO_ENTERO) {
+            return true;
+        } else {
             return false;
+        }
         return true;
     }
 
     private boolean sonOperablesLogicamente(Nodo op1, Nodo op2) {
-       if (logger.isDebugEnabled()) {
+        if (logger.isDebugEnabled()) {
             StringBuilder trace = new StringBuilder("Entrando en el metodo sonOperablesLogicamente con los nodos ");
             trace.append(op1);
             trace.append(" y ");
@@ -2862,12 +3172,13 @@ public class SlkAction {
                 if (op1.getTipoToken() != TipoToken.NUMERO_REAL) {
                     return false;
                 }
-            } else if (sem2 == TipoSemantico.REAL) {
+            } else if (sem2 == TipoSemantico.BOOLEANO) {
                 if (op1.getTipoBasico() != TipoSemantico.BOOLEANO) {
                     return false;
                 }
             }
         }
+
         // Si hemos llegado hasta aquí, es que son operables aritméticamente
         return true;
     }
@@ -2894,21 +3205,21 @@ public class SlkAction {
      * @return true si el nodo es de tipo real, false en otro caso
      */
     private boolean esReal(Nodo nodo) {
-        if(logger.isDebugEnabled()){
+        if (logger.isDebugEnabled()) {
             logger.debug("Entrando en esReal con nodo " + nodo);
         }
         if (nodo.getTipoToken() == TipoToken.IDENTIFICADOR) {
             InfoSimbolo simbNodo = _tablaActual.busca(nodo.getLexema());
-            if (simbNodo == null)
+            if (simbNodo == null) {
                 return false;
-            else if (simbNodo.getTipoBasico() != TipoSemantico.REAL)
+            } else if (simbNodo.getTipoBasico() != TipoSemantico.REAL) {
                 return false;
-        }
-        else if (nodo.getTipoToken() == TipoToken.NUMERO_REAL) {
-                return true;
-        }
-        else
+            }
+        } else if (nodo.getTipoToken() == TipoToken.NUMERO_REAL) {
+            return true;
+        } else {
             return false;
+        }
         return true;
     }
 
@@ -2934,21 +3245,21 @@ public class SlkAction {
      * @return true si el nodo es de tipo chars, false en otro caso
      */
     private boolean esChar(Nodo nodo) {
-        if(logger.isDebugEnabled()){
+        if (logger.isDebugEnabled()) {
             logger.debug("Entrando en esChar con nodo " + nodo);
         }
         if (nodo.getTipoToken() == TipoToken.IDENTIFICADOR) {
             InfoSimbolo simbNodo = _tablaActual.busca(nodo.getLexema());
-            if (simbNodo == null)
+            if (simbNodo == null) {
                 return false;
-            else if (simbNodo.getTipoBasico() != TipoSemantico.CARACTER)
+            } else if (simbNodo.getTipoBasico() != TipoSemantico.CARACTER) {
                 return false;
-        }
-        else if (nodo.getTipoToken() == TipoToken.CARACTER) {
-                return true;
-        }
-        else
+            }
+        } else if (nodo.getTipoToken() == TipoToken.CARACTER) {
+            return true;
+        } else {
             return false;
+        }
         return true;
     }
 
@@ -3019,12 +3330,8 @@ public class SlkAction {
                 sem1 = simbNodo1.getTipoBasico();
                 if ((sem1 != TipoSemantico.ENTERO) &&
                         (sem1 != TipoSemantico.REAL)) {
-                    StringBuilder trace = new StringBuilder();
-                    trace.append("Tipo de la variable ");
-                    trace.append(nodo1.getLexema());
-                    trace.append(" no operable aritmeticamente");
 
-                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), nodo1.getLinea(), nodo1.getColumna()));
+
                     // TODO: ¿Entero largo, real largo, etc?
                     return false;
                 }
@@ -3046,12 +3353,7 @@ public class SlkAction {
                 sem2 = simbNodo2.getTipoBasico();
                 if ((sem2 != TipoSemantico.ENTERO) &&
                         (sem2 != TipoSemantico.REAL)) {
-                    StringBuilder trace = new StringBuilder();
-                    trace.append("Tipo de la variable ");
-                    trace.append(nodo2.getLexema());
-                    trace.append(" no operable aritmeticamente");
 
-                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), nodo2.getLinea(), nodo2.getColumna()));
 
                     // TODO: ¿Entero largo, real largo, etc?
                     return false;
@@ -3085,14 +3387,7 @@ public class SlkAction {
         if (sem1 != null && sem2 != null) {
             // Caso 1: Dos identificadores
             if (sem1 != sem2) {
-                StringBuilder trace = new StringBuilder();
-                trace.append("Tipos de las variables ");
-                trace.append(nodo1.getLexema());
-                trace.append((" y "));
-                trace.append(nodo2.getLexema());
-                trace.append(" no operables aritmeticamente");
 
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico(trace.toString(), nodo1.getLinea(), nodo1.getColumna()));
                 return false;
             }
         } else if (sem1 != null && sem2 == null) {
