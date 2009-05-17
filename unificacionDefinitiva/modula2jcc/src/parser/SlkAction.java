@@ -774,13 +774,13 @@ public class SlkAction {
 
     public void completaSiEsIdentificador(Nodo nodo) {
         if (nodo.getTipoToken().equals(TipoToken.IDENTIFICADOR) == true) {
-            InfoSimbolo infoDimInicial = _tablaActual.busca(nodo.getLexema());
-            nodo.addTipo(infoDimInicial.getTipoBasico());
+            InfoSimbolo infoDimInicial = _tablaActual.busca( nodo.getLexema() );
+            nodo.addTipo( infoDimInicial.getTipoBasico() );
         }
     }
 
     private void TipoFormacion() {
-        System.out.println("TipoFormacion");
+        System.out.println("Toy en TipoFormacion");
 
         ArrayList<Nodo> listaNodos = new ArrayList<Nodo>();
 
@@ -829,6 +829,7 @@ public class SlkAction {
                 Nodo nodoEnumerado = _pilaNodos.pop();
                 nodoNuevo = new Nodo();
                 nodoNuevo.addTipo(TipoSemantico.ARRAY);
+                //TODO: crear un InfoSimboloArray
                 for (int i = 0; i < nodoTipoArray.getTipoSemantico().size(); i++) { //Mejor un add sobrecargado, no?
                     nodoNuevo.addTipo(nodoTipoArray.getTipoSemantico().get(i));
                 }
@@ -1353,6 +1354,7 @@ public class SlkAction {
     }
 
     private void ParteIzquierda_1() {
+        System.out.println("Toy en ParteIzquierda_1");
         //ParteIzquierda:
         //_epsilon_
         //\[ ListaDeExpresiones \] ParteIzquierda _action_ParteIzquierda_1
@@ -1362,7 +1364,20 @@ public class SlkAction {
         //supongo que los [ y los ] no se meten en la pila
         //ListaExpresiones: espero en la pila que haya un único nodo con el tipo de todas las expresiones
         //que debería ser el mismo, para poder comprobarlo con identificador
-        throw new UnsupportedOperationException("Not yet implemented: ParteIzquierda_1");
+
+        //consultar toda la info del array
+        Nodo nodoIdentificadorArray = _pilaNodos.pop();
+
+        //Si la pos es un identificador, consulto la ts
+        //En funcion del numero de dimensiones que tenga...
+        //Comprobar que no accede fuera
+        //Comprobar que el tipo xa acceder es el tipo con el que se declaro uff-creo q ya ta hecho en formacion
+        Nodo nodoPosicionDimension = _pilaNodos.pop();
+
+        //Si lo que asigno es un identificador, consulto la ts
+        //Compruebo que el tipo del array es compatible con el tipo de este valor
+        Nodo nodoValorAsignar = _pilaNodos.pop();
+        
     }
 
     private void ParteIzquierda_2() {

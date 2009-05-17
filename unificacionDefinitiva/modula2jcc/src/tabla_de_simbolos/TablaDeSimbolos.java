@@ -357,6 +357,33 @@ public class TablaDeSimbolos {
             return false; 
     }
 
+    /**
+     * Completa los datos para un array, pasando a estar definido
+     * completamente.
+     * Es necesario que antes se haya declarado el símbolo, para poder
+     * comprobar la unicidad.
+     *
+     * @param lexema el lexema que identifica la variable
+     * @param tipoSemantico el tipo semantico de esta variable
+       @param el valor que contiene
+     * @return si se ha completadoc correctamente
+     */
+    public boolean completaArray(String lexema, int numeroDimensiones,
+            int[] numeroComponentesPorDimension,
+            ArrayList<TipoSemantico> tipoSemantico ) {
+
+        if (_pendientes.contains(lexema)){
+            _pendientes.remove(lexema);
+
+            InfoSimbolo var = new InfoSimboloArray( numeroDimensiones, numeroComponentesPorDimension, tipoSemantico );
+
+            _TS.put(lexema, var);
+
+            return true;
+        }
+        else
+            return false;
+    }
     
     
     /**
