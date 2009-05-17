@@ -2121,7 +2121,7 @@ public class SlkAction {
         }
     }
 
-    /**
+  /**
      * Se completa el tipo semantico de los identificadores y completando el
      * simbolo con el tipo VARIABLE.
      */
@@ -2147,6 +2147,13 @@ public class SlkAction {
                                         id.getLinea(),
                                         id.getColumna()));
                             }
+                             // AYUSO:
+                            //TODO: falta colocar tamaño a las variables
+                            // como hacer: sacar de la tabla de simbolos el tipo,
+                            // con el primero nos vale, creo, y luego se asigna
+                            // un tamaño para cada tipo
+                            _generador.dameNuevaTemp(id.getLexema(), 1);
+
                         } else {
 
                             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
@@ -2159,8 +2166,6 @@ public class SlkAction {
                 _pilaNodos.push(id); // Apilamos de nuevo la marca
 
 
-                //*****FALTA GENERADOR: FALTA PONER EL TAMAÑO Y BUSCAR EL NOMBRE DE LA VARIABLE
-                _generador.dameNuevaTemp(("PRUEBA"), 1);
 
 
             }
@@ -2168,7 +2173,6 @@ public class SlkAction {
             e.printStackTrace();
         }
     }
-
     /**
      * Se completa el tipo semantico del identificador y completando el
      * simbolo con el tipo TIPO.
