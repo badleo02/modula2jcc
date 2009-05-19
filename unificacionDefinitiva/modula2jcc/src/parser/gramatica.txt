@@ -81,8 +81,8 @@ TipoEnumerado:
 \( ListaDeIdentificadores \) _action_TipoEnumerado
 
 RestoDeTipo:
-_epsilon_ // Simple
 \[ ExpresionConstante .. ExpresionConstante \] // Subrango
+_epsilon_ // Simple
 
 TipoConjunto:
 SET OF TipoSimple _action_TipoConjunto
@@ -97,8 +97,8 @@ SecuenciaDeListasDeCampos:
 ListaDeCampos { ; ListaDeCampos }
 
 ListaDeCampos:
-_epsilon_
 ListaDeIdentificadores : EsquemaDeTipo
+_epsilon_
 
 TipoPuntero:
 POINTER TO EsquemaDeTipo _action_TipoPuntero
@@ -116,8 +116,10 @@ _epsilon_
 DeclaracionDeVariables:
 VAR _action_ponerMarcaListaVariables { ListaDeVariables ; } _action_quitarMarcaListaVariables
 
+
 ListaDeVariables:
 ListaDeIdentificadores : EsquemaDeTipo _action_DeclaracionVariables 
+_epsilon_
 
 DeclaracionSubprograma:
 CabeceraSubprograma ; Bloque Identificador ; 
@@ -218,16 +220,16 @@ RETURN [ Expresion _action_ExpresionRETURN ]
 ListaDeValores:
 Valores RestoListaValores 
 
-RestoListaValores:
-_epsilon_ 
+RestoListaValores: 
 , Valores RestoListaValores 
+_epsilon_
 
 Valores:
 ExpresionConstante RestoValores
 
 RestoValores:
-_epsilon_
 .. ExpresionConstante
+_epsilon_
 
 ExpresionConstante:
 ExpresionConstanteSimple [ OperadorComparador ExpresionConstanteSimple _action_operadorBooleano ]
@@ -254,34 +256,33 @@ ListaDeExpresiones:
 Expresion RestoListaDeExpresiones
 
 RestoListaDeExpresiones:
-_epsilon_
 , Expresion RestoListaDeExpresiones
+_epsilon_
 
 Expresion:
 ExpresionSimple RestoExpresion 
 
 RestoExpresion:
-_epsilon_
 OperadorComparador ExpresionSimple _action_operadorBooleano
+_epsilon_
 
 ExpresionSimple:
 Signo Termino RestoExpresionSimple 
 
-RestoExpresionSimple:
-_epsilon_ 
+RestoExpresionSimple: 
 OperadorSumador Termino _action_expresionSinParentesisDeSuma RestoExpresionSimple
+_epsilon_
 
 Signo:
-_epsilon_
 + _action_operadorUnario
 - _action_operadorUnario
+_epsilon_
 
 Termino:
 Factor RestoTermino
 
-RestoTermino:
+RestoTermino:OperadorMultiplicador Factor RestoTermino _action_expresionSinParentesisDeMultiplicacion
 _epsilon_
-OperadorMultiplicador Factor RestoTermino _action_expresionSinParentesisDeMultiplicacion
 
 Factor:
 Identificador RestoFactor
@@ -368,8 +369,8 @@ ListaDeIdentificadores:
 Identificador RestoListaIdentificadores
 
 RestoListaIdentificadores:
-_epsilon_ 
 , Identificador RestoListaIdentificadores
+_epsilon_ 
 
 //----------------------------------------------------------------------------------//
 //		IMPORTACIONES DE PROCEDIMIENTOS Y FUNCIONES PREDEFINIDAS			//

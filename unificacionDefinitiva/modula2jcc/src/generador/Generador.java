@@ -5,14 +5,13 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import gui.Ventana;
 import semantico.Nodo;
 import tabla_de_simbolos.TablaDeSimbolos;
 import tabla_de_simbolos.simbolo.*;
 
 
 
-public class generador {
+public class Generador {
 
 	/**
 	 * Referencia de la interfaz
@@ -47,8 +46,8 @@ public class generador {
 	/**
 	 * Constructor de la clase
 	 */
-	public generador (TablaDeSimbolos arg0) {
-		String fichero = new String("COMPILACION.out");
+	public Generador (TablaDeSimbolos arg0, String fout) {
+		String fichero = new String(fout);
 		codigo = new String();
 		contadorEtiquetas = 0;
 		contadorVariables = new Stack<Integer>();

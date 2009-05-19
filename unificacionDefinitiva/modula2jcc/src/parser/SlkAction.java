@@ -43,25 +43,27 @@ public class SlkAction {
      * ultima accion semantica ejecutada
      */
     private String _ultimaAccion;
-    private generador _generador;
+    private Generador _generador;
 
-    private boolean habilitageneracion=true;
+    private boolean _habilitageneracion=true;
 
     /**
      * Constructor de la clase SlkAction.
      *
      * @param tabla Tabla de simbolos del compilador.
      */
-    public SlkAction(TablaDeSimbolos tablaActual, GestorErrores gestorDeErrores, PilaNodos pilaNodos) {
+    public SlkAction(TablaDeSimbolos tablaActual, 
+                     GestorErrores gestorDeErrores, 
+                     PilaNodos pilaNodos,
+                     Generador g) {
 
         _gestorDeErrores = gestorDeErrores;
         _pilaNodos = pilaNodos;
         _tablaActual = tablaActual;
 
-        if (this.habilitageneracion){
-        _generador = new generador(tablaActual);
+        if (this._habilitageneracion){
+            _generador = g;
         }
-
     }
 
     /**
@@ -356,7 +358,9 @@ public class SlkAction {
                         // Se abre un ambito
                         _tablaActual = _tablaActual.abrirAmbito();
                         _tablaActual.setNombre(id.getLexema());
-
+//
+//                        if(_habilitageneracion)
+//                            _generador.abreAmbito();
                     } else {
                         error = true;
                     }
@@ -389,9 +393,10 @@ public class SlkAction {
 
         //nombrePrograma = ((Atributos) (n).getToken().getAtributo()).obtener("LEXEMA").toString();
 
-        if (this.habilitageneracion){
+        if (this._habilitageneracion){
         _generador.emite("begin:");
-        _generador.emite("CALL /" + "hola");
+        // el modulo le da nombre a la funcion principal
+        _generador.emite("CALL /" + _tablaActual.getNombre()); 
         _generador.emite("HALT");
         _generador.escribeSeccion();
         }
@@ -961,11 +966,8 @@ public class SlkAction {
                Nodo op=new Nodo();
               op.setValor("<");
                operadores2.add(op);
-
                 _generador.generaCodigoComparacion(operadores,operadores2,nuevo);
         
-
-
             } else {
                 nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipo no booleano en la expresion if",
@@ -1134,23 +1136,6 @@ public class SlkAction {
      * END sean el mismo. Ademas cierra el ambito actual.
      */
     private void FinDeModulo() {
-        //esto ya lo ha hecho finDeAmbito; no preguntes por que
-//
-//        Nodo id = _pilaNodos.pop();
-//
-//        if (_tablaActual.getNombre().equals(id.getLexema())) {
-//            _tablaActual = _tablaActual.cerrarAmbito();
-//        } else {
-//
-//            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Simbolo \"" + id.getLexema() + "\" incorrecto, se esperaba \"" + _tablaActual.getNombre() + "\"",
-//                    id.getLinea(),
-//                    id.getColumna()));
-//        }
-
-        if (this.habilitageneracion){
-        _generador.generaCodigoSubprograma("hola", false);
-
-        }
     }
 
     private void IdentificadorFOR() {
@@ -2054,10 +2039,6 @@ public class SlkAction {
                 }
             }
         }
-
-
-
-
     }
 
     /**
@@ -2067,22 +2048,23 @@ public class SlkAction {
     private void finDeAmbito() {
         //TODO: aki hay un problema con el cierre de los modulos, colisionan aki
         // esta ñapa lo protege por ah
+       
+        if (this._habilitageneracion){
+            String nmb = _tablaActual.getNombre();
+            _generador.generaCodigoSubprograma(nmb, false);
+       //     _generador.cierraAmbito();
+        }
+        
         if (!_pilaNodos.isEmpty()) {
             Nodo id = _pilaNodos.pop();
             if (_tablaActual.getNombre().equals(id.getLexema())) {
                 _tablaActual = _tablaActual.cerrarAmbito();
-
-
             } else {
-
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Simbolo \"" + id.getLexema() + "\" incorrecto, se esperaba \"" + _tablaActual.getNombre() + "\"",
                         id.getLinea(),
                         id.getColumna()));
             }
         }
-
-
-
     }
 
     /**
@@ -2231,7 +2213,10 @@ public class SlkAction {
         // abrimos ambito.
         _tablaActual = _tablaActual.abrirAmbito();
         _tablaActual.setNombre(nodo.getLexema());
-
+//
+//        if(_habilitageneracion){
+//            _generador.abreAmbito();
+//        }
     }
 
     /**

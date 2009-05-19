@@ -1,5 +1,6 @@
 package gui;
 
+import generador.Generador;
 import gestor_de_errores.GestorErrores;
 import javax.swing.text.BadLocationException;
 import parser.SlkAction;
@@ -33,6 +34,7 @@ public class Ventana extends JFrame {
     private File _ficheroCargado;
     private VentanaTokens _ventanaTokens;
     private VentanaTablaDeSimbolos _ventanaTablaDeSimbolos;
+    private Generador _gen;
 
     /** 
      * Constructor de la clase Ventana. 
@@ -470,8 +472,14 @@ private void _opcionCompilarActionPerformed(java.awt.event.ActionEvent evt) {//G
             // Creamos la clase que gestiona los errores en Slk
             SlkError error = new SlkError(tokens, log, _gestorDeErrores);
 
+            //crea un generador de código intermedio
+           _gen = new Generador(_tablaDeSimbolos, "COMPILACION.out");
+            
             // crea un gestor de acciones semánticas
-            accionesSemanticas =  new SlkAction(_tablaDeSimbolos, _gestorDeErrores, _pilaNodos);
+            accionesSemanticas =  new SlkAction(_tablaDeSimbolos, 
+                                                _gestorDeErrores, 
+                                                _pilaNodos,
+                                                _gen);
 
             // Analiza la entrada a nivel sintactico
             SlkParser.parse(0,accionesSemanticas, tokens, error, log, (short) 0);
@@ -493,6 +501,7 @@ private void _opcionCompilarActionPerformed(java.awt.event.ActionEvent evt) {//G
             if (accionesSemanticas != null){
                 System.out.println("error, posiblemente en pila, ultima accion ejecutada:");
                 System.out.println("\t"+accionesSemanticas.ultimaAccionSemantica());
+                e.printStackTrace();
             }
             else{
                 if (_txtEditor.getText().length() > 0) {
