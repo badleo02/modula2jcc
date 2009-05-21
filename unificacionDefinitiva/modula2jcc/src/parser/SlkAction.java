@@ -45,7 +45,7 @@ public class SlkAction {
     private String _ultimaAccion;
     private Generador _generador;
 
-    private boolean _habilitageneracion=true;
+    private boolean _habilitageneracion=false;
 
     /**
      * Constructor de la clase SlkAction.
@@ -902,6 +902,14 @@ public class SlkAction {
             }
         }
 
+        if (nodo1.getTipoToken()==TipoToken.CONSTANTE_PREDEFINIDA){
+            if (nodo1.getLexema().equals("TRUE") || nodo1.getLexema().equals("FALSE")){
+                nodo1.addTipo(TipoSemantico.BOOLEANO);
+            } else {
+                nodo1.addTipo(TipoSemantico.ERROR);
+            }
+        }
+
         if (!errIdent) {
             if (nodo1.getTipoBasico().equals(TipoSemantico.BOOLEANO)) {
                 nuevo.addTipo(TipoSemantico.VOID);
@@ -952,21 +960,31 @@ public class SlkAction {
             }
         }
 
+        if (nodo1.getTipoToken()==TipoToken.CONSTANTE_PREDEFINIDA){
+            if (nodo1.getLexema().equals("TRUE") || nodo1.getLexema().equals("FALSE")){
+                nodo1.addTipo(TipoSemantico.BOOLEANO);
+            } else {
+                nodo1.addTipo(TipoSemantico.ERROR);
+            }
+        }
+
         if (!errIdent) {
             if (nodo1.getTipoBasico().equals(TipoSemantico.BOOLEANO)) {
                 nuevo.addTipo(TipoSemantico.VOID);
                 _pilaNodos.push(nuevo);
 
-                //todo ha ido bien, generas la etiqueta, y si el valor es false, emites un salto a la etiqueta. en el if emites la etiqueta.
-                nuevo.setSiguiente(_generador.dameNuevaEtiqueta());
-                //suponiendo que en nuevo está el operador de comparación, se puede llamar al generaCodigoComparacion quietando lo de los CMPs y lo del arrayList.
-               ArrayList<Nodo> operadores = new ArrayList<Nodo>();
-               operadores.add(nuevo);
-               ArrayList<Nodo> operadores2 = new ArrayList<Nodo>();
-               Nodo op=new Nodo();
-              op.setValor("<");
-               operadores2.add(op);
-                _generador.generaCodigoComparacion(operadores,operadores2,nuevo);
+                if (_habilitageneracion){
+                    //todo ha ido bien, generas la etiqueta, y si el valor es false, emites un salto a la etiqueta. en el if emites la etiqueta.
+                    nuevo.setSiguiente(_generador.dameNuevaEtiqueta());
+                    //suponiendo que en nuevo está el operador de comparación, se puede llamar al generaCodigoComparacion quietando lo de los CMPs y lo del arrayList.
+                    ArrayList<Nodo> operadores = new ArrayList<Nodo>();
+                    operadores.add(nuevo);
+                    ArrayList<Nodo> operadores2 = new ArrayList<Nodo>();
+                    Nodo op=new Nodo();
+                    op.setValor("<");
+                    operadores2.add(op);
+                    _generador.generaCodigoComparacion(operadores,operadores2,nuevo);
+                }
         
             } else {
                 nuevo.addTipo(TipoSemantico.ERROR);
@@ -1014,6 +1032,14 @@ public class SlkAction {
                 nuevo.setColumna(nodo1.getColumna());
                 nuevo.setLinea(nodo1.getLinea());
                 _pilaNodos.push(nuevo);
+            }
+        }
+
+        if (nodo1.getTipoToken()==TipoToken.CONSTANTE_PREDEFINIDA){
+            if (nodo1.getLexema().equals("TRUE") || nodo1.getLexema().equals("FALSE")){
+                nodo1.addTipo(TipoSemantico.BOOLEANO);
+            } else {
+                nodo1.addTipo(TipoSemantico.ERROR);
             }
         }
 
@@ -1111,6 +1137,14 @@ public class SlkAction {
                 nuevo.setColumna(nodo1.getColumna());
                 nuevo.setLinea(nodo1.getLinea());
                 _pilaNodos.push(nuevo);
+            }
+        }
+
+        if (nodo1.getTipoToken()==TipoToken.CONSTANTE_PREDEFINIDA){
+            if (nodo1.getLexema().equals("TRUE") || nodo1.getLexema().equals("FALSE")){
+                nodo1.addTipo(TipoSemantico.BOOLEANO);
+            } else {
+                nodo1.addTipo(TipoSemantico.ERROR);
             }
         }
 
@@ -1350,7 +1384,7 @@ public class SlkAction {
         //ListaExpresiones: espero en la pila que haya un único nodo con el tipo de todas las expresiones
         //que debería ser el mismo, para poder comprobarlo con identificador
 
-        //consultar toda la info del array
+        /*//consultar toda la info del array
         Nodo nodoIdentificadorArray = _pilaNodos.pop();
 
         //Si la pos es un identificador, consulto la ts
@@ -1361,7 +1395,69 @@ public class SlkAction {
 
         //Si lo que asigno es un identificador, consulto la ts
         //Compruebo que el tipo del array es compatible con el tipo de este valor
-        Nodo nodoValorAsignar = _pilaNodos.pop();
+        Nodo nodoValorAsignar = _pilaNodos.pop();*/
+
+
+        /* nuevo*/
+        Nodo aux = _pilaNodos.pop();//saco el :=
+        Nodo nodo1 = _pilaNodos.pop(); //saco ListaDeExpresiones
+
+        //aquí habría que hacer comprobaciones de que la ListaDeExpresiones es correcta
+        //se mete un nodo VOID si la parteIzquierda es correcta y ERROR en caso contrario
+        boolean errIdent = false;
+        Nodo nuevo = new Nodo();
+        if (nodo1.getTipoToken() == TipoToken.IDENTIFICADOR) {
+            // buscamos el tipo del identificador en la tabla
+            if (_tablaActual.busca(nodo1.getLexema()) != null) {
+                ArrayList<TipoSemantico> tipo = _tablaActual.busca(nodo1.getLexema()).getTipoSemantico();
+                nodo1.setTipo(tipo);
+            } else {
+                errIdent = true;
+                //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
+                nuevo.addTipo(TipoSemantico.ERROR);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo1.getLexema() + "' no está declarado",
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
+                nuevo.setColumna(nodo1.getColumna());
+                nuevo.setLinea(nodo1.getLinea());
+                _pilaNodos.push(nuevo);
+            }
+        }
+        if (!errIdent){ //entonces o es una ListaDeExpresiones y tiene un tipo booleano o es un ERROR
+            if (nodo1.getTipoBasico().equals(TipoSemantico.ERROR)){
+                //meto un nodo error
+                nuevo.addTipo(TipoSemantico.ERROR);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El indice del array no tiene el tipo correcto",
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
+                nuevo.setColumna(nodo1.getColumna());
+                nuevo.setLinea(nodo1.getLinea());
+                _pilaNodos.push(nuevo);
+            } else { 
+                //comprobamos que el tipo de ListaDeExpresiones (nodo1) es o CARDINAL, ENTERO o ENUMERADO, si no, es un error
+                if (nodo1.getTipoBasico().equals(TipoSemantico.CARDINAL) || nodo1.getTipoBasico().equals(TipoSemantico.ENTERO)
+                        || nodo1.getTipoBasico().equals(TipoSemantico.ENUMERADO)) {
+                    nuevo.addTipo(TipoSemantico.VOID);
+                    _pilaNodos.push(nuevo);
+                } else {
+                    //ERROR
+                    nuevo.addTipo(TipoSemantico.ERROR);
+                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El indice del array no tiene el tipo correcto",
+                        nodo1.getLinea(),
+                        nodo1.getColumna()));
+                    nuevo.setColumna(nodo1.getColumna());
+                    nuevo.setLinea(nodo1.getLinea());
+                    _pilaNodos.push(nuevo);
+                }
+                
+            }
+        }
+
+
+
+        _pilaNodos.push(aux);//se vuelve a meter el :=
+        /*fin nuevo*/
+
         
     }
 
@@ -1539,6 +1635,14 @@ public class SlkAction {
             }
         }
 
+        if (nodo1.getTipoToken()==TipoToken.CONSTANTE_PREDEFINIDA){
+            if (nodo1.getLexema().equals("TRUE") || nodo1.getLexema().equals("FALSE")){
+                nodo1.addTipo(TipoSemantico.BOOLEANO);
+            } else {
+                nodo1.addTipo(TipoSemantico.ERROR);
+            }
+        }
+
         if (!errIdent) {
 
             if (nodo2.getTipoToken() != null) { //es Identificador pq los VOID lo tienen a null
@@ -1595,7 +1699,7 @@ public class SlkAction {
                     tipo = _tablaActual.busca(nodo3.getLexema()).getTipoSemantico();
                     if (!nodo1.getTipoBasico().equals(TipoSemantico.ERROR) &&
                             /*!nodo3.getTipoBasico().equals(TipoSemantico.ERROR) && */
-                            nodo1.getTipoSemantico().equals(tipo)) { //esto da error pq no se guarda bien el tipo semantico
+                            nodo1.getTipoSemantico().get(nodo1.getTipoSemantico().size()-1).equals(tipo.get(tipo.size()-1))) { //esto da error pq no se guarda bien el tipo semantico
                         nuevo.addTipo(TipoSemantico.VOID);
                         _pilaNodos.push(nuevo);
                     } else {
@@ -2129,12 +2233,15 @@ public class SlkAction {
                                         id.getLinea(),
                                         id.getColumna()));
                             }
-                             // AYUSO:
-                            //TODO: falta colocar tamaño a las variables
-                            // como hacer: sacar de la tabla de simbolos el tipo,
-                            // con el primero nos vale, creo, y luego se asigna
-                            // un tamaño para cada tipo
-                            _generador.dameNuevaTemp(id.getLexema(), 1);
+
+                            if (_habilitageneracion){
+                                // AYUSO:
+                                //TODO: falta colocar tamaño a las variables
+                                // como hacer: sacar de la tabla de simbolos el tipo,
+                                // con el primero nos vale, creo, y luego se asigna
+                                // un tamaño para cada tipo
+                                _generador.dameNuevaTemp(id.getLexema(), 1);
+                            }
 
                         } else {
 
