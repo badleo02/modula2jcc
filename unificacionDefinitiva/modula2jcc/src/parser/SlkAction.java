@@ -777,6 +777,15 @@ public class SlkAction {
         _pilaNodos.push(nuevoNodo);
     }
 
+    //TODO: donde leches guardan el valor de los identificadores?? no esta en infoSimbolo o infoSimboloVar q es dnd deberia
+    /*public String completaSiEsIdentificador(Nodo nodo) {
+        if (nodo.getTipoToken().equals(TipoToken.IDENTIFICADOR) == true) {
+            InfoSimbolo infoDimInicial = _tablaActual.busca( nodo.getLexema() );
+            nodo.addTipo( infoDimInicial.getTipoBasico() );
+            return ;
+        }else
+            return ;
+    }*/
     public void completaSiEsIdentificador(Nodo nodo) {
         if (nodo.getTipoToken().equals(TipoToken.IDENTIFICADOR) == true) {
             InfoSimbolo infoDimInicial = _tablaActual.busca( nodo.getLexema() );
@@ -789,8 +798,14 @@ public class SlkAction {
 
         ArrayList<Nodo> listaNodos = new ArrayList<Nodo>();
         int numeroDimensiones = 0;
+        String valorFinal, valorInicial;
+        ArrayList<String> infoRango;
+        ArrayList<ArrayList<String>> rango; //rango.get( 0 ) -> dimension ;  rango.get(0).get(0) -> tipoDimension/es
+                                                               //rango.get(0).get(1) -> DimensionFinal
+                                                               //rango.get(0).get(2) -> DimensionInicial
 
         Nodo nodoNuevo = new Nodo();
+        rango = new ArrayList<ArrayList<String>>();
         while (_pilaNodos.size() > 3) { //Para cuando hay listas de arrays... marca+id+tipo , no mola
             numeroDimensiones++;
             //Desapilo el tipo del array
@@ -801,10 +816,15 @@ public class SlkAction {
                 Nodo nodoDimensionFinal = _pilaNodos.pop();
                 completaSiEsIdentificador(nodoDimensionFinal);
 
+                //TODO: arreglar cuando sepa dnd guardan el valor/atributos de los identifi
+                //Si son valores directos, el lexema tiene el valor, si es id no, ver dnd lo guardan
+                valorFinal = nodoDimensionFinal.getLexema();
+
                 //Desapilo la dimension inicial del rango
                 Nodo nodoDimensionInicial = _pilaNodos.pop();
                 //Si es un id, saco de la TS su tipoSem
                 completaSiEsIdentificador(nodoDimensionInicial);
+                valorInicial = nodoDimensionInicial.getLexema();
 
                 //Desapilo la marca
                 //Nodo nodoMarca = _pilaNodos.pop();
@@ -816,12 +836,18 @@ public class SlkAction {
                 //Sino son compatibles, debo generar un nodo error y meterlo en pila
                 //Cuando meto el nodo error, despues de meter el que? o antes de que?
                 if (nodoDimensionInicial.getTipoBasico().equals(nodoDimensionFinal.getTipoBasico()) == true) {
+                    infoRango = new ArrayList<String>();
+                    infoRango.add( nodoDimensionInicial.getTipoBasico().toString() );
+                    infoRango.add( valorFinal );
+                    infoRango.add( valorInicial );
+                    rango.add( infoRango );
                     nodoNuevo = new Nodo();
                     nodoNuevo.addTipo(TipoSemantico.ARRAY);
                     //nodoNuevo.addTipo( nodoTipoArray.getTipoBasico() ); //indica el tipo de datos del array
                     for (int i = 0; i < nodoTipoArray.getTipoSemantico().size(); i++) { //Mejor un add sobrecargado, no?
                         nodoNuevo.addTipo(nodoTipoArray.getTipoSemantico().get(i));
                     }
+
                 //_pilaNodos.push(nodoNuevo);
                 } else {
                     nodoNuevo = new Nodo();
@@ -845,22 +871,25 @@ public class SlkAction {
             }
         //Apilo los el nodos generados
         }
-        Nodo nodoTipoArray = _pilaNodos.pop();
-        Nodo nodoIdentificadorArray = _pilaNodos.pop();      //Problema al estar en la declaracion de VAR, no lo han tenido en cuenta
-        InfoSimbolo infoNodoDesapilado = new InfoSimboloArray( numeroDimensiones, nodoTipoArray.getTipoSemantico() );
-        //TODO: buscar para comprobar su unicidad!!! Si existe genero el error y lo meto en la pila
-        if( _tablaActual.busca( nodoIdentificadorArray.getLexema() ) == null ){
-            _tablaActual.getTS().put( nodoIdentificadorArray.getLexema(), infoNodoDesapilado);
-            //_tablaActual.completaArray( nodoIdentificadorArray.getLexema(), numeroDimensiones, nodoTipoArray.getTipoSemantico());
-            _pilaNodos.push( nodoIdentificadorArray );
-            _pilaNodos.push( nodoTipoArray ); //es el nodo nuevo, q seria error si el id esta en ya en la TS
-        }else{ //Si ya existe el identificador para arrays...
-            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + nodoIdentificadorArray.getLexema() + "\" ya esta definido (VAR-ARRAY).",
-                                        nodoIdentificadorArray.getLinea(),
-                                        nodoIdentificadorArray.getColumna()));
-            nodoNuevo = new Nodo();
-            nodoNuevo.addTipo(TipoSemantico.ERROR);
-            _pilaNodos.push( nodoNuevo );
+        //TODO: debo meter el tipo de cada una de las posibles dimensiones y el rango en el que estan los indices
+        if (numeroDimensiones > 0) {
+            Nodo nodoTipoArray = _pilaNodos.pop();
+            Nodo nodoIdentificadorArray = _pilaNodos.pop();      //Problema al estar en la declaracion de VAR, no lo han tenido en cuenta
+            InfoSimbolo infoNodoDesapilado = new InfoSimboloArray(numeroDimensiones, rango, nodoTipoArray.getTipoSemantico());
+            //TODO: buscar para comprobar su unicidad!!! Si existe genero el error y lo meto en la pila
+            if (_tablaActual.busca(nodoIdentificadorArray.getLexema()) == null) {
+                _tablaActual.getTS().put(nodoIdentificadorArray.getLexema(), infoNodoDesapilado);
+                //_tablaActual.completaArray( nodoIdentificadorArray.getLexema(), numeroDimensiones, nodoTipoArray.getTipoSemantico());
+                _pilaNodos.push(nodoIdentificadorArray);
+                _pilaNodos.push(nodoTipoArray); //es el nodo nuevo, q seria error si el id esta en ya en la TS
+            } else { //Si ya existe el identificador para arrays...
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + nodoIdentificadorArray.getLexema() + "\" ya esta definido (VAR-ARRAY).",
+                        nodoIdentificadorArray.getLinea(),
+                        nodoIdentificadorArray.getColumna()));
+                nodoNuevo = new Nodo();
+                nodoNuevo.addTipo(TipoSemantico.ERROR);
+                _pilaNodos.push(nodoNuevo);
+            }
         }
         //Ahora para saber cuantas dim tiene el array se me ocurre contar cuantos ARRAY hay en tipoSemantico, 
         //forma cutre->> Ya noooo!!!

@@ -21,6 +21,8 @@ public class InfoSimboloArray extends InfoSimbolo{
      */
     private int[] _numeroComponentesPorDimension;
 
+    private ArrayList<ArrayList<String>> _rango;
+
     /**
      * Constructor por defecto de la clase InfoSimboloArray.
      */
@@ -29,6 +31,13 @@ public class InfoSimboloArray extends InfoSimbolo{
         super._tipoSemantico = tipoSemantico;
         _numeroDimensiones = numeroDimensiones;
         _numeroComponentesPorDimension = new int[0];
+    }
+
+    public InfoSimboloArray( int numeroDimensiones, ArrayList<ArrayList<String>> rango, ArrayList<TipoSemantico> tipoSemantico) {
+
+        super._tipoSemantico = tipoSemantico;
+        _numeroDimensiones = numeroDimensiones;
+        _rango = rango;
     }
         
     /**
@@ -60,6 +69,11 @@ public class InfoSimboloArray extends InfoSimbolo{
         return _numeroComponentesPorDimension;
     }
 
+    public ArrayList<ArrayList<String>> getRangos() {
+
+        return _rango;
+    }
+
     /**
      * Devuelve el numero de componentes de cierta dimension del array.
      *
@@ -76,23 +90,15 @@ public class InfoSimboloArray extends InfoSimbolo{
      */
     @Override
     public String toString() {
-      
-        /*String cadena = "NumeroDimensiones: "+getNumeroDimensiones()+"\n";
-        for( int i = 0;  i < getNumeroDimensiones();  i++ )
-          cadena += "Dimension: " +i+" -> "+getNumeroComponentesDimension( i )+"componentes\n"*/
         String cadena = "";
-        if( getNumeroDimensiones() == getNumeroComponentesPorDimension().length ){
-            cadena = "\tARRAY:" + _tipoSemantico;
-            cadena += "\tnDim: "+getNumeroDimensiones()+"; [ ";
-            for( int i = 0;  i < getNumeroDimensiones();  i++ )
-              cadena += getNumeroComponentesDimension( i )+", ";
-            cadena += " ]"+cadena;
-        }else{
-            cadena = "\tARRAY:" + _tipoSemantico;
-            cadena += "\tnDim: "+getNumeroDimensiones();
-        }
+        cadena = "\tARRAY:" + _tipoSemantico;
+        cadena += "\tnDim: " + getNumeroDimensiones() + "\n";
 
-        return cadena+"\n";
+        for (int i = getNumeroDimensiones()-1; i >= 0 ; i--) {
+            cadena += "\ttipoDim: [" + _rango.get( i ).get( 0 ) + "]\t";
+            cadena += "Inicio: "+_rango.get( i ).get( 2 )+", Final: "+_rango.get( i ).get( 1 )+"\n";
+        }
+        return cadena;
     }
 
     /**
