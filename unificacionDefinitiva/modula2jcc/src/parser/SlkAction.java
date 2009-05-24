@@ -45,7 +45,7 @@ public class SlkAction {
     private String _ultimaAccion;
     private Generador _generador;
 
-    private boolean _habilitageneracion=false;
+    private boolean _habilitageneracion=true;
 
     /**
      * Constructor de la clase SlkAction.
@@ -890,10 +890,10 @@ public class SlkAction {
                 nodoNuevo.addTipo(TipoSemantico.ERROR);
                 _pilaNodos.push(nodoNuevo);
             }
-        }
-        //Ahora para saber cuantas dim tiene el array se me ocurre contar cuantos ARRAY hay en tipoSemantico, 
-        //forma cutre->> Ya noooo!!!
 
+            if (_habilitageneracion){
+            }
+        }
     }
 
     private void TipoFormal() {
@@ -1447,69 +1447,106 @@ public class SlkAction {
         //Si lo que asigno es un identificador, consulto la ts
         //Compruebo que el tipo del array es compatible con el tipo de este valor
         Nodo nodoValorAsignar = _pilaNodos.pop();*/
-
-
+        
         /* nuevo*/
         Nodo aux = _pilaNodos.pop();//saco el :=
-        Nodo nodo1 = _pilaNodos.pop(); //saco ListaDeExpresiones
+        //Nodo nodo1 = _pilaNodos.pop(); //saco ListaDeExpresiones
 
-        //aquí habría que hacer comprobaciones de que la ListaDeExpresiones es correcta
-        //se mete un nodo VOID si la parteIzquierda es correcta y ERROR en caso contrario
-        boolean errIdent = false;
-        Nodo nuevo = new Nodo();
-        if (nodo1.getTipoToken() == TipoToken.IDENTIFICADOR) {
-            // buscamos el tipo del identificador en la tabla
-            if (_tablaActual.busca(nodo1.getLexema()) != null) {
-                ArrayList<TipoSemantico> tipo = _tablaActual.busca(nodo1.getLexema()).getTipoSemantico();
-                nodo1.setTipo(tipo);
-            } else {
-                errIdent = true;
-                //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
-                nuevo.addTipo(TipoSemantico.ERROR);
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo1.getLexema() + "' no está declarado",
-                        nodo1.getLinea(),
-                        nodo1.getColumna()));
-                nuevo.setColumna(nodo1.getColumna());
-                nuevo.setLinea(nodo1.getLinea());
-                _pilaNodos.push(nuevo);
-            }
+        //Saco todas las dimensiones hasta llegar al identificador del array
+        ArrayList<Nodo> listaExpresiones = new ArrayList<Nodo>();
+        while (_pilaNodos.size() > 1) {
+            listaExpresiones.add(_pilaNodos.pop());
         }
-        if (!errIdent){ //entonces o es una ListaDeExpresiones y tiene un tipo booleano o es un ERROR
-            if (nodo1.getTipoBasico().equals(TipoSemantico.ERROR)){
-                //meto un nodo error
-                nuevo.addTipo(TipoSemantico.ERROR);
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El indice del array no tiene el tipo correcto",
-                        nodo1.getLinea(),
-                        nodo1.getColumna()));
-                nuevo.setColumna(nodo1.getColumna());
-                nuevo.setLinea(nodo1.getLinea());
-                _pilaNodos.push(nuevo);
-            } else { 
-                //comprobamos que el tipo de ListaDeExpresiones (nodo1) es o CARDINAL, ENTERO o ENUMERADO, si no, es un error
-                if (nodo1.getTipoBasico().equals(TipoSemantico.CARDINAL) || nodo1.getTipoBasico().equals(TipoSemantico.ENTERO)
-                        || nodo1.getTipoBasico().equals(TipoSemantico.ENUMERADO)) {
-                    nuevo.addTipo(TipoSemantico.VOID);
-                    _pilaNodos.push(nuevo);
-                } else {
-                    //ERROR
-                    nuevo.addTipo(TipoSemantico.ERROR);
-                    _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El indice del array no tiene el tipo correcto",
-                        nodo1.getLinea(),
-                        nodo1.getColumna()));
-                    nuevo.setColumna(nodo1.getColumna());
-                    nuevo.setLinea(nodo1.getLinea());
-                    _pilaNodos.push(nuevo);
+
+        Nodo nodoIdentificador = _pilaNodos.peek();
+        InfoSimbolo infoIdentificador = _tablaActual.busca(nodoIdentificador.getLexema());
+        //TODO: Comprobar ademas que se trata realmente de un ARRAY -> Podria para no tener que comprobar mas, pero lo obvio
+        //Aunque el que no sea array llega hasta sentencia asignacion-> No puedo obviarlo, sino es el adecuado al hacer el cast muere
+        if (infoIdentificador.getTipoSimbolo().equals(TipoSimbolo.ARRAY)) {
+            InfoSimboloArray infoIdentificadorArray = (InfoSimboloArray) infoIdentificador;
+
+            if (listaExpresiones.size() == infoIdentificadorArray.getNumeroDimensiones()) {
+
+                //if( listaExpresiones.size() != infoIdentificadorArray.getNumeroDimensiones() )
+                //aquí habría que hacer comprobaciones de que la ListaDeExpresiones es correcta
+                //se mete un nodo VOID si la parteIzquierda es correcta y ERROR en caso contrario
+                Nodo nodo1;
+                Nodo nuevo = new Nodo();
+                //nuevo.addTipo(TipoSemantico.VOID); //Para la cond inicial del for, luego nodo se vuelve a instanciar
+                for (int i = 0; i < listaExpresiones.size() && ( nuevo.getTipoSemantico().size() == 0 || !nuevo.getTipoBasico().equals(TipoSemantico.ERROR)); i++) {
+                    nodo1 = listaExpresiones.get(i);
+                    boolean errIdent = false;
+                    nuevo = new Nodo();
+                    if (nodo1.getTipoToken() == TipoToken.IDENTIFICADOR) {
+                        // buscamos el tipo del identificador en la tabla
+                        if (_tablaActual.busca(nodo1.getLexema()) != null) {
+                            ArrayList<TipoSemantico> tipo = _tablaActual.busca(nodo1.getLexema()).getTipoSemantico();
+                            nodo1.setTipo(tipo);
+                        } else {
+                            errIdent = true;
+                            //ERROR, el IDENTIFICADOR no esta en la tabla de simbolos
+                            nuevo.addTipo(TipoSemantico.ERROR);
+                            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador '" + nodo1.getLexema() + "' no está declarado",
+                                    nodo1.getLinea(),
+                                    nodo1.getColumna()));
+                            nuevo.setColumna(nodo1.getColumna());
+                            nuevo.setLinea(nodo1.getLinea());
+                            _pilaNodos.push(nuevo);
+                        }
+                    }
+                    if (!errIdent) { //entonces o es una ListaDeExpresiones y tiene un tipo booleano o es un ERROR
+                        if (nodo1.getTipoBasico().equals(TipoSemantico.ERROR)) {
+                            //meto un nodo error
+                            nuevo.addTipo(TipoSemantico.ERROR);
+                            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El indice del array no tiene el tipo correcto",
+                                    nodo1.getLinea(),
+                                    nodo1.getColumna()));
+                            nuevo.setColumna(nodo1.getColumna());
+                            nuevo.setLinea(nodo1.getLinea());
+                            _pilaNodos.push(nuevo);
+                        } else {
+                            //MAL, TODO: el tipo de cada nodo debe ser el tipo que se indica en su rango correspondiente
+                            //comprobamos que el tipo de ListaDeExpresiones (nodo1) es o CARDINAL, ENTERO o ENUMERADO, si no, es un error
+                            if (nodo1.getTipoBasico().equals(TipoSemantico.CARDINAL) || nodo1.getTipoBasico().equals(TipoSemantico.ENTERO) || nodo1.getTipoBasico().equals(TipoSemantico.ENUMERADO)) {
+                                if (i == listaExpresiones.size() - 1) {
+                                    nuevo.addTipo(TipoSemantico.VOID);
+                                    _pilaNodos.push(nuevo);
+                                }
+                            } else {
+                                //ERROR
+                                nuevo.addTipo(TipoSemantico.ERROR);
+                                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El indice del array no tiene el tipo correcto",
+                                        nodo1.getLinea(),
+                                        nodo1.getColumna()));
+                                nuevo.setColumna(nodo1.getColumna());
+                                nuevo.setLinea(nodo1.getLinea());
+                                _pilaNodos.push(nuevo);
+                            }
+                        }
+                    }
                 }
-                
+            }else {
+                Nodo nuevo = new Nodo();
+                nuevo.addTipo(TipoSemantico.ERROR);
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Fallo al precisar las dimensiones del ARRAY.",
+                        nodoIdentificador.getLinea(),
+                        nodoIdentificador.getColumna()));
+                nuevo.setColumna(nodoIdentificador.getColumna());
+                nuevo.setLinea(nodoIdentificador.getLinea());
+                _pilaNodos.push(nuevo);
             }
+        } else {
+            Nodo nuevo = new Nodo();
+            nuevo.addTipo(TipoSemantico.ERROR);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador <"+nodoIdentificador.getLexema()+"> no es un tipo ARRAY.",
+                    nodoIdentificador.getLinea(),
+                    nodoIdentificador.getColumna()));
+            nuevo.setColumna(nodoIdentificador.getColumna());
+            nuevo.setLinea(nodoIdentificador.getLinea());
+            _pilaNodos.push(nuevo);
         }
-
-
-
         _pilaNodos.push(aux);//se vuelve a meter el :=
-        /*fin nuevo*/
-
-        
+        /*fin nuevo*/        
     }
 
     private void ParteIzquierda_2() {
