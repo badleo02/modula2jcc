@@ -24,12 +24,11 @@ public class InfoSimboloArray extends InfoSimbolo{
     /**
      * Constructor por defecto de la clase InfoSimboloArray.
      */
-    public InfoSimboloArray( int numeroDimensiones, int[] numeroComponentesPorDimension,
-            ArrayList<TipoSemantico> tipoSemantico) {
+    public InfoSimboloArray( int numeroDimensiones, ArrayList<TipoSemantico> tipoSemantico) {
         
         super._tipoSemantico = tipoSemantico;
         _numeroDimensiones = numeroDimensiones;
-        _numeroComponentesPorDimension = numeroComponentesPorDimension;
+        _numeroComponentesPorDimension = new int[0];
     }
         
     /**
@@ -39,6 +38,16 @@ public class InfoSimboloArray extends InfoSimbolo{
      */
     public int getNumeroDimensiones(){
         return _numeroDimensiones;
+    }
+
+    /**
+     * Establece el numero de componentes por cada dimension del array.
+     *
+     * @param numeroComponentesPorDimension array de enteros.
+     */
+    public void setNumeroComponentesPorDimension( int[] numeroComponentesPorDimension ) {
+
+        _numeroComponentesPorDimension = numeroComponentesPorDimension;
     }
 
     /**
@@ -68,9 +77,22 @@ public class InfoSimboloArray extends InfoSimbolo{
     @Override
     public String toString() {
       
-        String cadena = "";       
+        /*String cadena = "NumeroDimensiones: "+getNumeroDimensiones()+"\n";
+        for( int i = 0;  i < getNumeroDimensiones();  i++ )
+          cadena += "Dimension: " +i+" -> "+getNumeroComponentesDimension( i )+"componentes\n"*/
+        String cadena = "";
+        if( getNumeroDimensiones() == getNumeroComponentesPorDimension().length ){
+            cadena = "\tARRAY:" + _tipoSemantico;
+            cadena += "\tnDim: "+getNumeroDimensiones()+"; [ ";
+            for( int i = 0;  i < getNumeroDimensiones();  i++ )
+              cadena += getNumeroComponentesDimension( i )+", ";
+            cadena += " ]"+cadena;
+        }else{
+            cadena = "\tARRAY:" + _tipoSemantico;
+            cadena += "\tnDim: "+getNumeroDimensiones();
+        }
 
-        return cadena;
+        return cadena+"\n";
     }
 
     /**

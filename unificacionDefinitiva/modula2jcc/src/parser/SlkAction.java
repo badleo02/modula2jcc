@@ -372,7 +372,7 @@ public class SlkAction {
             }
             if (error) {
                 _gestorDeErrores.insertaErrorSemantico(
-                        new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
+                        new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido (MOD).",
                         id.getLinea(),
                         id.getColumna()));
 
@@ -788,9 +788,11 @@ public class SlkAction {
         System.out.println("Toy en TipoFormacion");
 
         ArrayList<Nodo> listaNodos = new ArrayList<Nodo>();
+        int numeroDimensiones = 0;
 
-        Nodo nodoNuevo;
+        Nodo nodoNuevo = new Nodo();
         while (_pilaNodos.size() > 3) { //Para cuando hay listas de arrays... marca+id+tipo , no mola
+            numeroDimensiones++;
             //Desapilo el tipo del array
             Nodo nodoTipoArray = _pilaNodos.pop();
 
@@ -808,6 +810,7 @@ public class SlkAction {
                 //Nodo nodoMarca = _pilaNodos.pop();
 
                 //Supuestamente las comprobaciones de si hay espacio en el rango se hacen en codigo intermedio
+                //Si xq si son identificadores o expresiones no sabre su valor hasta q se ejecute el programa
 
                 //getTipoSemanticoInicial getTipoSemanticoFinal -comprobarCompatibilidad, comparaTipos, ...
                 //Sino son compatibles, debo generar un nodo error y meterlo en pila
@@ -842,6 +845,25 @@ public class SlkAction {
             }
         //Apilo los el nodos generados
         }
+        Nodo nodoTipoArray = _pilaNodos.pop();
+        Nodo nodoIdentificadorArray = _pilaNodos.pop();      //Problema al estar en la declaracion de VAR, no lo han tenido en cuenta
+        InfoSimbolo infoNodoDesapilado = new InfoSimboloArray( numeroDimensiones, nodoTipoArray.getTipoSemantico() );
+        //TODO: buscar para comprobar su unicidad!!! Si existe genero el error y lo meto en la pila
+        if( _tablaActual.busca( nodoIdentificadorArray.getLexema() ) == null ){
+            _tablaActual.getTS().put( nodoIdentificadorArray.getLexema(), infoNodoDesapilado);
+            //_tablaActual.completaArray( nodoIdentificadorArray.getLexema(), numeroDimensiones, nodoTipoArray.getTipoSemantico());
+            _pilaNodos.push( nodoIdentificadorArray );
+            _pilaNodos.push( nodoTipoArray ); //es el nodo nuevo, q seria error si el id esta en ya en la TS
+        }else{ //Si ya existe el identificador para arrays...
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + nodoIdentificadorArray.getLexema() + "\" ya esta definido (VAR-ARRAY).",
+                                        nodoIdentificadorArray.getLinea(),
+                                        nodoIdentificadorArray.getColumna()));
+            nodoNuevo = new Nodo();
+            nodoNuevo.addTipo(TipoSemantico.ERROR);
+            _pilaNodos.push( nodoNuevo );
+        }
+        //Ahora para saber cuantas dim tiene el array se me ocurre contar cuantos ARRAY hay en tipoSemantico, 
+        //forma cutre->> Ya noooo!!!
 
     }
 
@@ -2198,7 +2220,7 @@ public class SlkAction {
             }
             if (error) {
                 _gestorDeErrores.insertaErrorSemantico(
-                        new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
+                        new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido (CONST).",
                         id.getLinea(),
                         id.getColumna()));
             }
@@ -2216,20 +2238,14 @@ public class SlkAction {
         try {
 
             Nodo tipo = _pilaNodos.pop();
-
             if (!tipo.esError()) {
-
                 Nodo id = null;
-
                 do {
                     id = _pilaNodos.pop();
-
                     if (!id.esMarcaListaIdentificadores()) {
-
-                        if (_tablaActual.declaraSimbolo(id.getLexema())) {
-
-                            if (!_tablaActual.completaVariable(id.getLexema(), tipo.getTipoSemantico())) {
-                                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
+                        if (_tablaActual.declaraSimbolo(id.getLexema()) ) {
+                            if ( !_tablaActual.completaVariable(id.getLexema(), tipo.getTipoSemantico()) ) {
+                                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido (VAR1).",
                                         id.getLinea(),
                                         id.getColumna()));
                             }
@@ -2243,9 +2259,10 @@ public class SlkAction {
                                 _generador.dameNuevaTemp(id.getLexema(), 1);
                             }
 
-                        } else {
+                        } else
+                            if( !tipo.getTipoBasico().equals( TipoSemantico.ARRAY ) ){
 
-                            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
+                            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido (VAR2).",
                                     id.getLinea(),
                                     id.getColumna()));
                         }
@@ -2290,7 +2307,7 @@ public class SlkAction {
             }
 
             if (error) {
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido.",
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El simbolo \"" + id.getLexema() + "\" ya esta definido (TYPE).",
                         id.getLinea(),
                         id.getColumna()));
             }
@@ -2401,7 +2418,7 @@ public class SlkAction {
 
             // comprueba la unicidad a nivel de cabecera
             if (nombres.contains(nodo.getLexema())) {
-                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("el parametro \"" + nodo.getLexema() + "\"ya esta definido" +
+                _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("el parametro \"" + nodo.getLexema() + "\"ya esta definido (PROC)" +
                         nodo.getLexema(),
                         nodo.getLinea(),
                         nodo.getColumna()));

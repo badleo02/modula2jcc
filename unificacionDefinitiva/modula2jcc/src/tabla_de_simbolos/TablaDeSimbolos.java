@@ -368,14 +368,12 @@ public class TablaDeSimbolos {
        @param el valor que contiene
      * @return si se ha completadoc correctamente
      */
-    public boolean completaArray(String lexema, int numeroDimensiones,
-            int[] numeroComponentesPorDimension,
-            ArrayList<TipoSemantico> tipoSemantico ) {
+    public boolean completaArray(String lexema, int numeroDimensiones, ArrayList<TipoSemantico> tipoSemantico ) {
 
         if (_pendientes.contains(lexema)){
             _pendientes.remove(lexema);
 
-            InfoSimbolo var = new InfoSimboloArray( numeroDimensiones, numeroComponentesPorDimension, tipoSemantico );
+            InfoSimbolo var = new InfoSimboloArray( numeroDimensiones, tipoSemantico );
 
             _TS.put(lexema, var);
 
