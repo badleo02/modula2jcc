@@ -768,6 +768,11 @@ public class SlkAction {
                 //infoNodoDesapilado.getTipoSemantico().add( TipoSemantico.ENUMERADO );
                 //Lo que no se es como se distinguen estos elementos del identifacor del enumerado
                 _tablaActual.getTS().put(nodoDesapilado.getLexema(), infoNodoDesapilado);
+                if (_habilitageneracion){
+                    //TODO: considerar el tamaño de los elementos del enumerado como CARDINALES
+                    //TODO: competar con lugar/pos , desplazamiento, etc
+                    _generador.dameNuevaTemp( nodoDesapilado.getLexema(), 4);
+                }
             }
         }
         Nodo nuevoNodo = new Nodo();
@@ -778,7 +783,7 @@ public class SlkAction {
             nuevoNodo.addTipo(TipoSemantico.ERROR);
         }
 
-        _pilaNodos.push(nuevoNodo);
+        _pilaNodos.push(nuevoNodo);        
     }
 
     //TODO: donde leches guardan el valor de los identificadores?? no esta en infoSimbolo o infoSimboloVar q es dnd deberia
@@ -876,9 +881,11 @@ public class SlkAction {
         //Apilo los el nodos generados
         }
         //TODO: debo meter el tipo de cada una de las posibles dimensiones y el rango en el que estan los indices
+        Nodo nodoTipoArray;
+        Nodo nodoIdentificadorArray;
         if (numeroDimensiones > 0) {
-            Nodo nodoTipoArray = _pilaNodos.pop();
-            Nodo nodoIdentificadorArray = _pilaNodos.pop();      //Problema al estar en la declaracion de VAR, no lo han tenido en cuenta
+            nodoTipoArray = _pilaNodos.pop();
+            nodoIdentificadorArray = _pilaNodos.pop();      //Problema al estar en la declaracion de VAR, no lo han tenido en cuenta
             InfoSimbolo infoNodoDesapilado = new InfoSimboloArray(numeroDimensiones, rango, nodoTipoArray.getTipoSemantico());
             //TODO: buscar para comprobar su unicidad!!! Si existe genero el error y lo meto en la pila
             if (_tablaActual.busca(nodoIdentificadorArray.getLexema()) == null) {
@@ -896,6 +903,22 @@ public class SlkAction {
             }
 
             if (_habilitageneracion){
+                //Tantas nuevas temp como el producto de las dimensiones que tenemos
+                //Todo ellas del tamaño que tenga el tipo final
+                String tipoComponentes = rango.get( 0 ).get( 0 ); //TODO: de aqui sacar el tamaño, buscarlo en algun sitio
+                int nFinal = Integer.parseInt( rango.get( 0 ).get( 1 ) );
+                int nInicio = Integer.parseInt( rango.get( 0 ).get( 2 ) );
+
+                int totalComponentes =  nFinal - nInicio + 1;
+                for( int i = 1; i < numeroDimensiones;  i++ ){
+                    nFinal = Integer.parseInt( rango.get( i ).get( 1 ) );
+                    nInicio = Integer.parseInt( rango.get( i ).get(2) );
+                    totalComponentes *= nFinal - nInicio + 1;
+                }
+                //el array debe saber donde empieza
+                for( int i = 0;  i < totalComponentes;  i++ ) //4 por que si, supongo q es un INTEGER
+                    _generador.dameNuevaTemp( nodoIdentificadorArray.getLexema(), 4);
+
             }
         }
     }

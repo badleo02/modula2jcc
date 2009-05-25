@@ -15,10 +15,63 @@ import semantico.TipoSemantico;
  */
 public abstract class InfoSimbolo {
 
+    //contiene la pos o dire relativa en mem (desplazamiento con respecto a la base, programa o sub prgrama)
+    private String _lugarPosicion;
+
+    //Variable desplazamiento que apunta a la siguiente pos libre (relativa a la base)
+    //tal vez no todos los info los necesiten, puede que mudarlo
+    private String _desplazamiento;
+
+    //acnho estimado del tipo semantico, el factor de escala
+    private String _ancho;
+
+    private int _tamanio;
+
     /**
      * Array de tipos semanticos del simbolo para simbolos compuestos.
      */
     protected ArrayList<TipoSemantico> _tipoSemantico;
+
+    public void setLugarPosicion(String lugarPosicion) {
+        _lugarPosicion = lugarPosicion;
+    }
+    /**
+     * cadena para acceder al registro de esta variable
+     * @return
+     */
+    public String getLugar(){
+        return _lugarPosicion;
+    }
+
+    
+    public void setAncho( String ancho ){
+        _ancho = ancho;
+    }
+
+
+    public String getAncho(){
+        return _ancho;
+    }
+
+    public void setDesplazamiento( String desplazamiento ){ //xa sumascon anchos parsear, igual hacer un metodo de sumar ancho+despla
+        _desplazamiento = desplazamiento;
+    }
+
+    public String getDesplazamiento(){
+        return _desplazamiento;
+    }
+
+    /** tamaño en palabras de la maquina de codigo intermedio de la variable
+     *
+     * @param tama
+     */
+    public void setTamanio(int tamanio) {
+        _tamanio = tamanio;
+    }
+
+    public int getTamanio(){
+        return _tamanio;
+    }
 
     /**
      * Devuelve el tipo semantico asociado a un identificador en la TS.

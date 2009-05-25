@@ -20,6 +20,9 @@ import tabla_de_simbolos.simbolo.*;
  */
 public class TablaDeSimbolos {
 
+    //Variable desplazamiento que apunta a la siguiente pos libre, creo q hace de base para los id's que contiene
+    private String _desplazamiento;
+
     /**
      * Nombre asociado de la tabla de símbolos.
      */
@@ -75,6 +78,14 @@ public class TablaDeSimbolos {
         _TS = new Hashtable<String, InfoSimbolo>();
         iniciaPalabrasFuncionesProcedimientos();
         
+    }
+
+    public void setDesplazamiento( String desplazamiento ){ //xa sumascon anchos parsear, igual hacer un metodo de sumar ancho+despla
+        _desplazamiento = desplazamiento;
+    }
+
+    public String getDesplazamiento(){
+        return _desplazamiento;
     }
 
     /**
