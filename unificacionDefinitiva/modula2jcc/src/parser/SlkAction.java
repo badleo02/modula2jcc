@@ -2325,11 +2325,6 @@ public class SlkAction {
                             }
 
                             if (_habilitageneracion){
-                                // AYUSO:
-                                //TODO: falta colocar tamaño a las variables
-                                // como hacer: sacar de la tabla de simbolos el tipo,
-                                // con el primero nos vale, creo, y luego se asigna
-                                // un tamaño para cada tipo
                                 _generador.dameNuevaTemp(id.getLexema(), 1);
                             }
 

@@ -151,10 +151,17 @@ public class Generador {
 		if (nombre == null) nombre = "; variable temp";
 		else nombre = "; variable " + nombre;
 		Integer numero = _contadorVariables.pop();
-		//numero += size;
 		_contadorVariables.push(numero + size);
 		for (int i = 0; i < size; i++)
 			_pilaListaVariables.peek().add(nombre);
+
+                InfoSimbolo s = _tabla.busca(nombre);
+                if (s != null && s.getTipoSimbolo() == TipoSimbolo.VARIABLE){
+                    InfoSimboloVar v = (InfoSimboloVar)s;
+                    v.setLugar("#"+numero+"[.IX]");
+                    v.setTama(size);
+                }      
+                
 		return numero-1;
 	}
 
@@ -370,7 +377,6 @@ public class Generador {
 			emite("MOVE " + operandoOrigen + "," + operandoDestino,
 					  operando1com + " := " + operando2com);
 		}
-
 	}
 
 	// Genera el c�digo de comparaciones

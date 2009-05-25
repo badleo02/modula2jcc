@@ -1,4 +1,9 @@
 begin:
-	CALL /hola
+	CALL /m
 	HALT
+
+p:	PUSH .IX  ; RA backup
+	MOVE .SP, .IX  ; Set new RA
+	POP .IX  ; Restore RA
+	RET
 
