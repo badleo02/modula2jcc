@@ -1,5 +1,6 @@
 package parser;
 
+import java.util.logging.Level;
 import semantico.PilaNodos;
 import gestor_de_errores.GestorErrores;
 import gestor_de_errores.TErrorSemantico;
@@ -358,9 +359,9 @@ public class SlkAction {
                         // Se abre un ambito
                         _tablaActual = _tablaActual.abrirAmbito();
                         _tablaActual.setNombre(id.getLexema());
-//
-//                        if(_habilitageneracion)
-//                            _generador.abreAmbito();
+
+                        if(_habilitageneracion)
+                            _generador.abreAmbito();
                     } else {
                         error = true;
                     }
@@ -394,11 +395,14 @@ public class SlkAction {
         //nombrePrograma = ((Atributos) (n).getToken().getAtributo()).obtener("LEXEMA").toString();
 
         if (this._habilitageneracion){
-        _generador.emite("begin:");
-        // el modulo le da nombre a la funcion principal
-        _generador.emite("CALL /" + _tablaActual.getNombre()); 
-        _generador.emite("HALT");
-        _generador.escribeSeccion();
+           // creamos un ambito para este módulo
+            _generador.abreAmbito();
+            
+            _generador.emite("begin:");
+            // el modulo le da nombre a la funcion principal
+            _generador.emite("CALL /" + _tablaActual.getNombre()); 
+            _generador.emite("HALT");
+            _generador.escribeSeccion();
         }
     }
 
@@ -2243,8 +2247,12 @@ public class SlkAction {
        
         if (this._habilitageneracion){
             String nmb = _tablaActual.getNombre();
-            _generador.generaCodigoSubprograma(nmb, false);
-       //     _generador.cierraAmbito();
+            try {
+                _generador.generaCodigoSubprograma(nmb, false);
+                _generador.cierraAmbito();
+            } catch (Exception ex) {
+               ex.printStackTrace();
+            }
         }
         
         if (!_pilaNodos.isEmpty()) {
@@ -2403,10 +2411,10 @@ public class SlkAction {
         // abrimos ambito.
         _tablaActual = _tablaActual.abrirAmbito();
         _tablaActual.setNombre(nodo.getLexema());
-//
-//        if(_habilitageneracion){
-//            _generador.abreAmbito();
-//        }
+
+        if(_habilitageneracion){
+            _generador.abreAmbito();
+        }
     }
 
     /**

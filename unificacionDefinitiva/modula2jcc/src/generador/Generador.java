@@ -16,50 +16,49 @@ public class Generador {
 	/**
 	 * Referencia de la interfaz
 	 */
-	public gui.Ventana intefaz;
+	public gui.Ventana _intefaz;
 
 	/**
 	 * Buffer de c�digo ensamblador
 	 */
-	private String codigo;
-	private PrintStream file;
-	private FileOutputStream codObj;
+	private String _codigo;
+	private PrintStream _file;
+	private FileOutputStream _codObj;
 	/**
 	 * Contador de etiquetas a generar.
 	 */
-	private int contadorEtiquetas;
-	/**
-	 * Pila de contador de variables temporales por �mbito.
-	 */
-	private Stack<Integer> contadorVariables;
+	private int _contadorEtiquetas;
+        
+	/**  Pila de contador de variables temporales por ambito */
+	private Stack<Integer> _contadorVariables;
+        /** cada ambito, es en realidad un array con sus variables dentro */
+	private Stack<ArrayList<String>> _pilaListaVariables;
 
-	private Stack<ArrayList<String>> pilaListaVariables;
+	private TablaDeSimbolos _tabla;
 
-	private TablaDeSimbolos tabla;
-
-	private boolean etiquetaUltimaEmision;
+	private boolean _etiquetaUltimaEmision;
 
 	/** Separaci�n de los comentarios desde la columna 0 */
-	private int SEPCODIGO = 25;
+	private int _SEPCODIGO = 25;
 
 
 	/**
 	 * Constructor de la clase
 	 */
-	public Generador (TablaDeSimbolos arg0, String fout) {
+	public Generador (TablaDeSimbolos ts, String fout) {
 		String fichero = new String(fout);
-		codigo = new String();
-		contadorEtiquetas = 0;
-		contadorVariables = new Stack<Integer>();
-		contadorVariables.add(1);
-		pilaListaVariables = new Stack<ArrayList<String>>();
-		ArrayList<String> temp = new ArrayList<String>();
-		pilaListaVariables.add(temp);
-		tabla = arg0;
-		etiquetaUltimaEmision = false;
+		_codigo = new String();
+		_contadorEtiquetas = 0;
+                
+                // estas dos se refieren al tema de los ambitos.
+		_contadorVariables = new Stack<Integer>();  // inicialmente no hay hambitos, hay que crearlos
+		_pilaListaVariables = new Stack<ArrayList<String>>();
+                
+		_tabla = ts;
+		_etiquetaUltimaEmision = false;
 		try{
-			codObj = new FileOutputStream(fichero);
-			file = new PrintStream(codObj);
+			_codObj = new FileOutputStream(fichero);
+			_file = new PrintStream(_codObj);
 		}
 		catch (Exception e){
 			System.err.println("Error en apertura de fichero");
@@ -76,14 +75,14 @@ public class Generador {
 		String temp = new String();
 		if (arg0.charAt(0) < 'a'){
 			temp += '\t';
-			etiquetaUltimaEmision = false;
+			_etiquetaUltimaEmision = false;
 		} else {
-			if (etiquetaUltimaEmision)
+			if (_etiquetaUltimaEmision)
 				temp += "\tNOP \n";
-			etiquetaUltimaEmision = true;
+			_etiquetaUltimaEmision = true;
 		}
 		temp += arg0;
-		codigo += temp + "\n";
+		_codigo += temp + "\n";
 	}
 
 	/**
@@ -101,9 +100,9 @@ public class Generador {
 
 		temp += arg0;
 		String comentario = "";
-		for (int i=arg0.length(); i<SEPCODIGO; i++) comentario += " ";
+		for (int i=arg0.length(); i<_SEPCODIGO; i++) comentario += " ";
 		comentario += "; " + com;
-		codigo += temp + comentario + "\n";
+		_codigo += temp + comentario + "\n";
 	}
 
 	/**
@@ -121,7 +120,7 @@ public class Generador {
 		if (arg0.charAt(0) == ';'){
 			temp += '\n';
 		}
-		codigo = temp + codigo;
+		_codigo = temp + _codigo;
 	}
 
 
@@ -129,9 +128,9 @@ public class Generador {
 	 * Escribe el c�digo almacenado en el buffer.
 	 */
 	public void escribeSeccion(){
-		file.println(codigo);
+		_file.println(_codigo);
 		// IMPLEMENTAR ESTO intefaz.actualizarCodigoEns(codigo);
-		codigo = new String();
+		_codigo = new String();
 	}
 
 	/**
@@ -139,8 +138,8 @@ public class Generador {
 	 * @return Etiqueta temporal generada
 	 */
 	public String dameNuevaEtiqueta(){
-		contadorEtiquetas++;
-		return ("temp" + (contadorEtiquetas - 1));
+		_contadorEtiquetas++;
+		return ("temp" + (_contadorEtiquetas - 1));
 	}
 
 	/**
@@ -151,30 +150,36 @@ public class Generador {
 	public int dameNuevaTemp(String nombre, int size){
 		if (nombre == null) nombre = "; variable temp";
 		else nombre = "; variable " + nombre;
-		Integer numero = contadorVariables.pop();
+		Integer numero = _contadorVariables.pop();
 		//numero += size;
-		contadorVariables.push(numero + size);
+		_contadorVariables.push(numero + size);
 		for (int i = 0; i < size; i++)
-			pilaListaVariables.peek().add(nombre);
-		return numero - 1;
+			_pilaListaVariables.peek().add(nombre);
+		return numero-1;
 	}
 
 	/**
 	 * Abre un nuevo �mbito para declaraci�n de variables.
+         * Obligatorio llamarlo para abrir lo que sea, funciones o modulos
+         * como si es el programa principal
 	 */
 	public void abreAmbito(){
-		Integer temp = new Integer(3);
-		contadorVariables.push(temp);
+            // cuando abres un ambito no hay nada dentro, ninguna variable
+		Integer temp = new Integer(0);  
+		_contadorVariables.push(temp);
 		ArrayList<String> variables = new ArrayList<String>();
-		pilaListaVariables.add(variables);
+		_pilaListaVariables.add(variables);
 	}
 
 	/**
 	 * Cierra el �mbito actual y vuelve al �mbito padre.
 	 */
-	public void cierraAmbito(){
-		contadorVariables.pop();
-		pilaListaVariables.pop();
+	public void cierraAmbito() throws Exception{
+            if (_pilaListaVariables.size() == 0)
+                throw  new Exception("no hay ambito del Generador que cerrar");
+            
+		_contadorVariables.pop();
+		_pilaListaVariables.pop();
 	}
 
 	/**
@@ -182,8 +187,7 @@ public class Generador {
 	 * @return tama�o de la pila
 	 */
 	public int getTamanoTotalVariables(boolean esFuncion){
-		if (esFuncion) return contadorVariables.peek() - 3;
-		return contadorVariables.peek() - 1;
+		return _contadorVariables.peek();
 	}
 
 	/*
@@ -449,11 +453,15 @@ public class Generador {
 	}
 
 	// Genera el c�digo de gesti�n de la pila de cada subprograma
-	public void generaCodigoSubprograma(String nombre, boolean esFuncion) {
+	public void generaCodigoSubprograma(String nombre, boolean esFuncion) throws Exception {
+            if (_pilaListaVariables.size() == 0)
+                throw new Exception("no podemos generar el codigo de <" + nombre +
+                                    "> nunca se creo su ambito");
+            
 		String previo = "PUSH #0";
 		int espacio = getTamanoTotalVariables(esFuncion);
 		for (int i = 0; i < espacio; i++) {
-			anadeAlComienzo(pilaListaVariables.peek().get(pilaListaVariables.peek().size() - 1 - i));
+			anadeAlComienzo(_pilaListaVariables.peek().get(_pilaListaVariables.peek().size() - 1 - i));
 			anadeAlComienzo(previo);
 		}
 		if (esFuncion){ // Valor de retorno
@@ -502,7 +510,7 @@ public class Generador {
 		int retorno = -1;
 		if (arg0.getValor() == null) {
 			if (arg0.getToken() != null) {
-					InfoSimbolo at = tabla.busca(arg0.getLexema());
+					InfoSimbolo at = _tabla.busca(arg0.getLexema());
 
                     /****************
                      * HAY QUE ACCEDER A LA POSICION DEL ID,
