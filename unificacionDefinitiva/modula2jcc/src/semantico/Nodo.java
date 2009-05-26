@@ -29,7 +29,7 @@ public class Nodo {
 
     //PARA EL GENERADOR
 
-    private Object _lugar;
+    private String _lugar;
     private Object _valor;
     private Token _token;
     private int _offset;
@@ -236,13 +236,13 @@ public class Nodo {
 
 
 
-    //GENERACION CODIGO *************************
-    public Object getLugar() {
+    //GENERACIingON CODIGO *************************
+    public String getLugar() {
 
         return _lugar;
     }
 
-    public void setLugar (int lugar) {
+    public void setLugar (String lugar) {
 
         _lugar = lugar;
     }
