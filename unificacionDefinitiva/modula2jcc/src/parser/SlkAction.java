@@ -2230,10 +2230,13 @@ public class SlkAction {
                         tipoSem.add(TipoSemantico.ENTERO);
                     }
                     num2.setTipo(tipoSem);
-
+                    if(_habilitageneracion){
+                          _generador.generaCodigoAritmetica(num1, num2, op);
+                    }
                     _pilaNodos.push(num2);
                     if (logger.isDebugEnabled()) {
                         logger.debug("Salida con exito de expresionSinParentesisDeMultiplicacion");
+
                     }
                 } else {
                     Nodo error = new Nodo();
@@ -2295,6 +2298,11 @@ public class SlkAction {
 
                 if (auxiliar != null) {
                     _pilaNodos.push(auxiliar);
+                }
+
+                if (_habilitageneracion){
+
+                    _generador.generaCodigoAritmetica(num1, num2, oper);
                 }
 
                 if (logger.isDebugEnabled()) {
