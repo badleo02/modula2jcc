@@ -1610,7 +1610,23 @@ public class SlkAction {
         //\[ ListaDeExpresiones \] ParteIzquierda _action_ParteIzquierda_1
         //. IdentificadorOProcPredef ParteIzquierda _action_ParteIzquierda_2
         //^ ParteIzquierda _action_ParteIzquierda_3
-        throw new UnsupportedOperationException("Not yet implemented: ParteIzquierda_3");
+        System.out.println("toy en ParteIzquierda_3");
+        Nodo nodoOperador = _pilaNodos.pop();
+        Nodo nodoIdentificador = _pilaNodos.pop();
+        InfoSimbolo puntero = _tablaActual.busca( nodoIdentificador.getLexema() );
+        if( puntero.getTipoBasico().equals( TipoSemantico.PUNTERO ) != true ){
+            Nodo nuevo = new Nodo();
+            nuevo.addTipo(TipoSemantico.ERROR);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("La parte izquierda no es un tipo puntero.",
+                        nodoIdentificador.getLinea(),
+                        nodoIdentificador.getColumna()));
+                nuevo.setColumna(nodoIdentificador.getColumna());
+                nuevo.setLinea(nodoIdentificador.getLinea());
+                _pilaNodos.push(nuevo);
+        } //Que apunta a un tipo correcto se debe comprobar en la parte derecha, ya que yo no se q esla parte derecha
+        //TODO: aqui pasa igual con la generacion de codigo, salvo que ni si quiera creo q se pueda meter aqui,
+        //ya que el MOV va despues del LD de la parte derecha
+
     }
 
     private void RestoSentenciaAsignacion() {
