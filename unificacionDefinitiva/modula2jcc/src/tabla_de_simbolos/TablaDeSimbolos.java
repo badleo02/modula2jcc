@@ -393,6 +393,29 @@ public class TablaDeSimbolos {
         else
             return false;
     }
+
+    //Para GCI
+    public boolean completaArray(String lexema, String lugarPosicion, String desplazamiento ) {
+        //recibe el desplazamiento dnd hay libre, con repecto a la base
+
+        InfoSimboloArray var = (InfoSimboloArray) busca( lexema );
+        if( var != null ){
+
+            //TODO: comprobar
+            var.setLugarPosicion( lugarPosicion );
+
+            //TODO: calculo su nuevo desplazamiento
+            //ancho = var.getAncho(); -> ahora es string,convertir a int o asi xa la suma
+            //Si hacemos metodo mejor...
+            //String desplazamientoNuevo = desplazamiento + ancho;
+            var.setDesplazamiento( "" );
+
+            //_TS.put(lexema, var);
+
+            return true;
+        }else
+            return false;
+    }
     
     
     /**

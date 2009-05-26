@@ -771,7 +771,11 @@ public class SlkAction {
                 if (_habilitageneracion){
                     //TODO: considerar el tamaño de los elementos del enumerado como CARDINALES
                     //TODO: competar con lugar/pos , desplazamiento, etc
-                    _generador.dameNuevaTemp( nodoDesapilado.getLexema(), 4);
+                    _generador.dameNuevaTemp( nodoDesapilado.getLexema(), 1);
+
+                    //La variable que contiene al enumerado y que se hace en La Decla tengo que quiarla
+                    //para poder hacer bien lo del ancho
+                    //TODO:  setAncho
                 }
             }
         }
@@ -883,10 +887,11 @@ public class SlkAction {
         //TODO: debo meter el tipo de cada una de las posibles dimensiones y el rango en el que estan los indices
         Nodo nodoTipoArray;
         Nodo nodoIdentificadorArray;
+        InfoSimbolo infoNodoDesapilado;
         if (numeroDimensiones > 0) {
             nodoTipoArray = _pilaNodos.pop();
             nodoIdentificadorArray = _pilaNodos.pop();      //Problema al estar en la declaracion de VAR, no lo han tenido en cuenta
-            InfoSimbolo infoNodoDesapilado = new InfoSimboloArray(numeroDimensiones, rango, nodoTipoArray.getTipoSemantico());
+            infoNodoDesapilado = new InfoSimboloArray(numeroDimensiones, rango, nodoTipoArray.getTipoSemantico());
             //TODO: buscar para comprobar su unicidad!!! Si existe genero el error y lo meto en la pila
             if (_tablaActual.busca(nodoIdentificadorArray.getLexema()) == null) {
                 _tablaActual.getTS().put(nodoIdentificadorArray.getLexema(), infoNodoDesapilado);
@@ -906,6 +911,7 @@ public class SlkAction {
                 //Tantas nuevas temp como el producto de las dimensiones que tenemos
                 //Todo ellas del tamaño que tenga el tipo final
                 String tipoComponentes = rango.get( 0 ).get( 0 ); //TODO: de aqui sacar el tamaño, buscarlo en algun sitio
+                //TODO: para cuando las dim son letras, java ver como trata los char(en realidad son enteros cortos..)
                 int nFinal = Integer.parseInt( rango.get( 0 ).get( 1 ) );
                 int nInicio = Integer.parseInt( rango.get( 0 ).get( 2 ) );
 
@@ -916,9 +922,13 @@ public class SlkAction {
                     totalComponentes *= nFinal - nInicio + 1;
                 }
                 //el array debe saber donde empieza
-                for( int i = 0;  i < totalComponentes;  i++ ) //4 por que si, supongo q es un INTEGER
-                    _generador.dameNuevaTemp( nodoIdentificadorArray.getLexema(), 4);
-
+                for( int i = 0;  i < totalComponentes;  i++ ){ //4 por que si, supongo q es un INTEGER
+                    //le concateno el numero de var xa q no se "llame igual"
+                    //me parece que no lo hace bien, reserva 4 pos para un mismo id, no un registro de 4 bytes
+                    _generador.dameNuevaTemp( nodoIdentificadorArray.getLexema()+i, 1);
+                }
+                //TODO: poner cuando tengamos tam de los tipos
+                infoNodoDesapilado.setAncho( "AnchoDelTipoDeDatos*totalComponentes" );
             }
         }
     }
@@ -1491,9 +1501,8 @@ public class SlkAction {
         //Aunque el que no sea array llega hasta sentencia asignacion-> No puedo obviarlo, sino es el adecuado al hacer el cast muere
         if (infoIdentificador.getTipoSimbolo().equals(TipoSimbolo.ARRAY)) {
             InfoSimboloArray infoIdentificadorArray = (InfoSimboloArray) infoIdentificador;
-
+            //Y sino tiene el numero de dimensiones adecuado, pues no sigo
             if (listaExpresiones.size() == infoIdentificadorArray.getNumeroDimensiones()) {
-
                 //if( listaExpresiones.size() != infoIdentificadorArray.getNumeroDimensiones() )
                 //aquí habría que hacer comprobaciones de que la ListaDeExpresiones es correcta
                 //se mete un nodo VOID si la parteIzquierda es correcta y ERROR en caso contrario
@@ -1535,8 +1544,8 @@ public class SlkAction {
                             //MAL, TODO: el tipo de cada nodo debe ser el tipo que se indica en su rango correspondiente
                             //comprobamos que el tipo de ListaDeExpresiones (nodo1) es o CARDINAL, ENTERO o ENUMERADO, si no, es un error
                             if (nodo1.getTipoBasico().equals(TipoSemantico.CARDINAL) || nodo1.getTipoBasico().equals(TipoSemantico.ENTERO) || nodo1.getTipoBasico().equals(TipoSemantico.ENUMERADO)) {
-                                if (i == listaExpresiones.size() - 1) {
-                                    nuevo.addTipo(TipoSemantico.VOID);
+                                if (i == listaExpresiones.size() - 1) { //ñapa para que clara no muera si le paso varios nodos VOID
+                                    nuevo.addTipo(TipoSemantico.VOID);   //solo meto el void si es la ultima dim que me queda por comprobar
                                     _pilaNodos.push(nuevo);
                                 }
                             } else {
@@ -1551,6 +1560,16 @@ public class SlkAction {
                             }
                         }
                     }
+                }
+                if (_habilitageneracion){
+                    //TODO: ver si hacer aqui el acceso a la matriz o hacerlo en la asignacion, de una vez
+                    //Parametrizar para i-esima
+                    //x[ i ] ;= y;
+                    //atañe solo a x[ i ]
+                    //ld registro, #desplaX[.IX] //IX o la dir base del reg activo xa X
+                    //add registro, #despla_i[.IX]
+                    //mov #desplaY[.IX], registro
+                    //ver como anda esto en el generador ese
                 }
             }else {
                 Nodo nuevo = new Nodo();
