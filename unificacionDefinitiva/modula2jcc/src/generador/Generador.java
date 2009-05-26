@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import semantico.Nodo;
+import semantico.TipoSemantico;
 import tabla_de_simbolos.TablaDeSimbolos;
 import tabla_de_simbolos.simbolo.*;
 
@@ -40,6 +41,8 @@ public class Generador {
 
 	/** Separaci�n de los comentarios desde la columna 0 */
 	private int _SEPCODIGO = 25;
+
+    private long _contadorTemporales =0;
 
 
 	/**
@@ -147,7 +150,7 @@ public class Generador {
 	 * @param size tama�o del dato temporal
 	 * @return Nueva variable temporal
 	 */
-	public int dameNuevaTemp(String nombre, int size){
+	public String dameNuevaTemp(String nombre, int size){
 		if (nombre == null) nombre = "; variable temp";
 		else nombre = "; variable " + nombre;
 		Integer numero = _contadorVariables.pop();
@@ -162,7 +165,7 @@ public class Generador {
                     v.setTama(size);
                 }      
                 
-		return numero-1;
+		return "#"+numero+"[.IX]";
 	}
 
 	/**
@@ -202,260 +205,138 @@ public class Generador {
 	 */
 
 	// Genera el c�digo de las sumas y restas
-	public void generaCodigoSumas(ArrayList<Nodo> sumandos,
-			ArrayList<String> operaciones, Nodo resultado) {
-		if (sumandos.size() == 1) { // Si hay 1 sumando
-			Nodo sumando = sumandos.get(0);
-			resultado.setLugar(getPosicionReal(sumando));
-			resultado.setTipo(sumando.getTipoSemantico());
-		} else { // Si hay varios
-			Nodo semiresultado = new Nodo();
-			for (int i = 0; i < sumandos.size() - 1; i++) {
-				Nodo sumando2 = sumandos.get(i);
-				Nodo sumando1 = sumandos.get(i + 1);
-				semiresultado = new Nodo();
-				semiresultado.setLugar(dameNuevaTemp(null,1));
-				String operando1 = new String();
-				String operando2 = new String();
-				String operando1com = new String();
-				String operando2com = new String();
-				int posicion2 = getPosicionReal(sumando2);
-				int posicion1 = getPosicionReal(sumando1);
-				if (sumando2.getValor() == null)
-					operando2 += "#-";
-				else operando2 += "#";
-				operando2 += posicion2;
-				if (sumando2.getValor() == null) {
-					operando2 += "[.IX]";
-					if (sumando2.getToken() == null)
-                        operando2 = "temp";
-				}
-				else operando2com = operando2;
-				if (sumando1.getValor() == null)
-					operando1 += "#-";
-				else operando1 += "#";
-				operando1 += posicion1;
-				if (sumando1.getValor() == null) {
-					operando1 += "[.IX]";
-					if (sumando1.getToken() == null)
-                        operando1com = "temp";
-				}
-				else operando1com = operando1;
+	public String generaCodigoAritmetica(Nodo sumando1, Nodo sumando2, Nodo operador){
 
-				if (operaciones.get(i).equals("+")){
-					emite("ADD " + operando1 + "," + operando2, operando1com + " + " + operando2com);
-				} else if (operaciones.get(i).equals("-")){
-					emite("SUB " + operando1 + "," + operando2, operando1com + " + " + operando2com);
-				} else if (operaciones.get(i).equals("or")){
-					emite("OR " + operando1 + "," + operando2, operando1com + " OR " + operando2com);
-				}
-				emite("MOVE .A, #-" + semiresultado.getLugar() + "[.IX]",
-					  "Acum -> temp");
-				sumandos.set(i + 1, semiresultado);
-			}
-			resultado.setLugar((Integer) semiresultado.getLugar());
-			resultado.setToken(null);
-			resultado.setValor(null);
-			resultado.setOffset(0);
-		}
+         String direcOp1, direcOp2;
+         /*tres casos para cada uno de los operandos*/
+
+            if(sumando1.getLexema()!= null){
+                // *     1º sumando es un identificador
+                InfoSimbolo operador1;
+                if((operador1=_tabla.busca(sumando1.getLexema()))!=null){
+                    direcOp1 = ((InfoSimboloVar)operador1).getLugar();
+                }
+                else{
+                    //*     2º sumando es un literal
+                    direcOp1 = generaNuevoLiteral(sumando1.getTipoSemantico(),sumando1.getLexema());
+                }
+            }
+            else{
+            //*     3º sumando es el resultado de una operacion anterior
+             direcOp1 = sumando1.getLugar();
+            }
+
+         // lo mismo para el operando 2
+            if(sumando2.getLexema()!= null){
+                // *     1º sumando es un identificador
+                InfoSimbolo operador2;
+                if((operador2=_tabla.busca(sumando2.getLexema()))!=null){
+                    direcOp2 = ((InfoSimboloVar)operador2).getLugar();
+                }
+                else{
+                    //*     2º sumando es un literal
+                    direcOp2 = generaNuevoLiteral(sumando2.getTipoSemantico(),sumando2.getLexema());
+                }
+            }
+            else{
+            //*     3º sumando es el resultado de una operacion anterior
+             direcOp2 = sumando2.getLugar();
+            }
+        // nuevo temporal
+        String dirRes = dameNuevaTemp(null, 1);
+        emite("MOVE " + dirRes + " " + direcOp1);
+
+        // un switch para la operacion:
+        String op ="pero que es estoooooo";
+        switch(operador.getTipoToken()){
+            case OPERADOR_MULTIPLICADOR:
+                if (operador.getLexema().equals("DIVISION"))
+                    op = "DIV";
+                else if (operador.getLexema().equals("MULTIPLICACION"))
+                    op = "MUL";
+                break;
+            case OPERADOR_SUMADOR:
+                if (operador.getLexema().equals("SUMA"))
+                    op = "SUM";
+                else if (operador.getLexema().equals("RESTA"))
+                    op = "SUB";
+                break;
+        }
+        emite(op + " " + dirRes + " " + direcOp2 + "; suma ");
+
+		return dirRes;
 	}
 
 	// Genera el c�digo de las multiplicacines y divisiones
-	public void generaCodigoMultiplicaciones(ArrayList<Nodo> factores,
-			ArrayList<String> operaciones, Nodo resultado) {
-		if (factores.size() == 1) { // Si hay 1 sumando
-			Nodo factor = factores.get(0);
-			resultado.setLugar(getPosicionReal(factor));
-		//	resultado.setTipo(factor.getTipo());
-		} else { // Si hay varios
-			Nodo semiresultado = new Nodo();
-			for (int i = 0; i < factores.size() - 1; i++) {
-				Nodo factor2 = factores.get(i);
-				Nodo factor1 = factores.get(i + 1);
-				semiresultado = new Nodo();
-				semiresultado.setLugar(dameNuevaTemp(null,1));
-				String operando1 = new String();
-				String operando2 = new String();
-				String operando1com = new String();
-				String operando2com = new String();
-				int posicion2 = getPosicionReal(factor2);
-				int posicion1 = getPosicionReal(factor1);
-				if (factor2.getValor() == null)
-					operando2 += "#-";
-				else operando2 += "#";
-				operando2 += posicion2;
-				if (factor2.getValor() == null){
-					operando2 += "[.IX]";
-                    operando2com = "";
-				}else operando2com = operando2;
-				if (factor1.getValor() == null)
-					operando1 += "#-";
-				else operando1 += "#";
-				operando1 += posicion1;
-				if (factor1.getValor() == null){
-					operando1 += "[.IX]";
-					operando1com = "";
-				}else operando1com = operando1;
-
-				if (operaciones.get(i).equals("*")){
-					emite("MUL " + operando1 + "," + operando2, operando1com + " * " + operando2com);
-				} else if (operaciones.get(i).equals("/")){
-					emite("DIV " + operando1 + "," + operando2, operando1com + " / " + operando2com);
-				} else if (operaciones.get(i).equals("and")){
-					emite("AND " + operando1 + "," + operando2, operando1com + " AND " + operando2com);
-				}
-				emite("MOVE .A, #-" + semiresultado.getLugar() + "[.IX]" ,
-					  "Acum -> temp");
-				factores.set(i + 1, semiresultado);
-			}
-			resultado.setLugar((Integer) semiresultado.getLugar());
-			resultado.setToken(null);
-			resultado.setValor(null);
-			resultado.setOffset(0);
-		}
+	public void generaCodigoMultiplicaciones(ArrayList<Nodo> factores){
+		
 	}
 
 	// Genera el c�digo de la asignaci�n
 	public void generaCodigoAsignacion(Nodo destino, Nodo origen) {
-		int iTamanoVariables = 1;
-//		iTamanoVariables = destino.getTipo().getTamanoTipo();
-		String operandoDestino = new String();
-		String operandoOrigen = new String();
-		String operando1com = new String();
-		String operando2com = new String();
-		int posicionDestino = getPosicionReal(destino);
-		int posicionOrigen = getPosicionReal(origen);
-		if (destino.getValor() == null)
-			//va a haber que restar al indice de la pila posiciones, por eso el menos
-			operandoDestino += "#-";
-		//en este caso es un imediato, no hace falta el menos
-		else operandoDestino += "#";
-		operandoDestino += posicionDestino;
-		if (destino.getValor() == null){
-			//se pone el indice de la pila (que lleva el menos delante)
-			operandoDestino += "[.IX]";
-			operando1com = "";
-		}else operando1com = operandoDestino;
-		//lo mismo con el operando origen
-		if (origen.getValor() == null)
-			operandoOrigen += "#-";
-		else operandoOrigen += "#";
-		operandoOrigen += posicionOrigen;
-		if (origen.getValor() == null){
-			operandoOrigen += "[.IX]";
-			operando2com = "";
-		}else operando2com = operandoOrigen;
-
-		// Copia todas las posiciones de memoria que sean necesarias
-		//para el caso de arrays, por ejemplo.
-
-		emite("MOVE " + operandoOrigen + "," + operandoDestino,
-			  operando1com + " := " + operando2com);
-
-		for (int i = 1; i < iTamanoVariables; i++){
-			posicionDestino++; posicionOrigen++;
-			operandoDestino = new String();
-			operandoOrigen = new String();
-			operando1com = new String();
-			operando2com = new String();
-			if (destino.getValor() == null)
-				operandoDestino += "#-";
-			else operandoDestino += "#";
-			operandoDestino +=  posicionDestino;
-			if (destino.getValor() == null){
-				operandoDestino += "[.IX]";
-				operando1com = "";
-			}else operando1com = operandoDestino;
-			if (origen.getValor() == null)
-				operandoOrigen += "#-";
-			else operandoOrigen += "#";
-			operandoOrigen += posicionOrigen;
-			if (origen.getValor() == null){
-				operandoOrigen += "[.IX]";
-				operando2com = "temp";
-			}else operando2com = operandoOrigen;
-			emite("MOVE " + operandoOrigen + "," + operandoDestino,
-					  operando1com + " := " + operando2com);
-		}
+		emite("MOVE "+ destino.getLugar() + " " + origen.getLugar() + " ; Asignacion");
 	}
+// Genera el c digo de comparaciones
+        public void generaCodigoComparacion(ArrayList<Nodo> comparables,
+                        ArrayList<Nodo> operaciones, Nodo resultado){
+                if (resultado.getSiguiente() == null) // Si no tiene etiqueta se la damos
+                        resultado.setSiguiente(dameNuevaEtiqueta());
+                Nodo comp2 = comparables.get(0);
+                Nodo comp1 = comparables.get(1);
+                String operando1 = new String();
+                String operando2 = new String();
+                String operando1com = new String();
+                String operando2com = new String();
+                int posicion2 = getPosicionReal(comp2);
+                int posicion1 = getPosicionReal(comp1);
+                if (comp2.getValor() == null)
+                        operando2 += "#-";
+                else operando2 += "#";
+                operando2 += posicion2;
+                if (comp2.getValor() == null){
+                        operando2 += "[.IX]";
+                        operando2com = "";
+                }else operando2com = operando2;
+                if (comp1.getValor() == null)
+                        operando1 += "#-";
+                else operando1 += "#";
+                operando1 += posicion1;
+                if (comp1.getValor() == null){
+                        operando1 += "[.IX]";
+                        operando1com = "";
+                }else operando1com = operando1;
 
-	// Genera el c�digo de comparaciones
-	public void generaCodigoComparacion(ArrayList<Nodo> comparables,
-			ArrayList<Nodo> operaciones, Nodo resultado){
-		if (resultado.getSiguiente() == null) // Si no tiene etiqueta se la damos
-			resultado.setSiguiente(dameNuevaEtiqueta());
-		Nodo comp2 = comparables.get(0);
-		Nodo comp1 = comparables.get(1);
-		String operando1 = new String();
-		String operando2 = new String();
-		String operando1com = new String();
-		String operando2com = new String();
-		int posicion2 = getPosicionReal(comp2);
-		int posicion1 = getPosicionReal(comp1);
-		if (comp2.getValor() == null)
-			operando2 += "#-";
-		else operando2 += "#";
-		operando2 += posicion2;
-		if (comp2.getValor() == null){
-			operando2 += "[.IX]";
-			operando2com = "";
-		}else operando2com = operando2;
-		if (comp1.getValor() == null)
-			operando1 += "#-";
-		else operando1 += "#";
-		operando1 += posicion1;
-		if (comp1.getValor() == null){
-			operando1 += "[.IX]";
-			operando1com = "";
-		}else operando1com = operando1;
-
-		emite("CMP " + operando1 + "," + operando2, operando1com + " <=> " + operando2com);
-		if (operaciones.get(0).getValor().equals("<")) {
-			emite("BZ /" + resultado.getSiguiente());
-			emite("BP /" + resultado.getSiguiente());
-		} else if (operaciones.get(0).getValor().equals("<=")) {
-			emite("BP /" + resultado.getSiguiente());
-		} else if (operaciones.get(0).getValor().equals(">")) {
-			emite("BZ /" + resultado.getSiguiente());
-			emite("BN /" + resultado.getSiguiente());
-		} else if (operaciones.get(0).getValor().equals(">=")) {
-			emite("BN /" + resultado.getSiguiente());
-		} else if (operaciones.get(0).getValor().equals("<>")) {
-			emite("BZ /" + resultado.getSiguiente());
-		} else if (operaciones.get(0).getValor().equals("=")) {
-			emite("BNZ /" + resultado.getSiguiente());
-		}
-		resultado.setLugar(dameNuevaTemp(null, 1));
-		emite("MOVE #1,#-" + resultado.getLugar() + "[.IX]", "temp := 1");
-	}
+                emite("CMP " + operando1 + "," + operando2, operando1com + " <=> " + operando2com);
+                if (operaciones.get(0).getValor().equals("<")) {
+                        emite("BZ /" + resultado.getSiguiente());
+                        emite("BP /" + resultado.getSiguiente());
+                } else if (operaciones.get(0).getValor().equals("<=")) {
+                        emite("BP /" + resultado.getSiguiente());
+                } else if (operaciones.get(0).getValor().equals(">")) {
+                        emite("BZ /" + resultado.getSiguiente());
+                        emite("BN /" + resultado.getSiguiente());
+                } else if (operaciones.get(0).getValor().equals(">=")) {
+                        emite("BN /" + resultado.getSiguiente());
+                } else if (operaciones.get(0).getValor().equals("<>")) {
+                        emite("BZ /" + resultado.getSiguiente());
+                } else if (operaciones.get(0).getValor().equals("=")) {
+                        emite("BNZ /" + resultado.getSiguiente());
+                }
+                resultado.setLugar(dameNuevaTemp(null, 1));
+                emite("MOVE #1,#-" + resultado.getLugar() + "[.IX]", "temp := 1");
+        }
 
 	// Genera el c�digo de evaluaci�n de booleano
 	public void generaCodigoBooleano(Nodo resultado){
-		if (resultado.getSiguiente() == null)
-			resultado.setSiguiente(dameNuevaEtiqueta());
-		String operando2 = new String();
-		String operando2com = new String();
-		int posicion2 = getPosicionReal(resultado);
-		if (resultado.getValor() == null)
-			operando2 += "#-";
-		else operando2 += "#";
-		operando2 += posicion2;
-		if (resultado.getValor() == null){
-			operando2 += "[.IX]";
-			operando2com = "";
-		}else operando2com = operando2;
-
-		emite("CMP #0," + operando2, operando2com + "== true?");
-		emite("BZ /" + resultado.getSiguiente());
+		
 	}
 
 	// Genera el c�digo de una llamada a subrutina
 	public void GeneraCodigoLlamadaAFuncion(String nombre, Nodo resultado){
 		emite("CALL /"+ nombre);
 		resultado.setLugar(dameNuevaTemp(null, 1));
-		emite("MOVE .IY,#-" + resultado.getLugar() + "[.IX]", "Receive Data");
+	//	emite("MOVE .IY,#-" + resultado.getLugar() + "[.IX]", "Receive Data");
 		resultado.setToken(null);
-		resultado.setValor(null);
 	}
 
 	// Genera el c�digo de gesti�n de la pila de cada subprograma
@@ -491,32 +372,40 @@ public class Generador {
 
 	// Pide la inserci�n de una variable y la inserta en su posici�n
 	public void generaCodigoEntrada(Nodo identificador){
-		String operando = new String();
-		String operandorcom = "";
-		int posicion = getPosicionReal(identificador);
-		operando += "#-" + posicion + "[.IX]";
-		emite("ININT " + operando, operandorcom + " <- read");
+	
 	}
 
 	// Escribe el valor de una variable por terminal
 	public void generaCodigoSalida(Nodo identificador){
-		String operando = new String();
-		String operandorcom = "";
-		int posicion = getPosicionReal(identificador);
-		operando += "#-" + posicion + "[.IX]";
-		emite("WRINT " + operando, "write -> " + operandorcom);
+
 	}
 
-	/**
-	 * Retorna la posici�n real en memoria del nodo deseado.
-	 * @param arg0 valor sobre la pila en la que se encuentra el valor del nodo.
-	 * @return
-	 */
-	private int getPosicionReal(Nodo arg0){
-		int retorno = -1;
-		if (arg0.getValor() == null) {
-			if (arg0.getToken() != null) {
-					InfoSimbolo at = _tabla.busca(arg0.getLexema());
+    private String generaNuevoLiteral(ArrayList<TipoSemantico> tipoSemantico, String lexema) {
+
+        String nmb = "; Temporal" + _contadorTemporales;
+        _contadorTemporales++;
+
+		Integer numero = _contadorVariables.pop();
+        // TODO: el tamaño debe ser en función del tipo semantico.
+		_contadorVariables.push(numero + 1);
+		_pilaListaVariables.peek().add(nmb);
+
+        String lugar = "#" + numero + "[.IX]";
+        emite("MOVE " + "#" + lexema + " " + lugar + "; inicializacion de " + nmb);
+                
+		return lugar ;
+    }
+
+      /**
+         * Retorna la posici n real en memoria del nodo deseado.
+         * @param arg0 valor sobre la pila en la que se encuentra el valor del nodo.
+         * @return
+         */
+        private int getPosicionReal(Nodo arg0){
+                int retorno = -1;
+                if (arg0.getValor() == null) {
+                        if (arg0.getToken() != null) {
+                                        InfoSimbolo at = _tabla.busca(arg0.getLexema());
 
                     /****************
                      * HAY QUE ACCEDER A LA POSICION DEL ID,
@@ -529,13 +418,23 @@ public class Generador {
                      */
                     retorno = 0;
                     //ARREGLAR ESTO CUANDO SE META POSICION EN SIMBOO
-					//retorno = ((Integer)at.obtener("POSICION") + arg0.getOffset());
-			}else
-				//retorno = ((Integer)arg0.getLugar() + arg0.getOffset());
-                  retorno = (Integer)arg0.getLugar();
-		} else {
-			retorno = (Integer)arg0.getValor();
-		}
-		return retorno;
-	}
+                                        //retorno = ((Integer)at.obtener("POSICION") + arg0.getOffset());
+                        }else{
+                                //retorno = ((Integer)arg0.getLugar() + arg0.getOffset());
+
+
+                  /**
+                   * Comentado para mejora de lugar como un String y no como un object
+                   * Para que funcionen las expresiones y lo demas
+                   */
+                  //retorno = (Integer)arg0.getLugar();
+
+                        }
+                } else {
+                        retorno = (Integer)arg0.getValor();
+                }
+                return retorno;
+        }
+
+
 }
