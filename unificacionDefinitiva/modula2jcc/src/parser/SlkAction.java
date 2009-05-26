@@ -1611,11 +1611,23 @@ public class SlkAction {
         //. IdentificadorOProcPredef ParteIzquierda _action_ParteIzquierda_2
         //^ ParteIzquierda _action_ParteIzquierda_3
         System.out.println("toy en ParteIzquierda_3");
+        Nodo nuevo;
         Nodo nodoOperador = _pilaNodos.pop();
-        Nodo nodoIdentificador = _pilaNodos.pop();
+        Nodo nodoIdentificador = _pilaNodos.peek();
         InfoSimbolo puntero = _tablaActual.busca( nodoIdentificador.getLexema() );
-        if( puntero.getTipoBasico().equals( TipoSemantico.PUNTERO ) != true ){
-            Nodo nuevo = new Nodo();
+        //TODO: puede que el id no este en la tabla, dar error
+        if(  puntero == null ){ //aun asi tengo q comprobar q no e snull para no morrir en el if
+            /*nuevo = new Nodo();
+            nuevo.addTipo(TipoSemantico.ERROR);
+            _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("El identificador <"+nodoIdentificador.getLexema()+"> no ha sido declarado.",
+                        nodoIdentificador.getLinea(),
+                        nodoIdentificador.getColumna()));
+                nuevo.setColumna(nodoIdentificador.getColumna());
+                nuevo.setLinea(nodoIdentificador.getLinea());
+                _pilaNodos.push(nuevo);*/
+        }else //ENTERO, PUNTERO, lo ha hecho raro
+            if( puntero.getTipoSemantico().get( puntero.getTipoSemantico().size() -1 ).equals( TipoSemantico.PUNTERO ) != true ){
+            nuevo = new Nodo();
             nuevo.addTipo(TipoSemantico.ERROR);
             _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("La parte izquierda no es un tipo puntero.",
                         nodoIdentificador.getLinea(),
@@ -1623,10 +1635,14 @@ public class SlkAction {
                 nuevo.setColumna(nodoIdentificador.getColumna());
                 nuevo.setLinea(nodoIdentificador.getLinea());
                 _pilaNodos.push(nuevo);
+        }else{
+            nuevo = new Nodo();
+            nuevo.addTipo(TipoSemantico.VOID);   //solo meto el void si es la ultima dim que me queda por comprobar
+            _pilaNodos.push(nuevo);
         } //Que apunta a un tipo correcto se debe comprobar en la parte derecha, ya que yo no se q esla parte derecha
         //TODO: aqui pasa igual con la generacion de codigo, salvo que ni si quiera creo q se pueda meter aqui,
         //ya que el MOV va despues del LD de la parte derecha
-
+        _pilaNodos.push(nodoOperador);
     }
 
     private void RestoSentenciaAsignacion() {
