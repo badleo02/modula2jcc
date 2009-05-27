@@ -1060,23 +1060,22 @@ public class SlkAction {
             if (nodo1.getTipoBasico().equals(TipoSemantico.BOOLEANO)) {
                 nuevo.addTipo(TipoSemantico.VOID);
 
-                if (_habilitageneracion){        
+                if (_habilitageneracion && nodo1.getTipoToken()!=null){
 
                     /** apaño para los IF ***/
                     String nuevaEtiq = _generador.dameNuevaEtiqueta();
                     nuevo.setLexema(nuevaEtiq); //APAÑO
                     _generador.emiteEtiq(nuevaEtiq+":");
                     nuevo.setSiguiente(_generador.dameNuevaEtiqueta());
-                    int aux=0;
                     //suponemos que la expresion va a ser TRUE o FALSE solo para probar
-                    if (nodo1.getTipoToken().equals(TipoToken.CONSTANTE_PREDEFINIDA)&& nodo1.getLexema().equals("TRUE")){
-                        aux=1;
-                    } else if (nodo1.getTipoToken().equals(TipoToken.CONSTANTE_PREDEFINIDA)&& nodo1.getLexema().equals("FALSE")){
-                        aux=0;                    }
+                        if (nodo1.getTipoToken().equals(TipoToken.CONSTANTE_PREDEFINIDA)&& nodo1.getLexema().equals("TRUE")){
+                            _generador.emite("CMP #1,#0",nodo1.getLexema());
+                            _generador.emite("BZ "+ nuevo.getSiguiente());
+                        } else if (nodo1.getTipoToken().equals(TipoToken.CONSTANTE_PREDEFINIDA)&& nodo1.getLexema().equals("FALSE")){
+                            _generador.emite("CMP #0,#0",nodo1.getLexema());
+                            _generador.emite("BZ "+ nuevo.getSiguiente());
+                        }
 
-                    _generador.emite("CMP "+aux+", 0",nodo1.getLexema());
-                    _generador.emite("BEQ "+ nuevo.getSiguiente());
-                _pilaNodos.push(nuevo);
                    /** fin apaño para los IF**/
 
                     //_generador.emite(nuevo.getSiguiente() + ":");
@@ -1091,6 +1090,7 @@ public class SlkAction {
                     operadores2.add(op);
                     _generador.generaCodigoComparacion(operadores,operadores2,nuevo);*/
                 }
+                _pilaNodos.push(nuevo);
         
             } else {
                 nuevo.addTipo(TipoSemantico.ERROR);
@@ -1275,26 +1275,24 @@ public class SlkAction {
 
             if (nodo1.getTipoBasico().equals(TipoSemantico.BOOLEANO)) {
                 nuevo.addTipo(TipoSemantico.VOID);
-                _pilaNodos.push(nuevo);
 
-                if (_habilitageneracion){
+                if (_habilitageneracion && nodo1.getTipoToken()!=null){
                     /** apaño para los WHILE ***/
                     String nuevaEtiq = _generador.dameNuevaEtiqueta();
                     nuevo.setLexema(nuevaEtiq); //APAÑO
                     _generador.emiteEtiq(nuevaEtiq+":");
                     nuevo.setSiguiente(_generador.dameNuevaEtiqueta());
-                    int aux=0;
                     //suponemos que la expresion va a ser TRUE o FALSE solo para probar
                     if (nodo1.getTipoToken().equals(TipoToken.CONSTANTE_PREDEFINIDA)&& nodo1.getLexema().equals("TRUE")){
-                        aux=1;
+                        _generador.emite("CMP #1,#0",nodo1.getLexema());
+                        _generador.emite("BZ "+ nuevo.getSiguiente());
                     } else if (nodo1.getTipoToken().equals(TipoToken.CONSTANTE_PREDEFINIDA)&& nodo1.getLexema().equals("FALSE")){
-                        aux=0;                    }
-
-                    _generador.emite("CMP "+aux+", 0",nodo1.getLexema());
-                    _generador.emite("BEQ "+ nuevo.getSiguiente());
-
+                        _generador.emite("CMP #0,#0",nodo1.getLexema());
+                        _generador.emite("BZ "+ nuevo.getSiguiente());
+                    }
                    /** fin apaño para los WHILE**/
                 }
+                _pilaNodos.push(nuevo);
 
             } else {
                 nuevo.addTipo(TipoSemantico.ERROR);
@@ -2094,8 +2092,8 @@ public class SlkAction {
             nuevo.addTipo(TipoSemantico.VOID);
 
             if (_habilitageneracion){
-                nuevo.setSiguiente(_generador.dameNuevaEtiqueta());
-                _generador.emite(nuevo.getSiguiente());
+                //nuevo.setSiguiente(_generador.dameNuevaEtiqueta());
+                //_generador.emite(nuevo.getSiguiente());
             }
 
             _pilaNodos.push(nuevo);
@@ -2805,7 +2803,7 @@ public class SlkAction {
             nuevo.addTipo(TipoSemantico.VOID);
             _pilaNodos.push(nuevo);
 
-            if (_habilitageneracion){
+            if (_habilitageneracion && nodo3.getSiguiente()!=null){
                 _generador.emiteEtiq(nodo3.getSiguiente() + ":");
                 //nuevo.setSiguiente(_generador.dameNuevaEtiqueta());
             }
@@ -2906,9 +2904,9 @@ public class SlkAction {
             nuevo.addTipo(TipoSemantico.VOID);
             _pilaNodos.push(nuevo);
 
-            if (_habilitageneracion){
+            if (_habilitageneracion && nodo2.getSiguiente()!=null){
                 _generador.emite("BR "+nodo2.getLexema()); //apaño
-                _generador.emiteEtiq(nodo2.getSiguiente());
+                _generador.emiteEtiq(nodo2.getSiguiente()+":");
             }
 
         } else {
