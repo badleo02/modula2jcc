@@ -88,6 +88,20 @@ public class Generador {
 		_codigo += temp + "\n";
 	}
 
+    	public void emiteEtiq(String arg0){
+		String temp = new String();
+		if (arg0.charAt(0) < 'a'){
+			temp += '\t';
+			_etiquetaUltimaEmision = false;
+		} else {
+			if (_etiquetaUltimaEmision)
+				temp += "\tNOP \n";
+			_etiquetaUltimaEmision = true;
+		}
+		temp += arg0;
+		_codigo += temp;
+	}
+
 	/**
 	 * Emite el c�digo al fichero buffer de c�digo ensamblador.
 	 * IMPORTANTE: No escribe en fichero. S�lo ampl�a el c�digo.

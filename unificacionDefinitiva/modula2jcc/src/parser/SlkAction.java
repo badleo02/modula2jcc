@@ -1059,19 +1059,37 @@ public class SlkAction {
         if (!errIdent) {
             if (nodo1.getTipoBasico().equals(TipoSemantico.BOOLEANO)) {
                 nuevo.addTipo(TipoSemantico.VOID);
-                _pilaNodos.push(nuevo);
 
-                if (_habilitageneracion){
-                    //todo ha ido bien, generas la etiqueta, y si el valor es false, emites un salto a la etiqueta. en el if emites la etiqueta.
+                if (_habilitageneracion){        
+
+                    /** apaño para los IF ***/
+                    String nuevaEtiq = _generador.dameNuevaEtiqueta();
+                    nuevo.setLexema(nuevaEtiq); //APAÑO
+                    _generador.emiteEtiq(nuevaEtiq+":");
                     nuevo.setSiguiente(_generador.dameNuevaEtiqueta());
-                    //suponiendo que en nuevo está el operador de comparación, se puede llamar al generaCodigoComparacion quietando lo de los CMPs y lo del arrayList.
+                    int aux=0;
+                    //suponemos que la expresion va a ser TRUE o FALSE solo para probar
+                    if (nodo1.getTipoToken().equals(TipoToken.CONSTANTE_PREDEFINIDA)&& nodo1.getLexema().equals("TRUE")){
+                        aux=1;
+                    } else if (nodo1.getTipoToken().equals(TipoToken.CONSTANTE_PREDEFINIDA)&& nodo1.getLexema().equals("FALSE")){
+                        aux=0;                    }
+
+                    _generador.emite("CMP "+aux+", 0",nodo1.getLexema());
+                    _generador.emite("BEQ "+ nuevo.getSiguiente());
+                _pilaNodos.push(nuevo);
+                   /** fin apaño para los IF**/
+
+                    //_generador.emite(nuevo.getSiguiente() + ":");
+                    //AQUI DEBERÍA IR ALGO QUE ESCRIBA LA EXPRESION QUE TIENE QUE VENIR DE ALGÚN LADO
+
+                    /*//suponiendo que en nuevo está el operador de comparación, se puede llamar al generaCodigoComparacion quietando lo de los CMPs y lo del arrayList.
                     ArrayList<Nodo> operadores = new ArrayList<Nodo>();
                     operadores.add(nuevo);
                     ArrayList<Nodo> operadores2 = new ArrayList<Nodo>();
                     Nodo op=new Nodo();
                     op.setValor("<");
                     operadores2.add(op);
-                    _generador.generaCodigoComparacion(operadores,operadores2,nuevo);
+                    _generador.generaCodigoComparacion(operadores,operadores2,nuevo);*/
                 }
         
             } else {
@@ -1135,6 +1153,23 @@ public class SlkAction {
 
             if (nodo1.getTipoBasico().equals(TipoSemantico.BOOLEANO)) {
                 nuevo.addTipo(TipoSemantico.VOID);
+
+                /** apaño para los REPEAT ***/
+                    String nuevaEtiq = _generador.dameNuevaEtiqueta();
+                    nuevo.setLexema(nuevaEtiq); //APAÑO
+                    _generador.emiteEtiq(nuevaEtiq+":");
+                    nuevo.setSiguiente(_generador.dameNuevaEtiqueta());
+                    int aux=0;
+                    //suponemos que la expresion va a ser TRUE o FALSE solo para probar
+                    if (nodo1.getTipoToken().equals(TipoToken.CONSTANTE_PREDEFINIDA)&& nodo1.getLexema().equals("TRUE")){
+                        aux=1;
+                    } else if (nodo1.getTipoToken().equals(TipoToken.CONSTANTE_PREDEFINIDA)&& nodo1.getLexema().equals("FALSE")){
+                        aux=0;                    }
+
+                    _generador.emite("CMP "+aux+", 0",nodo1.getLexema());
+                    //_generador.emite("BEQ "+ nuevo.getSiguiente());
+
+                   /** fin apaño para los REPEAT**/
                 _pilaNodos.push(nuevo);
             } else {
                 nuevo.addTipo(TipoSemantico.ERROR);
@@ -1241,6 +1276,26 @@ public class SlkAction {
             if (nodo1.getTipoBasico().equals(TipoSemantico.BOOLEANO)) {
                 nuevo.addTipo(TipoSemantico.VOID);
                 _pilaNodos.push(nuevo);
+
+                if (_habilitageneracion){
+                    /** apaño para los WHILE ***/
+                    String nuevaEtiq = _generador.dameNuevaEtiqueta();
+                    nuevo.setLexema(nuevaEtiq); //APAÑO
+                    _generador.emiteEtiq(nuevaEtiq+":");
+                    nuevo.setSiguiente(_generador.dameNuevaEtiqueta());
+                    int aux=0;
+                    //suponemos que la expresion va a ser TRUE o FALSE solo para probar
+                    if (nodo1.getTipoToken().equals(TipoToken.CONSTANTE_PREDEFINIDA)&& nodo1.getLexema().equals("TRUE")){
+                        aux=1;
+                    } else if (nodo1.getTipoToken().equals(TipoToken.CONSTANTE_PREDEFINIDA)&& nodo1.getLexema().equals("FALSE")){
+                        aux=0;                    }
+
+                    _generador.emite("CMP "+aux+", 0",nodo1.getLexema());
+                    _generador.emite("BEQ "+ nuevo.getSiguiente());
+
+                   /** fin apaño para los WHILE**/
+                }
+
             } else {
                 nuevo.addTipo(TipoSemantico.ERROR);
                 _gestorDeErrores.insertaErrorSemantico(new TErrorSemantico("Tipo no booleano en la expresion WHILE",
@@ -2037,6 +2092,12 @@ public class SlkAction {
         nodo1 = _pilaNodos.pop(); //Sentencia (la primera)
         if (nodo1.getTipoBasico().equals(TipoSemantico.VOID) && (!SSError)) {
             nuevo.addTipo(TipoSemantico.VOID);
+
+            if (_habilitageneracion){
+                nuevo.setSiguiente(_generador.dameNuevaEtiqueta());
+                _generador.emite(nuevo.getSiguiente());
+            }
+
             _pilaNodos.push(nuevo);
         } else if (nodo1.getTipoBasico().equals(TipoSemantico.ERROR)) {
             nuevo.addTipo(TipoSemantico.ERROR);
@@ -2744,7 +2805,10 @@ public class SlkAction {
             nuevo.addTipo(TipoSemantico.VOID);
             _pilaNodos.push(nuevo);
 
-            _generador.emite(nodo3.getSiguiente() + ":");
+            if (_habilitageneracion){
+                _generador.emiteEtiq(nodo3.getSiguiente() + ":");
+                //nuevo.setSiguiente(_generador.dameNuevaEtiqueta());
+            }
 
         } else {
             nuevo.addTipo(TipoSemantico.ERROR);
@@ -2799,7 +2863,14 @@ public class SlkAction {
         if (nodo1.getTipoBasico().equals(TipoSemantico.VOID) &&
                 nodo2.getTipoBasico().equals(TipoSemantico.VOID)) {
             nuevo.addTipo(TipoSemantico.VOID);
+
+            if (_habilitageneracion){
+                _generador.emite("BEQ "+ nodo2.getSiguiente());
+                
+            }
+
             _pilaNodos.push(nuevo);
+
         } else {
             nuevo.addTipo(TipoSemantico.ERROR);
             _pilaNodos.push(nuevo);
@@ -2834,6 +2905,12 @@ public class SlkAction {
                 nodo2.getTipoBasico().equals(TipoSemantico.VOID)) {
             nuevo.addTipo(TipoSemantico.VOID);
             _pilaNodos.push(nuevo);
+
+            if (_habilitageneracion){
+                _generador.emite("BR "+nodo2.getLexema()); //apaño
+                _generador.emiteEtiq(nodo2.getSiguiente());
+            }
+
         } else {
             nuevo.addTipo(TipoSemantico.ERROR);
             _pilaNodos.push(nuevo);
