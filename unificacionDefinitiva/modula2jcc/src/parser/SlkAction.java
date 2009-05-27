@@ -416,7 +416,14 @@ public class SlkAction {
     }
 
     private void EXIT() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        //mete un nodo VOID en la pila
+        Nodo nuevo = new Nodo();
+        nuevo.addTipo(TipoSemantico.VOID);
+        _pilaNodos.push(nuevo);
+
+        if (_habilitageneracion){
+            _generador.emite("BR "); //FALTA AÑADIR LA ETIQUETA A DND SALTA
+        }
     }
 
     private void ExpresionRETURN() {
@@ -764,7 +771,9 @@ public class SlkAction {
     }
 
     private void SentenciaLOOP_GCI() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        if (_habilitageneracion){
+            _generador.emiteEtiq(_generador.dameNuevaEtiqueta()+":");
+        }
     }
 
     private void SentenciaREPEAT_GCI() {
@@ -2864,6 +2873,10 @@ public class SlkAction {
         Nodo nuevo = new Nodo();
         if (nodo1.getTipoBasico().equals(TipoSemantico.VOID)) {
             nuevo.addTipo(TipoSemantico.VOID);
+
+            if (_habilitageneracion){
+                _generador.emiteEtiq(_generador.dameNuevaEtiqueta()+ ":");
+            }
             _pilaNodos.push(nuevo);
         } else {
             nuevo.addTipo(TipoSemantico.ERROR);
