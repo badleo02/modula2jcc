@@ -160,7 +160,7 @@ SentenciaFOR
 SentenciaWITH
 LlamadaProcedimientoPredefinido
 SentenciaRETURN
-EXIT
+EXIT _action_EXIT
 _epsilon_ _action_epsilonSentencia
 
 SentenciaAsignacion:
@@ -200,10 +200,10 @@ SentenciaWHILE:
 WHILE Expresion _action_ExpresionWHILE DO SecuenciaDeSentencias END _action_SentenciaWHILE
 
 SentenciaREPEAT:
-REPEAT SecuenciaDeSentencias UNTIL Expresion _action_ExpresionREPEAT _action_SentenciaREPEAT
+REPEAT _action_SentenciaREPEAT_GCI SecuenciaDeSentencias UNTIL Expresion _action_ExpresionREPEAT _action_SentenciaREPEAT
 
 SentenciaLOOP:
-LOOP SecuenciaDeSentencias END _action_SentenciaLOOP
+LOOP _action_SentenciaLOOP_GCI SecuenciaDeSentencias END _action_SentenciaLOOP
 
 SentenciaFOR:
 FOR Identificador := Expresion _action_IdentificadorFOR TO Expresion _action_ExpresionTO [ BY ExpresionConstante _action_ExpresionConstanteFOR ] DO SecuenciaDeSentencias END _action_SentenciaFOR
@@ -281,7 +281,8 @@ _epsilon_
 Termino:
 Factor RestoTermino
 
-RestoTermino:OperadorMultiplicador Factor RestoTermino _action_expresionSinParentesisDeMultiplicacion
+RestoTermino:
+OperadorMultiplicador Factor RestoTermino _action_expresionSinParentesisDeMultiplicacion
 _epsilon_
 
 Factor:

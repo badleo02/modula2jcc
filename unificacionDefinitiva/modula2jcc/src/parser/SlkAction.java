@@ -150,162 +150,171 @@ public class SlkAction {
                 SecuenciaDeSentencias();
                 break;
             case 25:
-                epsilonSentencia();
+                EXIT();
                 break;
             case 26:
-                SentenciaAsignacion();
+                epsilonSentencia();
                 break;
             case 27:
-                RestoSentenciaAsignacion();
+                SentenciaAsignacion();
                 break;
             case 28:
-                RestoSentenciaRestoAsignacion_1();
+                RestoSentenciaAsignacion();
                 break;
             case 29:
-                RestoSentenciaRestoAsignacion_2();
+                RestoSentenciaRestoAsignacion_1();
                 break;
             case 30:
-                ParteIzquierda_1();
+                RestoSentenciaRestoAsignacion_2();
                 break;
             case 31:
-                ParteIzquierda_2();
+                ParteIzquierda_1();
                 break;
             case 32:
-                ParteIzquierda_3();
+                ParteIzquierda_2();
                 break;
             case 33:
-                IdentificadorOProcPredef_Ident();
+                ParteIzquierda_3();
                 break;
             case 34:
-                IdentificadorOProcPredef_ProcPredef();
+                IdentificadorOProcPredef_Ident();
                 break;
             case 35:
-                ExpresionIF();
+                IdentificadorOProcPredef_ProcPredef();
                 break;
             case 36:
-                SentenciaIF();
+                ExpresionIF();
                 break;
             case 37:
-                ExpresionELSIF();
+                SentenciaIF();
                 break;
             case 38:
-                RestoSentenciaELSIF();
+                ExpresionELSIF();
                 break;
             case 39:
-                RestoSentenciaELSE();
+                RestoSentenciaELSIF();
                 break;
             case 40:
-                RestoSentenciaIF();
+                RestoSentenciaELSE();
                 break;
             case 41:
-                Caso();
+                RestoSentenciaIF();
                 break;
             case 42:
-                SentenciaCaseELSE();
+                Caso();
                 break;
             case 43:
-                SentenciaCase();
+                SentenciaCaseELSE();
                 break;
             case 44:
-                SentenciaCaso();
+                SentenciaCase();
                 break;
             case 45:
-                ExpresionWHILE();
+                SentenciaCaso();
                 break;
             case 46:
-                SentenciaWHILE();
+                ExpresionWHILE();
                 break;
             case 47:
-                ExpresionREPEAT();
+                SentenciaWHILE();
                 break;
             case 48:
-                SentenciaREPEAT();
+                SentenciaREPEAT_GCI();
                 break;
             case 49:
-                SentenciaLOOP();
+                ExpresionREPEAT();
                 break;
             case 50:
-                IdentificadorFOR();
+                SentenciaREPEAT();
                 break;
             case 51:
-                ExpresionTO();
+                SentenciaLOOP_GCI();
                 break;
             case 52:
-                ExpresionConstanteFOR();
+                SentenciaLOOP();
                 break;
             case 53:
-                SentenciaFOR();
+                IdentificadorFOR();
                 break;
             case 54:
-                SecuenciaWITH();
+                ExpresionTO();
                 break;
             case 55:
-                ExpresionRETURN();
+                ExpresionConstanteFOR();
                 break;
             case 56:
-                operadorBooleano();
+                SentenciaFOR();
                 break;
             case 57:
-                Cadena();
+                SecuenciaWITH();
                 break;
             case 58:
-                Caracter();
+                ExpresionRETURN();
                 break;
             case 59:
-                expresionSinParentesisDeSuma();
+                operadorBooleano();
                 break;
             case 60:
-                operadorUnario();
+                Cadena();
                 break;
             case 61:
-                expresionSinParentesisDeMultiplicacion();
+                Caracter();
                 break;
             case 62:
-                TipoFormal();
+                expresionSinParentesisDeSuma();
                 break;
             case 63:
-                NumeroEntero();
+                operadorUnario();
                 break;
             case 64:
-                NumeroReal();
+                expresionSinParentesisDeMultiplicacion();
                 break;
             case 65:
-                TipoPredefinidoPorUsuario();
+                TipoFormal();
                 break;
             case 66:
-                BITSET();
+                NumeroEntero();
                 break;
             case 67:
-                BOOLEAN();
+                NumeroReal();
                 break;
             case 68:
-                CARDINAL();
+                TipoPredefinidoPorUsuario();
                 break;
             case 69:
-                CHAR();
+                BITSET();
                 break;
             case 70:
-                INTEGER();
+                BOOLEAN();
                 break;
             case 71:
-                LONGINT();
+                CARDINAL();
                 break;
             case 72:
-                LONGREAL();
+                CHAR();
                 break;
             case 73:
-                PROC();
+                INTEGER();
                 break;
             case 74:
-                REAL();
+                LONGINT();
                 break;
             case 75:
-                TRUE();
+                LONGREAL();
                 break;
             case 76:
-                FALSE();
+                PROC();
                 break;
             case 77:
+                REAL();
+                break;
+            case 78:
+                TRUE();
+                break;
+            case 79:
+                FALSE();
+                break;
+            case 80:
                 NIL();
                 break;
         }
@@ -404,6 +413,10 @@ public class SlkAction {
             _generador.emite("HALT");
             _generador.escribeSeccion();
         }
+    }
+
+    private void EXIT() {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     private void ExpresionRETURN() {
@@ -748,6 +761,28 @@ public class SlkAction {
             }
         }
 
+    }
+
+    private void SentenciaLOOP_GCI() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void SentenciaREPEAT_GCI() {
+        //Se crea un nuevo nodo en la pila q va a llevar la información de la etiqueta
+        if (_habilitageneracion){
+            Nodo nuevo= new Nodo();
+            nuevo.setSiguiente(_generador.dameNuevaEtiqueta());
+            _generador.emiteEtiq(nuevo.getSiguiente()+":");
+            //se mete en la pila
+            if (_pilaNodos.isEmpty()){
+               _pilaNodos.push(nuevo); 
+            } else {
+                Nodo aux = _pilaNodos.pop();
+                _pilaNodos.push(nuevo);
+                _pilaNodos.push(aux);
+            }
+            
+        }
     }
 
     private void TipoEnumerado() {
@@ -1155,21 +1190,15 @@ public class SlkAction {
                 nuevo.addTipo(TipoSemantico.VOID);
 
                 /** apaño para los REPEAT ***/
-                    String nuevaEtiq = _generador.dameNuevaEtiqueta();
-                    nuevo.setLexema(nuevaEtiq); //APAÑO
-                    _generador.emiteEtiq(nuevaEtiq+":");
-                    nuevo.setSiguiente(_generador.dameNuevaEtiqueta());
-                    int aux=0;
+                if (_habilitageneracion && nodo1.getTipoToken()!=null){
                     //suponemos que la expresion va a ser TRUE o FALSE solo para probar
                     if (nodo1.getTipoToken().equals(TipoToken.CONSTANTE_PREDEFINIDA)&& nodo1.getLexema().equals("TRUE")){
-                        aux=1;
+                        _generador.emite("CMP #1,#0",nodo1.getLexema());
                     } else if (nodo1.getTipoToken().equals(TipoToken.CONSTANTE_PREDEFINIDA)&& nodo1.getLexema().equals("FALSE")){
-                        aux=0;                    }
-
-                    _generador.emite("CMP "+aux+", 0",nodo1.getLexema());
-                    //_generador.emite("BEQ "+ nuevo.getSiguiente());
-
-                   /** fin apaño para los REPEAT**/
+                        _generador.emite("CMP #0,#0",nodo1.getLexema());
+                    }
+                }
+                /** fin apaño para los REPEAT**/
                 _pilaNodos.push(nuevo);
             } else {
                 nuevo.addTipo(TipoSemantico.ERROR);
@@ -2863,8 +2892,8 @@ public class SlkAction {
             nuevo.addTipo(TipoSemantico.VOID);
 
             if (_habilitageneracion){
-                _generador.emite("BEQ "+ nodo2.getSiguiente());
-                
+                Nodo nodoAux = _pilaNodos.pop();
+                _generador.emite("BNZ "+ nodoAux.getSiguiente());
             }
 
             _pilaNodos.push(nuevo);
