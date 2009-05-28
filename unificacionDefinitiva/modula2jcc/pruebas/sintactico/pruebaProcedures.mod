@@ -14,19 +14,19 @@ VAR
 
          PROCEDURE interior;
          BEGIN
-         END interior
+         END interior;
         
      BEGIN
      END primero;
 
 
-     PROCEDURE segundo (a: INTEGER, VAR b:INTEGER);
+     PROCEDURE segundo (a: INTEGER; VAR b:INTEGER);
      VAR
          e, f : INTEGER;
      BEGIN
      END segundo;
 
-     PROCEDURE tercero (a: INTEGER, b : INTEGER): INTEGER;
+     PROCEDURE tercero (a: INTEGER; b : INTEGER): INTEGER;
      VAR
          e, f : INTEGER;
      BEGIN
