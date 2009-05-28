@@ -5,7 +5,7 @@
  *)
 
 MODULE testProc;
-TIPE
+TYPE
       entero = INTEGER;
 VAR
       a : INTEGER;

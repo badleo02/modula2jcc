@@ -30,7 +30,7 @@ VAR
      VAR
          e, f : INTEGER;
      BEGIN
-     END segundo;
+     END tercero;
 
 BEGIN
 
