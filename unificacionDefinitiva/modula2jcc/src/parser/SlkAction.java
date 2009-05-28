@@ -846,7 +846,10 @@ public class SlkAction {
     public void completaSiEsIdentificador(Nodo nodo) {
         if (nodo.getTipoToken().equals(TipoToken.IDENTIFICADOR) == true) {
             InfoSimbolo infoDimInicial = _tablaActual.busca( nodo.getLexema() );
-            nodo.addTipo( infoDimInicial.getTipoBasico() );
+            if( infoDimInicial != null )
+              nodo.addTipo( infoDimInicial.getTipoBasico() );
+            else
+                System.out.println("No esta el id");
         }
     }
 
@@ -868,7 +871,12 @@ public class SlkAction {
             //Desapilo el tipo del array
             Nodo nodoTipoArray = _pilaNodos.pop();
 
-            if (_pilaNodos.peek().getTipoBasico().equals(TipoSemantico.ENUMERADO) != true) {
+            Nodo nodoAux = _pilaNodos.peek();
+            if( nodoAux.getTipoToken().equals( TipoToken.IDENTIFICADOR ) == true ){
+                InfoSimbolo infoAux= _tablaActual.busca( nodoAux.getLexema() );
+                nodoAux.setTipo(infoAux.getTipoSemantico());
+            }
+            if (nodoAux.getTipoBasico().equals(TipoSemantico.ENUMERADO) != true) {
                 //Desapilo la dimension final del rango
                 Nodo nodoDimensionFinal = _pilaNodos.pop();
                 completaSiEsIdentificador(nodoDimensionFinal);
@@ -951,28 +959,51 @@ public class SlkAction {
                 _pilaNodos.push(nodoNuevo);
             }
 
-            if (_habilitageneracion){
+            if (_habilitageneracion && rango.size()!= 0 ){
                 //Tantas nuevas temp como el producto de las dimensiones que tenemos
                 //Todo ellas del tamaño que tenga el tipo final
                 String tipoComponentes = rango.get( 0 ).get( 0 ); //TODO: de aqui sacar el tamaño, buscarlo en algun sitio
                 //TODO: para cuando las dim son letras, java ver como trata los char(en realidad son enteros cortos..)
-                int nFinal = Integer.parseInt( rango.get( 0 ).get( 1 ) );
-                int nInicio = Integer.parseInt( rango.get( 0 ).get( 2 ) );
+
+                //TODO: puede que las dim sean identificadores
+                int nFinal, nInicio;
+                if( Character.isDigit( rango.get( 0 ).get( 1 ).charAt( 0 ) )== true ){
+                        nFinal = Integer.parseInt( rango.get( 0 ).get( 1 ) );
+                        nInicio = Integer.parseInt( rango.get( 0 ).get(2) );
+                    }
+                    else{
+                        nFinal = (int)rango.get( 0 ).get( 1 ).charAt( 0 );
+                        nInicio = (int)rango.get( 0 ).get(2).charAt( 0 );
+                    }
 
                 int totalComponentes =  nFinal - nInicio + 1;
                 for( int i = 1; i < numeroDimensiones;  i++ ){
-                    nFinal = Integer.parseInt( rango.get( i ).get( 1 ) );
-                    nInicio = Integer.parseInt( rango.get( i ).get(2) );
+                    if( Character.isDigit( rango.get( i ).get( 1 ).charAt( 0 ) )== true ){
+                        nFinal = Integer.parseInt( rango.get( i ).get( 1 ) );
+                        nInicio = Integer.parseInt( rango.get( i ).get(2) );
+                    }
+                    else{
+                        nFinal = (int)rango.get( i ).get( 1 ).charAt( 0 );
+                        nInicio = (int)rango.get( i ).get(2).charAt( 0 );
+                    }
                     totalComponentes *= nFinal - nInicio + 1;
                 }
+                nodoIdentificadorArray.setLugar( _generador.dameNuevaTemp( nodoIdentificadorArray.getLexema()+"0", 1) );
                 //el array debe saber donde empieza
-                for( int i = 0;  i < totalComponentes;  i++ ){ //4 por que si, supongo q es un INTEGER
+                for( int i = 1;  i < totalComponentes;  i++ ){ //4 por que si, supongo q es un INTEGER
                     //le concateno el numero de var xa q no se "llame igual"
                     //me parece que no lo hace bien, reserva 4 pos para un mismo id, no un registro de 4 bytes
                     _generador.dameNuevaTemp( nodoIdentificadorArray.getLexema()+i, 1);
                 }
                 //TODO: poner cuando tengamos tam de los tipos
-                infoNodoDesapilado.setAncho( "AnchoDelTipoDeDatos*totalComponentes" );
+                //infoNodoDesapilado.setAncho( "AnchoDelTipoDeDatos*totalComponentes" );
+                int ancho = 1* totalComponentes;
+                infoNodoDesapilado.setAncho( new Integer( ancho ).toString() );
+
+                String desplazamiento = infoNodoDesapilado.getLugar()+ancho;
+                infoNodoDesapilado.setDesplazamiento(desplazamiento);
+                /*String lugarPosicionAccesoDimension = infoNodoDesapilado.getDesplazamiento()+ancho;
+                nodoIdentificadorArray.setLugar( lugarPosicionAccesoDimension );*/
             }
         }
     }
@@ -1599,8 +1630,9 @@ public class SlkAction {
                 //se mete un nodo VOID si la parteIzquierda es correcta y ERROR en caso contrario
                 Nodo nodo1;
                 Nodo nuevo = new Nodo();
+                int i;
                 //nuevo.addTipo(TipoSemantico.VOID); //Para la cond inicial del for, luego nodo se vuelve a instanciar
-                for (int i = 0; i < listaExpresiones.size() && ( nuevo.getTipoSemantico().size() == 0 || !nuevo.getTipoBasico().equals(TipoSemantico.ERROR)); i++) {
+                for (i = 0; i < listaExpresiones.size() && ( nuevo.getTipoSemantico().size() == 0 || !nuevo.getTipoBasico().equals(TipoSemantico.ERROR)); i++) {
                     nodo1 = listaExpresiones.get(i);
                     boolean errIdent = false;
                     nuevo = new Nodo();
@@ -1634,7 +1666,8 @@ public class SlkAction {
                         } else {
                             //MAL, TODO: el tipo de cada nodo debe ser el tipo que se indica en su rango correspondiente
                             //comprobamos que el tipo de ListaDeExpresiones (nodo1) es o CARDINAL, ENTERO o ENUMERADO, si no, es un error
-                            if (nodo1.getTipoBasico().equals(TipoSemantico.CARDINAL) || nodo1.getTipoBasico().equals(TipoSemantico.ENTERO) || nodo1.getTipoBasico().equals(TipoSemantico.ENUMERADO)) {
+                            String tipoRango = infoIdentificadorArray.getRangos().get( i ).get( 0 );
+                            if ( nodo1.getTipoBasico().toString().compareTo( tipoRango ) == 0 ) {
                                 if (i == listaExpresiones.size() - 1) { //ñapa para que clara no muera si le paso varios nodos VOID
                                     nuevo.addTipo(TipoSemantico.VOID);   //solo meto el void si es la ultima dim que me queda por comprobar
                                     _pilaNodos.push(nuevo);
@@ -1661,6 +1694,12 @@ public class SlkAction {
                     //add registro, #despla_i[.IX]
                     //mov #desplaY[.IX], registro
                     //ver como anda esto en el generador ese
+                    //TODO: generar el calculo de la direccion a la que se quiere acceder, pero donde dejo el calculo
+                    if (i == listaExpresiones.size() - 1) { //Cuando tengo todas las dimensiones calculo la pos
+                        String desplazamientoIesimo = new Integer( i ).toString(); //TODO
+                        String lugarPosicion = aux.getLugar()+desplazamientoIesimo;
+                        aux.setLugar(lugarPosicion);
+                    }
                 }
             }else {
                 Nodo nuevo = new Nodo();

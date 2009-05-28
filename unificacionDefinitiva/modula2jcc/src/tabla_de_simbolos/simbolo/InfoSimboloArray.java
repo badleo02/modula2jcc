@@ -94,9 +94,11 @@ public class InfoSimboloArray extends InfoSimbolo{
         cadena = "\tARRAY:" + _tipoSemantico;
         cadena += "\tnDim: " + getNumeroDimensiones() + "\n";
 
+        if( _rango.size() != 0 ){
         for (int i = getNumeroDimensiones()-1; i >= 0 ; i--) {
             cadena += "\ttipoDim: [" + _rango.get( i ).get( 0 ) + "]\t";
             cadena += "Inicio: "+_rango.get( i ).get( 2 )+", Final: "+_rango.get( i ).get( 1 )+"\n";
+        }
         }
         return cadena;
     }
