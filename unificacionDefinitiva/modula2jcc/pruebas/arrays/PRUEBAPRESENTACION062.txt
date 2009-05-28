@@ -1,0 +1,9 @@
+MODULE enums;
+
+VAR Index       : CARDINAL;
+	a	: CARDINAL;
+    Automobiles : ARRAY[1..5] OF ARRAY[1..8] OF INTEGER;
+
+BEGIN
+	Automobiles[4,7] := 3+2;
+END enums.

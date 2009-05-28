@@ -1,0 +1,10 @@
+MODULE enums;
+
+VAR 
+
+    Automobiles : ARRAY [-11..0] OF INTEGER;
+
+BEGIN
+	Automobiles[-6,0] := 'a';
+
+END enums.

@@ -1,0 +1,12 @@
+MODULE enums;
+
+VAR 
+	Index   : CARDINAL;
+	Ini	: CARDINAL;
+	Fin	: CARDINAL;
+    Automobiles : ARRAY [Ini..Fin] OF CARDINAL;
+
+BEGIN
+	Automobiles[Index] := Ini;
+
+END enums.
