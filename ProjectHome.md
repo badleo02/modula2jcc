@@ -1,0 +1,3 @@
+Compilador del Lenguaje Modula-2 desarrollado en java durante el curso académico 2008/2009 en la asignatura Procesadores de Lenguaje en la Facultad de Informática de la Universidad Complutense de Madrid correspondiente a la titulación de Ingeniero Informática.
+
+Como aspectos generales caben destacar el uso de las herramientas JFlex para la realización del Analizador Léxico y de Slk para la realización del Analizador Sintáctico y Semántico.
